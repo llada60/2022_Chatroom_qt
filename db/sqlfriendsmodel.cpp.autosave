@@ -1,0 +1,39 @@
+#include "sqlfriendsmodel.h"
+#include <QtSql/QSqlDatabase>
+#include <QtSql/QSqlQuery>
+#include <QtSql/QSqlError>
+#include <QtSql/QSqlRecord>
+#include <QtDebug>
+
+static const char* friendTableName = "FRIENDINFO";
+static void createTable()
+{
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE", "friend");
+    db.setDatabaseName("Info.db");
+    if(db.tables().contains(friendTableName))
+    {
+        return;
+    }
+    if(db.open())
+    {
+        QSqlQuery query(db);
+        if(!query.exec(QString("CREATE TABLE IF NOT EXISTS FRIENDINFO("
+                               "USERID INTEGER NOT NULL, "
+                               "FRIENDID INTEGER NOT NULL CHECK (USERID<=FRIENDID),"
+                               "PRIMARY KEY (USERID, FRIENDID),"
+                               "USERID REFERENCES USERINFO(ID) CASCADES,"
+                               "USERID REFERENCES USERINFO(ID) CASCADES)"
+                               ).arg(friendTableName)))
+        {
+            qDebug() << "表创建发生错误";
+            qDebug() << query.lastError();
+        }
+    }
+    db.close();
+}
+
+SqlFriendsModel::SqlFriendsModel(QObject *parent, QSqlDatabase db, QString userID):
+    QSqlTableModel(parent, db), userID(userID)
+{
+    createTable();
+}

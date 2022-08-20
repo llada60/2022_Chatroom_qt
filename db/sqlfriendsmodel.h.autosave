@@ -1,0 +1,23 @@
+#ifndef SQLFRIENDSMODEL_H
+#define SQLFRIENDSMODEL_H
+
+#include <QObject>
+#include <QtSql/QSqlTableModel>
+#include <QJsonArray>
+#include <QByteArray>
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QJsonValue>
+
+class SqlFriendsModel : public QSqlTableModel
+{
+    Q_OBJECT
+public:
+    SqlFriendsModel(QObject *parent, QSqlDatabase db, QString userID);
+    ~SqlFriendsModel();
+
+private:
+    QString userID;
+};
+
+#endif // SQLFRIENDSMODEL_H
