@@ -50,7 +50,7 @@ ColumnLayout {
         id: chatListView
         Layout.fillWidth: true
         Layout.fillHeight: true
-        height: childrenRect.height
+//        height: parent.height - 64
         clip: true
         spacing: 8
 
@@ -96,15 +96,17 @@ ColumnLayout {
 
     }
 
-    Pane {
-        id: pane
-        Layout.fillWidth: true
-        background: Rectangle {
-            color: undefined
-        }
+//    Pane {
+//        id: pane
+//        Layout.fillWidth: true
+//        height: 64
+//        background: Rectangle {
+//            color: undefined
+//        }
 
         RowLayout {
             width: parent.width
+            height: 64
 
 
             ScrollView {
@@ -143,7 +145,6 @@ ColumnLayout {
                 }
             }
         }
-    }
+//    }
 
 }
-

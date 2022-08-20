@@ -4,5 +4,6 @@
         <file>ChatScreen.qml</file>
         <file>RoundImage.qml</file>
         <file>qtquickcontrols2.conf</file>
+        <file>AutoScrollTextEdit.qml</file>
     </qresource>
 </RCC>
