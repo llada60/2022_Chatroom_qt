@@ -56,6 +56,7 @@ Window {
             width:200
             height: 50
             leftPadding: 4
+            echoMode: TextInput.Password
             placeholderText: qsTr("<center>密码</center>")
         }
         TextField
@@ -66,6 +67,7 @@ Window {
             width:200
             height: 50
             leftPadding: 4
+            echoMode: TextInput.Password
             placeholderText: qsTr("<center>确认密码</center>")
         }
         RoundButton

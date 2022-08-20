@@ -77,6 +77,7 @@ Window {
         y:200
         x:20
         leftPadding: 4
+        echoMode: TextInput.Password
         placeholderText: qsTr("<center>密码</center>")
     }
 
