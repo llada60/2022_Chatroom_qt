@@ -1,4 +1,4 @@
-QT       += core gui network
+QT       += core gui network sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -18,12 +18,16 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     main.cpp \
     onlinelist.cpp \
-    qqserver.cpp
+    qqserver.cpp \
+    sqlaccountmodel.cpp \
+    sqlfriendmodel.cpp
 
 HEADERS += \
     ../../Tcp-Version/QQServer/onlinelist.h \
     onlinelist.h \
-    qqserver.h
+    qqserver.h \
+    sqlaccountmodel.h \
+    sqlfriendmodel.h
 
 FORMS += \
     qqserver.ui

@@ -1,5 +1,8 @@
 #include "qqclient.h"
 #include "ui_qqclient.h"
+#include <QJsonObject>
+#include <QJsonParseError>
+#include <QJsonDocument>
 
 QQClient::QQClient(QWidget *parent)
     : QMainWindow(parent)
@@ -36,7 +39,7 @@ void QQClient::on_registerButton_clicked()
 void QQClient::on_loginButton_clicked()
 {
     //这里提取出id和password
-    int id=123;
+    int id=6;
     QString password="123456";
     //调用函数
     login(id,password);
@@ -50,15 +53,31 @@ void QQClient::on_udpSocket_readyRead()
     char buf[1024]={0};
     QHostAddress ip;
     quint16 port;
+    QJsonParseError parseErr;
+    QJsonObject recObj;
+    QString result;
     //提取
     qint64 len = udpSocket->readDatagram(buf,sizeof(buf),&ip,&port);
     //显示+处理
     if(len>0)
     {
+        recObj = QJsonDocument::fromJson(buf, &parseErr).object();
+        qDebug() << parseErr.error;
+        qDebug() << recObj;
+        if(recObj.contains("id"))
+        {
+            result = "id: " + QString::number(recObj["id"].toInt());
+        }
+        else if(recObj.contains("result"))
+        {
+            result = QString::number(recObj["result"].toBool());
+        }
+
         QString content=QString("[%1,%2]：%3")
                 .arg(ip.toString())
                 .arg(port)
-                .arg(buf);
+                .arg(result);
+
         ui->textBrowser->append(content);
     }
     else

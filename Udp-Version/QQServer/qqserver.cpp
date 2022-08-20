@@ -16,11 +16,20 @@ QQServer::QQServer(QWidget *parent)
     connect(udpSocket,&QUdpSocket::readyRead,
             this,&QQServer::on_udpSocket_readyRead);
     //测试代码
+
+    //建立数据库连接，初始化数据模型
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName("Info.db");
+    db.open();
+    atModel = new SqlAccountModel(this, db);
+    fdModel = new SqlFriendModel(this, db);
 }
 
 QQServer::~QQServer()
 {
     delete ui;
+    delete fdModel;
+    delete atModel;
 }
 
 //收
@@ -62,6 +71,16 @@ void QQServer::sendMessage(QString content,QHostAddress ip, quint16 port)
     udpSocket->writeDatagram(content.toUtf8().data(),ip,port);
 }
 
+void QQServer::sendMessage(QByteArray content, QHostAddress ip, quint16 port)
+{
+    udpSocket->writeDatagram(content,ip,port);
+}
+
+void QQServer::sendMessage(QByteArray content, QString ip, QString port)
+{
+    udpSocket->writeDatagram(content,QHostAddress(ip),port.toUInt());
+}
+
 
 //解析
 void QQServer::parseCommand(QString jsonStr,QHostAddress ip, quint16 port)
@@ -79,7 +98,7 @@ void QQServer::parseCommand(QString jsonStr,QHostAddress ip, quint16 port)
         QString password=obj["password"].toString();
         //注册函数
         //返回信息（待定）
-        sendMessage("register backward",ip,port);
+        sendMessage(atModel->addUserAccount(user, password),ip,port);
     }
     else if(command=="login")
     {
@@ -88,7 +107,7 @@ void QQServer::parseCommand(QString jsonStr,QHostAddress ip, quint16 port)
         QString password=obj["password"].toString();
         //登录函数
         //返回信息（待定）
-        sendMessage("login backward",ip,port);
+        sendMessage(atModel->checkAccount(id, password),ip,port);
     }
     else if(command=="sendToFriend")
     {
@@ -101,7 +120,7 @@ void QQServer::parseCommand(QString jsonStr,QHostAddress ip, quint16 port)
     else
     {
         //未知命令
-        sendMessage("未知命令",ip,port);
+        sendMessage(QString("未知命令"),ip,port);
     }
 
 }
