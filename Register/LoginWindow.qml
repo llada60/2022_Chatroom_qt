@@ -8,12 +8,10 @@ import QtGraphicalEffects 1.0
 Window {
     property int usrID: 0
     property string usrPSW: ""
-    property string usrHead: "qrc:/image/mushroom.jpg"
+    property string usrHead: "qrc:/image/mushroom.jpg" //登陆时若本地就有头像自动获取；否则使用自带默认头像（类qq的企鹅）
 
-    function sendMsg()
-    {
 
-    }
+    signal sendLoginInf(int usrID,string usrPSW)
 
 
     id: loginWindows
@@ -63,6 +61,7 @@ Window {
     // 账号 密码
     TextField
     {
+        id: inputID
         width:200
         height: 50
         y:150
@@ -72,6 +71,7 @@ Window {
     }
     TextField
     {
+        id: inputPSW
         width:200
         height: 50
         y:200
@@ -95,8 +95,10 @@ Window {
             acceptedButtons: Qt.LeftButton
             onClicked:
             {
+                usrID = inputID.text
+                usrPSW = inputPSW.text
                 //发送消息
-                sendMsg()
+                sendMsg (usrID,usrPSW)
             }
         }
     }
