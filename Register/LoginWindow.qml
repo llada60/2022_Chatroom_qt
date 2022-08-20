@@ -6,6 +6,15 @@ import QtGraphicalEffects 1.0
 
 
 Window {
+    property int usrID: 0
+    property string usrPSW: ""
+    property string usrHead: "qrc:/image/mushroom.jpg"
+
+    function sendMsg()
+    {
+
+    }
+
 
     id: loginWindows
     width: 248
@@ -30,7 +39,7 @@ Window {
             smooth: true
             visible: false
             anchors.fill: parent
-            source: "qrc:/image/mushroom.jpg"
+            source: usrHead
             antialiasing: true
         }
         Rectangle {
@@ -74,13 +83,22 @@ Window {
     // 确认
     Button
     {
+        id: sendMsg
         anchors.centerIn: parent
         anchors.verticalCenterOffset: 90
         width: 40
         height: 40
         icon.source: "qrc:/image/rightArrow.png"
 
-
+        MouseArea
+        {
+            acceptedButtons: Qt.LeftButton
+            onClicked:
+            {
+                //发送消息
+                sendMsg()
+            }
+        }
     }
 
 
