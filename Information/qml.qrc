@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>personalInf.qml</file>
+        <file>qtquickcontrols2.conf</file>
+        <file>groupInf.qml</file>
+    </qresource>
+</RCC>

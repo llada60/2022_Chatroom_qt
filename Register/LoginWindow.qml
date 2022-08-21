@@ -6,6 +6,13 @@ import QtGraphicalEffects 1.0
 
 
 Window {
+    property int usrID: 0
+    property string usrPSW: ""
+    property string usrHead: "qrc:/image/mushroom.jpg" //登陆时若本地就有头像自动获取；否则使用自带默认头像（类qq的企鹅）
+
+
+    signal sendLoginInf(int usrID,string usrPSW)
+
 
     id: loginWindows
     width: 248
@@ -30,7 +37,7 @@ Window {
             smooth: true
             visible: false
             anchors.fill: parent
-            source: "qrc:/image/mushroom.jpg"
+            source: usrHead
             antialiasing: true
         }
         Rectangle {
@@ -54,6 +61,7 @@ Window {
     // 账号 密码
     TextField
     {
+        id: inputID
         width:200
         height: 50
         y:150
@@ -63,24 +71,37 @@ Window {
     }
     TextField
     {
+        id: inputPSW
         width:200
         height: 50
         y:200
         x:20
         leftPadding: 4
+        echoMode: TextInput.Password
         placeholderText: qsTr("<center>密码</center>")
     }
 
     // 确认
     Button
     {
+        id: sendMsg
         anchors.centerIn: parent
         anchors.verticalCenterOffset: 90
         width: 40
         height: 40
         icon.source: "qrc:/image/rightArrow.png"
 
-
+        MouseArea
+        {
+            acceptedButtons: Qt.LeftButton
+            onClicked:
+            {
+                usrID = inputID.text
+                usrPSW = inputPSW.text
+                //发送消息
+                sendMsg (usrID,usrPSW)
+            }
+        }
     }
 
 
