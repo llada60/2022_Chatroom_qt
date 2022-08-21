@@ -9,6 +9,7 @@
 #include <QJsonDocument>
 #include <QJsonValue>
 
+//负责好友数据库管理
 class SqlFriendModel : public QSqlTableModel
 {
     Q_OBJECT

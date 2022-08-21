@@ -7,6 +7,7 @@
 #include <QJsonValue>
 #include <QJsonDocument> //默认toJson是utf-8
 #include <QDebug>
+#include <iostream>
 #include "sqlaccountmodel.h"
 #include "sqlfriendmodel.h"
 
@@ -24,17 +25,19 @@ public:
 
 
 private slots:
+    //通用收信息函数
     void on_udpSocket_readyRead();
 
 private:
     Ui::QQServer *ui;
     QUdpSocket* udpSocket=NULL;
-    SqlAccountModel *atModel;
-    SqlFriendModel *fdModel;
+    SqlAccountModel *atModel; //数据库操作
+    SqlFriendModel *fdModel; //数据库操作
 
-
+    //数据包通信解析
     void parseCommand(QString jsonStr,QHostAddress ip,quint16 port);
-    void sendMessage(QString content,QString ip,QString port); //重载两个模式的发
+    //不同参数类型的的发送信息
+    void sendMessage(QString content,QString ip,QString port);
     void sendMessage(QString content,QHostAddress ip,quint16 port);
     void sendMessage(QByteArray content,QHostAddress ip,quint16 port);
     void sendMessage(QByteArray content,QString ip,QString port);

@@ -75,6 +75,7 @@ QByteArray SqlAccountModel::addUserAccount(const QString& userName, const QStrin
             qDebug() << query.lastError();
         }
     }
+    obj.insert("command","register");
     obj.insert("id", QJsonValue(id));
     doc = QJsonDocument(obj);
     bArry = doc.toJson();
@@ -110,6 +111,7 @@ QByteArray SqlAccountModel::checkAccount(const int& userID, const QString &userP
         }
         else rel = false;
     }
+    obj.insert("command","login");
     obj.insert("result", QJsonValue(rel));
     doc = QJsonDocument(obj);
     bArry = doc.toJson();

@@ -6,6 +6,7 @@ QQServer::QQServer(QWidget *parent)
     , ui(new Ui::QQServer)
 {
     ui->setupUi(this);
+    //监听端口设置
     quint16 listenPort=9990;
     this->setWindowTitle(QString("服务端监听%1").arg(listenPort));
     //创建套接字
@@ -15,14 +16,14 @@ QQServer::QQServer(QWidget *parent)
     //readyRead响应
     connect(udpSocket,&QUdpSocket::readyRead,
             this,&QQServer::on_udpSocket_readyRead);
-    //测试代码
-
     //建立数据库连接，初始化数据模型
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName("Info.db");
     db.open();
     atModel = new SqlAccountModel(this, db);
     fdModel = new SqlFriendModel(this, db);
+    //测试代码
+
 }
 
 QQServer::~QQServer()
@@ -45,11 +46,12 @@ void QQServer::on_udpSocket_readyRead()
     //显示+处理
     if(len>0)
     {
-        QString content=QString("[%1,%2]：%3")
+        QString content=QString("[%1,%2]：\n%3")
                 .arg(ip.toString())
                 .arg(port)
                 .arg(buf);
-        ui->textBrowser->append(content);
+        ui->textBrowser->append(content);//显示到窗口和控制台
+        qDebug()<<content<<'\n';
         //携带全部信息，进行命令解析+分发
         parseCommand(buf,ip,port);//注意只写buf，不要把content写进来
     }
@@ -60,7 +62,7 @@ void QQServer::on_udpSocket_readyRead()
     }
 }
 
-//发
+//发（类型的排列组合）
 void QQServer::sendMessage(QString content,QString ip, QString port)
 {
     udpSocket->writeDatagram(content.toUtf8().data(),QHostAddress(ip),port.toUInt());
@@ -88,7 +90,7 @@ void QQServer::parseCommand(QString jsonStr,QHostAddress ip, quint16 port)
     //生成json对象
     QJsonParseError error;
     QByteArray jsonByteArray=jsonStr.toUtf8();
-    QJsonObject obj=QJsonDocument::fromJson(jsonByteArray,&error).object();//出错
+    QJsonObject obj=QJsonDocument::fromJson(jsonByteArray,&error).object();
     //解析命令
     QString command=obj["command"].toString();
     if (command=="register") //推荐用对应的函数名
@@ -105,8 +107,7 @@ void QQServer::parseCommand(QString jsonStr,QHostAddress ip, quint16 port)
         //登录
         int id=obj["id"].toInt();
         QString password=obj["password"].toString();
-        //登录函数
-        //返回信息（待定）
+        //登录+返回信息
         sendMessage(atModel->checkAccount(id, password),ip,port);
     }
     else if(command=="sendToFriend")

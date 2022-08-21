@@ -9,6 +9,7 @@
 #include <QJsonDocument>
 #include <QJsonValue>
 
+//负责用户账号数据库管理
 class SqlAccountModel : public QSqlTableModel
 {
     Q_OBJECT
