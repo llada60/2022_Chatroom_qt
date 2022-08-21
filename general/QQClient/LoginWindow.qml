@@ -15,15 +15,30 @@ Window {
     height: 400
     visible: true //窗口是否可见
     title: qsTr("登陆") //窗口标题
+    //全局信号
+    signal loginSignal(int usrID,string usrPSW) //登录请求
+    signal registerSignal(string usrName,string usrPassword) //注册请求
 
-    RegisterWindow{id: registerWindows}
 
     //qml全局函数，一般从C++那头调就调这里的函数
 
-    function myFunc(s)
+    function registerBack(id)
     {
-        console.log(s)
-        return "你好"
+        console.log("1")
+        console.log(id)
+    }
+
+    function loginBack(isSuccess)
+    {
+        console.log("1")
+        console.log(isSuccess)
+    }
+
+
+    //被隐藏的注册窗口
+    RegisterWindow{
+        id: registerWindows
+        objectName: "registerWindows"
     }
 
 
@@ -97,15 +112,14 @@ Window {
         width: 40
         height: 40
         icon.source: "qrc:/image/rightArrow.png"
-        signal loginSignal(int usrID,string usrPSW)
 
         onClicked:
         {
             usrID = Number(inputID.text)
             usrPSW = inputPSW.text
             //发送消息
-            console.log(usrPSW)
-            console.log("登录")
+            //console.log(usrPSW)
+            //console.log("登录")
             loginSignal(usrID,usrPSW)
         }
     }
@@ -115,11 +129,11 @@ Window {
     {
         width:50
         height: 30
-        objectName: "registerButton"
         anchors.centerIn: parent
         anchors.verticalCenterOffset: 180
         highlighted: true
         text: qsTr("注册")
+
         onClicked:
         {
             registerWindows.show()

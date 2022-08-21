@@ -46,6 +46,7 @@ void QQServer::on_udpSocket_readyRead()
     //显示+处理
     if(len>0)
     {
+        //这里不做解析，基本不做处理，解析交给parseCommand
         QString content=QString("[%1,%2]：\n%3")
                 .arg(ip.toString())
                 .arg(port)
@@ -59,6 +60,7 @@ void QQServer::on_udpSocket_readyRead()
     {
         QString content=QString("收取失败");
         ui->textEdit->append(content);
+        qDebug()<<content<<'\n';
     }
 }
 

@@ -2,9 +2,10 @@
 #include <QQmlApplicationEngine>
 #include <QQuickStyle>
 #include <QQmlContext>
-#include <temp.h>
+#include <qqclient.h>
 #include <QObject>
 #include <QList>
+#include <temp.h>
 
 int main(int argc, char *argv[])
 {
@@ -22,18 +23,8 @@ int main(int argc, char *argv[])
             QCoreApplication::exit(-1);
     }, Qt::QueuedConnection);
     engine.load(url);
-    //C++后台通讯
-    Temp temp;
-    QObject* root=engine.rootObjects()[0];//Qt对象树结构,root是qml全局的根节点
-    QObject* loginButton=root->findChild<QObject*>("loginButton");//找到按钮节点
-    //qml到C++(信号型通讯)
-    QObject::connect(loginButton,SIGNAL(loginSignal(int,QString)),&temp,SLOT(response2(int,QString)));
-    //c++调qml函数（直接调）
-    QVariant res;
-    QVariant input="C++到qml";
-    QMetaObject::invokeMethod(root,"myFunc",
-                              Q_RETURN_ARG(QVariant,res),
-                              Q_ARG(QVariant,input));
+    //C++后台通讯，以app为父对象实例化后台通讯类，便于内存管理
+    QQClient* qqClient=new QQClient(&engine,&app);
 
     return app.exec();
 }

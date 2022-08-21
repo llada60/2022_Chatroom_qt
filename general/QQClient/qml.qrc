@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>LoginWindow.qml</file>
+        <file>RegisterWindow.qml</file>
+        <file>qtquickcontrols2.conf</file>
+    </qresource>
+</RCC>

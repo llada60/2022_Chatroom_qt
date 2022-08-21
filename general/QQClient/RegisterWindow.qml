@@ -7,6 +7,7 @@ import QtQuick.Dialogs 1.3
 
 Window {
     id: registerWindows
+    //objectName: "registerWindows"
     width: 248
     height: 400
     visible: false //窗口是否可见
@@ -14,9 +15,6 @@ Window {
 
     property string usrName: ""
     property string usrPassword: ""
-
-    signal sendRegisterInf(string usrName,string usrPassword)
-
 
     MessageDialog
     {
@@ -74,6 +72,7 @@ Window {
         {
             //注册，自动分配账号，并弹出message写出对应的账号和用户名，跳过登陆步骤进入主界面
             id: register
+            //objectName: "registerButton"
             anchors.centerIn: parent
             text: qsTr("注册")
             flat: true
@@ -96,8 +95,8 @@ Window {
                 }
                 else
                 {
-                    console.log("inf config ok")
-                    sendRegisterInf(usrName,usrPassword)
+                    //console.log("注册\n")
+                    registerSignal(usrName,usrPassword)
                 }
 
             }
