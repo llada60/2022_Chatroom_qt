@@ -11,5 +11,9 @@
         <file>HistoryMessageScreen.qml</file>
         <file>time_utils.js</file>
         <file>HistoryMessageListItem.qml</file>
+        <file>VerticalTabWidget.qml</file>
+        <file>images/icon_chat.png</file>
+        <file>images/icon_contact.png</file>
+        <file>images/icon_folder.png</file>
     </qresource>
 </RCC>

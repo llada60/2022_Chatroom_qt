@@ -2,9 +2,12 @@ import QtQuick 2.12
 import QtQuick.Controls 2.5
 import QtQuick.Controls.Material 2.3
 import QtQuick.Layouts 1.3
+import QtGraphicalEffects 1.0
 
-Rectangle {
-    radius: 8
+ColumnLayout {
+//    anchors.fill: parent
+    spacing: 12
+    anchors.margins: 24
     property int myUid: 0
     property string myName: "Shen"
     property string myAvatar: "https://tse2-mm.cn.bing.net/th/id/OIP-C.cS6phGwfJ3qgAtvSXv0rugAAAA?pid=ImgDet&rs=1"
@@ -14,59 +17,103 @@ Rectangle {
         chatListModel.append(data)
     }
 
-    ColumnLayout {
-
-        anchors.fill: parent
-        spacing: 12
-        anchors.margins: 24
-
-
-
-        ListModel {
-            id: chatListModel
-            ListElement {
-                uid: 1
-                name: "张三"
-                time: 1660893694
-                message: "我长得好帅啊~"
-                avatar: "https://tse2-mm.cn.bing.net/th/id/OIP-C.cS6phGwfJ3qgAtvSXv0rugAAAA?pid=ImgDet&rs=1"
-                type: 0
-            }
-            ListElement {
-                uid: 0
-                name: "李四"
-                time: 1660893694
-                message: "是啊"
-                avatar: "https://ts1.cn.mm.bing.net/th/id/R-C.1eed2de61a172c6ca2d79fc5ea62eb01?rik=c7W7KrSN7xFOIg&riu=http%3a%2f%2fimg.crcz.com%2fallimg%2f202003%2f10%2f1583821081100057.jpg&ehk=q%2f9lt0hQhwZzKFdRKYyG2g4zxQKgTWKJ4gHeelom3Mo%3d&risl=&pid=ImgRaw&r=0&sres=1&sresct=1"
-                type: 0
-            }
-            ListElement {
-                uid: 0
-                name: "李四"
-                time: 1660893694
-                message: "这是一条很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长的消息"
-                avatar: "https://ts1.cn.mm.bing.net/th/id/R-C.1eed2de61a172c6ca2d79fc5ea62eb01?rik=c7W7KrSN7xFOIg&riu=http%3a%2f%2fimg.crcz.com%2fallimg%2f202003%2f10%2f1583821081100057.jpg&ehk=q%2f9lt0hQhwZzKFdRKYyG2g4zxQKgTWKJ4gHeelom3Mo%3d&risl=&pid=ImgRaw&r=0&sres=1&sresct=1"
-                type: 0
-            }
+    ListModel {
+        id: chatListModel
+        ListElement {
+            uid: 1
+            name: "张三"
+            time: 1660893694
+            message: "我长得好帅啊~"
+            avatar: "https://tse2-mm.cn.bing.net/th/id/OIP-C.cS6phGwfJ3qgAtvSXv0rugAAAA?pid=ImgDet&rs=1"
+            type: 0
         }
+        ListElement {
+            uid: 0
+            name: "李四"
+            time: 1660893694
+            message: "是啊"
+            avatar: "https://ts1.cn.mm.bing.net/th/id/R-C.1eed2de61a172c6ca2d79fc5ea62eb01?rik=c7W7KrSN7xFOIg&riu=http%3a%2f%2fimg.crcz.com%2fallimg%2f202003%2f10%2f1583821081100057.jpg&ehk=q%2f9lt0hQhwZzKFdRKYyG2g4zxQKgTWKJ4gHeelom3Mo%3d&risl=&pid=ImgRaw&r=0&sres=1&sresct=1"
+            type: 0
+        }
+        ListElement {
+            uid: 0
+            name: "李四"
+            time: 1660893694
+            message: "这是一条很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长的消息"
+            avatar: "https://ts1.cn.mm.bing.net/th/id/R-C.1eed2de61a172c6ca2d79fc5ea62eb01?rik=c7W7KrSN7xFOIg&riu=http%3a%2f%2fimg.crcz.com%2fallimg%2f202003%2f10%2f1583821081100057.jpg&ehk=q%2f9lt0hQhwZzKFdRKYyG2g4zxQKgTWKJ4gHeelom3Mo%3d&risl=&pid=ImgRaw&r=0&sres=1&sresct=1"
+            type: 0
+        }
+    }
 
+
+    Rectangle {
+        radius: 4
+        Layout.fillWidth: true
+        Layout.fillHeight: true
 
         ListView {
             id: chatListView
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            //        height: parent.height - 64
+            anchors.fill: parent
+            anchors.margins: 16
             clip: true
             spacing: 8
-
             model: chatListModel
             delegate: ChatListItem{} // getWidget(type)
         }
+    }
+
+
+    Rectangle {
+        id: rect
+        radius: 4
+        Layout.fillWidth: true
+        Layout.preferredHeight: childrenRect.height
+        Layout.alignment: Qt.AlignBottom
+        anchors.margins: 16
+
+        Item {
+            id: imgContainer
+            width : 20
+            height: 20
+            anchors.left: parent.left
+            anchors.top: parent.top
+            anchors.leftMargin: 12
+            anchors.topMargin: 8
+            Image {
+                id: img
+                source: "./images/icon_folder.png"
+                width : parent.width
+                height: parent.height
+
+
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+
+                    }
+                    hoverEnabled: true
+                    onHoveredChanged: cursorShape = Qt.PointingHandCursor
+
+                }
+            }
+
+            ColorOverlay {
+                anchors.fill: img
+                source: img
+                color: Material.primary
+            }
+        }
+
+
 
 
         RowLayout {
+
             width: parent.width
             height: 64
+            anchors.top: imgContainer.bottom
+            anchors.left: parent.left
+            anchors.leftMargin: 12
 
             ScrollView {
                 Layout.fillWidth: true
@@ -89,6 +136,8 @@ Rectangle {
 
             Button {
                 id: sendButton
+                Layout.alignment: Qt.AlignRight
+                Layout.rightMargin: 16
                 text: `<font color="${sendButton.enabled?'white':'green'}">发送</font>`
                 enabled: messageField.length > 0
                 Material.background: "#90CAF9"
@@ -110,21 +159,25 @@ Rectangle {
                 }
             }
         }
-
-        Component.onCompleted: {
-            chatListModel.append({
-                                     "uid": 0,
-                                     "name": "李四",
-                                     "time": 1660893694,
-
-                                     "fileName": "来来来.txt",
-                                     "fileSize": 1389420,
-
-                                     "avatar": "https://ts1.cn.mm.bing.net/th/id/R-C.1eed2de61a172c6ca2d79fc5ea62eb01?rik=c7W7KrSN7xFOIg&riu=http%3a%2f%2fimg.crcz.com%2fallimg%2f202003%2f10%2f1583821081100057.jpg&ehk=q%2f9lt0hQhwZzKFdRKYyG2g4zxQKgTWKJ4gHeelom3Mo%3d&risl=&pid=ImgRaw&r=0&sres=1&sresct=1",
-                                     "type": 1 // 1代表文件
-                                 })
-        }
-
     }
+
+
+
+
+    Component.onCompleted: {
+        chatListModel.append({
+                                 "uid": 0,
+                                 "name": "李四",
+                                 "time": 1660893694,
+
+                                 "fileName": "来来来.txt",
+                                 "fileSize": 1389420,
+
+                                 "avatar": "https://ts1.cn.mm.bing.net/th/id/R-C.1eed2de61a172c6ca2d79fc5ea62eb01?rik=c7W7KrSN7xFOIg&riu=http%3a%2f%2fimg.crcz.com%2fallimg%2f202003%2f10%2f1583821081100057.jpg&ehk=q%2f9lt0hQhwZzKFdRKYyG2g4zxQKgTWKJ4gHeelom3Mo%3d&risl=&pid=ImgRaw&r=0&sres=1&sresct=1",
+                                 "type": 1 // 1代表文件
+                             })
+    }
+
+
 
 }

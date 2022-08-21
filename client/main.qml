@@ -6,33 +6,47 @@ import QtQuick.Layouts 1.3
 
 Window {
     visible: true
-    width: 900
+    width: 1000
     height: 600
     title: qsTr("WeTalk")
-    color: "#f3efec"
+    color: "#edf5f9"
 
-
-    RowLayout {
+    VerticalTabWidget {
         anchors.rightMargin: 12
         anchors.leftMargin: 12
         anchors.bottomMargin: 12
         anchors.topMargin: 12
-        spacing: 12
         anchors.fill: parent
 
-        HistoryMessageScreen {
-            Layout.fillHeight: true
-            Layout.preferredWidth: parent.width * 0.3
+        // 聊天页面
+        RowLayout {
+            spacing: 12
+            anchors.fill: parent
+
+            HistoryMessageScreen {
+                Layout.fillHeight: true
+                Layout.preferredWidth: parent.width * 0.3
+            }
+
+            ChatScreen {
+                Layout.fillHeight: true
+                Layout.preferredWidth: parent.width * 0.68
+            }
         }
 
-        ChatScreen {
-            Layout.fillHeight: true
-            Layout.preferredWidth: parent.width * 0.68
+        // 联系人页面
+        Rectangle {
+            anchors.fill: parent
+            radius: 4
         }
+
 
     }
 
-//    ChatScreen {
-//        anchors.fill: parent
-//    }
+
+
+
+    //    ChatScreen {
+    //        anchors.fill: parent
+    //    }
 }

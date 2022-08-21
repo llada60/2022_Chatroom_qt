@@ -13,7 +13,7 @@ Rectangle {
     width: 180
     height: 80
     radius: 4
-    color: "#f0ede9"
+    color: "#edf5f9"
     z: 0
 
     MouseArea {
