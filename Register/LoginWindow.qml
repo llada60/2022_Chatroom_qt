@@ -10,10 +10,6 @@ Window {
     property string usrPSW: ""
     property string usrHead: "qrc:/image/mushroom.jpg" //登陆时若本地就有头像自动获取；否则使用自带默认头像（类qq的企鹅）
 
-
-    signal sendLoginInf(int usrID,string usrPSW)
-
-
     id: loginWindows
     width: 248
     height: 400
@@ -21,6 +17,15 @@ Window {
     title: qsTr("登陆") //窗口标题
 
     RegisterWindow{id: registerWindows}
+
+    //qml全局函数，一般从C++那头调就调这里的函数
+
+    function myFunc(s)
+    {
+        console.log(s)
+        return "你好"
+    }
+
 
     // 头像
     Rectangle {
@@ -84,23 +89,24 @@ Window {
     // 确认
     Button
     {
+        //signal loginSignal(int usrID,string usrPSW)
         id: sendMsg
+        objectName: "loginButton"
         anchors.centerIn: parent
         anchors.verticalCenterOffset: 90
         width: 40
         height: 40
         icon.source: "qrc:/image/rightArrow.png"
+        signal loginSignal(int usrID,string usrPSW)
 
-        MouseArea
+        onClicked:
         {
-            acceptedButtons: Qt.LeftButton
-            onClicked:
-            {
-                usrID = inputID.text
-                usrPSW = inputPSW.text
-                //发送消息
-                sendMsg (usrID,usrPSW)
-            }
+            usrID = Number(inputID.text)
+            usrPSW = inputPSW.text
+            //发送消息
+            console.log(usrPSW)
+            console.log("登录")
+            loginSignal(usrID,usrPSW)
         }
     }
 
@@ -109,6 +115,7 @@ Window {
     {
         width:50
         height: 30
+        objectName: "registerButton"
         anchors.centerIn: parent
         anchors.verticalCenterOffset: 180
         highlighted: true
