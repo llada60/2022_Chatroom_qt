@@ -21,10 +21,39 @@ Window {
     property int groupID: 12345
     property string groupNotic: "见证一款聊天软件的诞生w"
     property string groupSummary: "这是一个组建于2022-08-14的群组\n欢迎新成员加入lol"
-
+    property bool setFlag: true // true:显示模式 false：设置模式
 
     //接收发来信号判断是否是群主，若是群主拥有设置权限
-    property bool isOwner: false
+    property bool isOwner: true
+
+    // 1）接受数据库传来的信息并display
+    function receiveGroupInf(data)
+    {
+        groupHead = data.groupHead
+        groupName = data.groupName
+        groupID = data.groupID
+        groupNotic = data.groupNotic //群公告
+        groupSummary = data.groupSummary //群简介
+        isOwner = data.isOwner
+    }
+    function receiveIsOwner(v)
+    {
+        /*
+          v==1:群主（拥有设置修改权限）
+          v==0:成员
+          */
+        if (1 == v)
+        {
+            isOwner = true
+        }
+        else
+        {
+            isOwner = false
+        }
+    }
+
+    // 2）若为群主对信息进行修改，向服务器推送修改后的信息
+    signal sendGroupInf(string groupName,string groupNotic,string groupSummary)
 
 
     /*
@@ -51,9 +80,48 @@ Window {
 
                 font.pixelSize :15
 
-                text: reset.pressed? qsTr("<font color='#57c1f2'>设置</font>") :
+                text: setFlag?(reset.pressed? qsTr("<font color='#57c1f2'>设置</font>") :
                                      reset.hovered? qsTr("<font color='#57c1f2'>设置</font>") :
-                                                    ("<font color='#e1e7f2'>设置</font>")
+                                                    ("<font color='#e1e7f2'>设置</font>")):
+                               (reset.pressed? qsTr("<font color='#57c1f2'>完成</font>") :
+                                                                    reset.hovered? qsTr("<font color='#57c1f2'>完成</font>") :
+                                                                                   ("<font color='#e1e7f2'>完成</font>"))
+
+                onClicked:
+                {
+                    if(1 == setFlag)
+                    {//readonly -> write
+                        name.visible = false
+                        nameC.visible = true
+                        sendMsg.visible = false
+                        summaryDisplay.visible = false
+                        summaryC.visible = true
+                        noticeContext.visible = false
+                        noticeC.visible = true
+                    }
+                    else
+                    {//write -> readonly
+                        name.visible = true
+                        nameC.visible = false
+                        groupName = nameC.text
+
+                        sendMsg.visible = true
+
+                        summaryDisplay.visible = true
+                        summaryC.visible = false
+                        groupSummary = summaryC.text
+
+                        noticeContext.visible = true
+                        noticeC.visible = false
+                        groupNotic = noticeC.text
+
+                        console.log("群组信息修改已完成")
+
+                        sendGroupInf(groupName,groupNotic,groupSummary)
+                    }
+
+                    setFlag = !setFlag
+                }
             }
 
             // 头像
@@ -123,6 +191,18 @@ Window {
                     font.bold: true
                     text: groupName
                 }
+                TextInput
+                {
+                    id: nameC
+                    visible: false
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    font.pixelSize: 20
+                    font.family: "SimHei"
+                    font.bold: true
+                    text: groupName
+                }
+
                 Text
                 {
                     id: groupNum
@@ -156,16 +236,12 @@ Window {
             }
 
 
-
-
-
-
         //群公告
         ColumnLayout
         {
             id:notice
             anchors.top: belowInf.bottom
-            anchors.topMargin: 30
+            anchors.topMargin: setFlag? 20:40
             anchors.horizontalCenter: parent.horizontalCenter
 
             Text {
@@ -173,13 +249,26 @@ Window {
             }
             Rectangle
             {
-                id: noticeContext
                 width: 280
                 height: 60
                 Text
                 {
+                    id: noticeContext
                     anchors.fill: noticeContext
                     text: groupNotic
+                }
+                TextArea
+                {
+                    id: noticeC
+                    visible: false
+                    width : parent.width
+                    anchors.fill:notice
+                    text: groupNotic
+                    font: font.pixelSize = 13
+                    background: Rectangle
+                    {
+                        border.color : "white"
+                    }
                 }
             }
         }
@@ -215,7 +304,7 @@ Window {
         {
             id:summary
             anchors.top: notice.bottom
-            anchors.topMargin: 30
+            anchors.topMargin: setFlag? 30:40
             anchors.horizontalCenter: parent.horizontalCenter
 
             Text {
@@ -223,13 +312,26 @@ Window {
             }
             Rectangle
             {
-                id: summaryDisplay
                 width: 280
-                height: 60
+                height: 100
                 Text
                 {
+                    id: summaryDisplay
                     anchors.fill: summary
                     text: groupSummary
+                }
+                TextArea
+                {
+                    id:summaryC
+                    visible: false
+                    width: parent.width
+                    anchors.fill:summary
+                    text: groupSummary
+                    font: font.pixelSize = 13
+                    background: Rectangle
+                    {
+                        border.color : "white"
+                    }
                 }
             }
         }
