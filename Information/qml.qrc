@@ -3,5 +3,6 @@
         <file>personalInf.qml</file>
         <file>qtquickcontrols2.conf</file>
         <file>groupInf.qml</file>
+        <file>setPInf.qml</file>
     </qresource>
 </RCC>
