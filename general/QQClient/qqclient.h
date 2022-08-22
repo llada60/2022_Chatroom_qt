@@ -7,6 +7,10 @@
 #include <QHostAddress>
 #include <QUdpSocket>
 #include <QQmlApplicationEngine>
+#include <QDateTime>
+#include <iostream>
+
+
 
 class QQClient:public QObject
 {
@@ -22,11 +26,13 @@ private slots:
     //请求函数：QML到C++的槽函数
     void registerAccount(QString user,QString password);
     void login(int id,QString password);
+    void sendToFriend(int targetId,QString content,QString time);
 private:
-    //固定服务器ip和端口
-    QUdpSocket* udpSocket;
+    //配置信息
+    QUdpSocket* udpSocket;//服务器ip和端口
     QHostAddress hostIp=QHostAddress("127.0.0.1");
     quint16 hostPort=9990;
+    int clientId=0;//储存当前id
     //前端通信engine
     QQmlApplicationEngine* engine=NULL;
     QObject* root=NULL;
@@ -39,9 +45,9 @@ private:
     //数据包通信解析
     void parseCommand(QString jsonStr,QHostAddress ip,quint16 port);
     //响应函数：C++到QML的函数
-    void registerBack();
-    void loginBack();
-
+    void registerBack(QJsonObject obj);
+    void loginBack(QJsonObject obj);
+    void sendToFriendBack(QJsonObject obj);
 };
 
 

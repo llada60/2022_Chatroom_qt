@@ -1,5 +1,6 @@
 #include "qqserver.h"
 #include "ui_qqserver.h"
+#include "onlinelist.h"
 
 QQServer::QQServer(QWidget *parent)
     : QMainWindow(parent)
@@ -52,7 +53,7 @@ void QQServer::on_udpSocket_readyRead()
                 .arg(port)
                 .arg(buf);
         ui->textBrowser->append(content);//显示到窗口和控制台
-        qDebug()<<content<<'\n';
+        qDebug()<<"收到命令："<<content<<'\n';
         //携带全部信息，进行命令解析+分发
         parseCommand(buf,ip,port);//注意只写buf，不要把content写进来
     }
@@ -85,7 +86,6 @@ void QQServer::sendMessage(QByteArray content, QString ip, QString port)
     udpSocket->writeDatagram(content,QHostAddress(ip),port.toUInt());
 }
 
-
 //解析
 void QQServer::parseCommand(QString jsonStr,QHostAddress ip, quint16 port)
 {
@@ -95,26 +95,18 @@ void QQServer::parseCommand(QString jsonStr,QHostAddress ip, quint16 port)
     QJsonObject obj=QJsonDocument::fromJson(jsonByteArray,&error).object();
     //解析命令
     QString command=obj["command"].toString();
-    if (command=="register") //推荐用对应的函数名
+    //推荐用对应的函数名
+    if (command=="register") //注册
     {
-        //注册
-        QString user=obj["user"].toString();
-        QString password=obj["password"].toString();
-        //注册函数
-        //返回信息（待定）
-        sendMessage(atModel->addUserAccount(user, password),ip,port);
+        registerRespond(obj,ip,port);
     }
-    else if(command=="login")
+    else if(command=="login")//登录
     {
-        //登录
-        int id=obj["id"].toInt();
-        QString password=obj["password"].toString();
-        //登录+返回信息
-        sendMessage(atModel->checkAccount(id, password),ip,port);
+        loginRespond(obj,ip,port);
     }
-    else if(command=="sendToFriend")
+    else if(command=="sendToFriend")//单发
     {
-        //单发
+        sendToFriendRespond(obj,ip,port);
     }
     else if(command=="sendToGroup")
     {
@@ -128,5 +120,63 @@ void QQServer::parseCommand(QString jsonStr,QHostAddress ip, quint16 port)
 
 }
 
+//客户端响应函数
+void QQServer::registerRespond(QJsonObject obj,QHostAddress ip,quint16 port)
+{
+    //解包
+    QString user=obj["user"].toString();
+    QString password=obj["password"].toString();
+    //注册+返回
+    sendMessage(atModel->addUserAccount(user, password),ip,port);
+}
 
+void QQServer::loginRespond(QJsonObject obj,QHostAddress ip,quint16 port)
+{
+    //解包
+    int id=obj["id"].toInt();
+    QString password=obj["password"].toString();
+    //登录
+    QByteArray respond=atModel->checkAccount(id, password);
+    bool loginOk=QJsonDocument::fromJson(respond).object()["result"].toBool();
+    if(loginOk)//成功登录，添加在线列表
+    {
+        onlineUser.append(new User(ip,port,id));
+        //测试显示
+        User* last=onlineUser.last();
+        qDebug()<<"上线："<<last->id<<last->ip<<last->port;
+    }
+    //返回信息
+    sendMessage(respond,ip,port);
+}
+
+void QQServer::sendToFriendRespond(QJsonObject obj, QHostAddress ip, quint16 port)
+{
+    //解包
+    int sendId=obj["sendId"].toInt();
+    int targetId=obj["targetId"].toInt();
+    QString content=obj["content"].toString();
+    QString time=obj["time"].toString();
+    //取目标ip和port
+    QHostAddress targetIp;
+    quint16 targetPort;
+    for(int i=0;i<onlineUser.length();i++)
+    {
+        if(onlineUser[i]->id==targetId)//在在线用户列表中找到目标id
+        {
+            targetIp=onlineUser[i]->ip;
+            targetPort=onlineUser[i]->port;
+        }
+    }
+    //转发消息
+    QJsonObject jsonObj;
+    jsonObj.insert("command","sendToFriendBack");
+    jsonObj.insert("sendId",sendId);
+    jsonObj.insert("content",content);
+    jsonObj.insert("time",time);
+    QString diagram=QJsonDocument(jsonObj).toJson();
+    sendMessage(diagram,targetIp,targetPort);
+    //数据库添加聊天记录
+
+
+}
 

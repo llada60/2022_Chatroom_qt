@@ -107,34 +107,20 @@ void QQClient::parseCommand(QString jsonStr,QHostAddress ip, quint16 port)
     QJsonObject obj=QJsonDocument::fromJson(jsonByteArray,&error).object();
     //解析命令
     QString command=obj["command"].toString();
-    if (command=="register") //推荐用对应的函数名
+    //推荐用对应的函数名
+    if (command=="registerBack")//注册响应
     {
-        //注册
-        int id=obj["id"].toInt();
-        qDebug()<<"register";
-        //调用QML注册函数
-        QVariant res; //如果QML函数没有返回值会不会报错？
-        QMetaObject::invokeMethod(root,"registerBack",
-                                  Q_RETURN_ARG(QVariant,res),
-                                  Q_ARG(QVariant,id));
+        registerBack(obj);
     }
-    else if(command=="login")
+    else if(command=="loginBack")//登录响应
     {
-        //登录
-        bool isSuccess=obj["result"].toBool();
-        qDebug()<<"login";
-        //调用QML登录函数
-        QVariant res; //如果QML函数没有返回值会不会报错？
-        QMetaObject::invokeMethod(root,"loginBack",
-                                  Q_RETURN_ARG(QVariant,res),
-                                  Q_ARG(QVariant,isSuccess));
-
+        loginBack(obj);
     }
-    else if(command=="sendToFriend")
+    else if(command=="sendToFriendBack")//收到单发消息
     {
-        //单发
+        sendToFriendBack(obj);
     }
-    else if(command=="sendToGroup")
+    else if(command=="sendToGroupBack")//收到群发消息
     {
         //群发
     }
@@ -148,7 +134,7 @@ void QQClient::parseCommand(QString jsonStr,QHostAddress ip, quint16 port)
 
 
 //请求函数
-//注册
+//注册请求
 void QQClient::registerAccount(QString user, QString password)
 {
     //封装Json
@@ -161,7 +147,7 @@ void QQClient::registerAccount(QString user, QString password)
     sendMessage(content,this->hostIp,this->hostPort);
 }
 
-//登录
+//登录请求
 void QQClient::login(int id, QString password)
 {
     //封装Json
@@ -169,7 +155,75 @@ void QQClient::login(int id, QString password)
     jsonObj.insert("command","login");
     jsonObj.insert("id",id);
     jsonObj.insert("password",password);
-    QString content=QJsonDocument(jsonObj).toJson();
+    QString diagram=QJsonDocument(jsonObj).toJson();
     //发送
-    sendMessage(content,this->hostIp,this->hostPort);
+    sendMessage(diagram,this->hostIp,this->hostPort);
+    //设置临时客户端id
+    clientId=id;
 }
+
+//单发请求
+void QQClient::sendToFriend(int targetId, QString content,QString time)
+{
+    //封装Json
+    QJsonObject jsonObj;
+    jsonObj.insert("command","sendToFriend");
+    jsonObj.insert("sendId",clientId);
+    jsonObj.insert("targetId",targetId);
+    jsonObj.insert("content",content);
+    jsonObj.insert("time",time);
+    QString diagram=QJsonDocument(jsonObj).toJson();
+    //发送
+    sendMessage(diagram,this->hostIp,this->hostPort);
+}
+
+//响应函数
+//注册响应
+
+void QQClient::registerBack(QJsonObject obj)
+{
+    //注册
+    int id=obj["id"].toInt();
+    qDebug()<<"register";
+    //调用QML注册函数
+    QVariant res; //如果QML函数没有返回值会不会报错？
+    QMetaObject::invokeMethod(root,"registerBack",
+                              Q_RETURN_ARG(QVariant,res),
+                              Q_ARG(QVariant,id));
+}
+
+//登录响应
+void QQClient::loginBack(QJsonObject obj)
+{
+    //登录
+    bool isSuccess=obj["result"].toBool();
+    //如果登录失败就重置客户端id
+    if (!isSuccess)
+    {
+        clientId=0;
+    }
+    //调用QML登录函数
+    QVariant res; //如果QML函数没有返回值会不会报错？
+    QMetaObject::invokeMethod(root,"loginBack",
+                              Q_RETURN_ARG(QVariant,res),
+                              Q_ARG(QVariant,isSuccess));
+
+}
+//单发响应
+void QQClient::sendToFriendBack(QJsonObject obj)
+{
+    //解包
+    int sendId=obj["sendId"].toInt();
+    QString content=obj["content"].toString();
+    QString time=obj["time"].toString();
+    //调用QML函数
+    QVariant res;
+    QMetaObject::invokeMethod(root,"sendToFriendBack",
+                              Q_RETURN_ARG(QVariant,res),
+                              Q_ARG(QVariant,sendId),
+                              Q_ARG(QVariant,content),
+                              Q_ARG(QVariant,time));
+}
+
+
+
