@@ -4,7 +4,8 @@
 
 ### 成员变量
 
-//配置信息
+```c++
+
 QUdpSocket* udpSocket;
 
 储存客户端udp套接字
@@ -22,6 +23,7 @@ QQmlApplicationEngine* engine=NULL;
 QObject* root=NULL;
 
 储存代表QML对象的engine和root
+```
 
 ### QML发出的请求信号与C++槽函数（响应QML）
 
