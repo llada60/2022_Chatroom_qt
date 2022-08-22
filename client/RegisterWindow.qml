@@ -12,10 +12,15 @@ Window {
     height: 400
     visible: true //窗口是否可见
     title: qsTr("注册") //窗口标题
+    objectName: "registerWindows"
 
     property string usrName: ""
     property string usrPassword: ""
     property int usrID: 0
+
+    //发送信号
+    signal registerSignal(string usrName,string usrPassword)
+
 
     MessageDialog
     {//注册失败提示
@@ -43,19 +48,19 @@ Window {
 
         onAccepted:
         {
+            //TODO 这里跳转失败
             console.log("Having checked the new usr inf")
-            MainWindow.show()
+            MainWindows.visible = true
             registerWindows.hide()
         }
     }
 
 
-    //发送信号
-    signal sendRegisterInf(string usrName,string usrPassword)
 
     //接收服务器返回的账号，打印后进入主界面
-    function receiveID(pID)
+    function registerBack(pID)
     {
+        console.log(1)
         if (0 == pID)
         {
             wrongRegister.open()
@@ -162,7 +167,7 @@ Window {
                 else
                 {
                     console.log("inf config ok")
-                    sendRegisterInf(usrName,usrPassword)
+                    registerSignal(usrName,usrPassword)
                 }
 
             }

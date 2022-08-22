@@ -34,11 +34,11 @@ Window {
     }
 
     //接收服务器返回 登陆成功
-    function loginIsSuccess(v)
+    function loginBack(v)
     {
         if(1 == v)
         {
-            mainWindows.show()
+            mainWindows.visible=true
             LoginWindows.hide()
         }
         else

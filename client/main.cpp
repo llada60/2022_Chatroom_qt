@@ -3,6 +3,7 @@
 #include <QSettings>
 #include <QQmlContext>
 #include "qsettingini.h"
+#include "qqclient.h"
 
 int main(int argc, char *argv[])
 {
@@ -14,7 +15,7 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
     QQmlContext* root = engine.rootContext();
     root->setContextProperty("Config", &qSettingIni);
-
+    //加载QML
     const QUrl url(QStringLiteral("qrc:/LoginWindow.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                      &app, [url](QObject *obj, const QUrl &objUrl) {
@@ -22,6 +23,8 @@ int main(int argc, char *argv[])
             QCoreApplication::exit(-1);
     }, Qt::QueuedConnection);
     engine.load(url);
+    //C++后台通讯
+    QQClient* qqClient=new QQClient(&engine,&app);
 
     return app.exec();
 }
