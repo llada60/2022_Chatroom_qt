@@ -24,5 +24,7 @@
         <file>images/message1.png</file>
         <file>GroupInf.qml</file>
         <file>PersonalInf.qml</file>
+        <file>js/file_utils.js</file>
+        <file>js/config_utils.js</file>
     </qresource>
 </RCC>

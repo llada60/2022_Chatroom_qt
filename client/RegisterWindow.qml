@@ -4,6 +4,7 @@ import QtQuick.Controls 2.5
 import QtQuick.Controls.Material 2.0
 import QtQuick.Layouts 1.3
 import QtQuick.Dialogs 1.3
+import "./js/config_utils.js" as ConfigUtils
 
 Window {
     id: registerWindows
@@ -99,6 +100,7 @@ Window {
     {
         anchors.centerIn: parent
         anchors.verticalCenterOffset: -20
+
         TextField
         {
             id: usr
@@ -110,8 +112,7 @@ Window {
         TextField
         {
             id: password
-            anchors.top: usr.bottom
-            anchors.topMargin: 15
+            Layout.topMargin: 15
             width:200
             height: 50
             leftPadding: 4
@@ -121,8 +122,7 @@ Window {
         TextField
         {
             id: passwordAgain
-            anchors.top: password.bottom
-            anchors.topMargin: 15
+            Layout.topMargin: 15
             width:200
             height: 50
             leftPadding: 4
@@ -133,7 +133,7 @@ Window {
         {
             //注册，自动分配账号，并弹出message写出对应的账号和用户名，跳过登陆步骤进入主界面
             id: register
-            anchors.centerIn: parent
+            Layout.alignment: Qt.AlignHCenter
             text: qsTr("注册")
             flat: true
 

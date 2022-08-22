@@ -12,10 +12,17 @@ ColumnLayout {
     property int myUid: 0
     property string myName: "Shen"
     property string myAvatar: "https://tse2-mm.cn.bing.net/th/id/OIP-C.cS6phGwfJ3qgAtvSXv0rugAAAA?pid=ImgDet&rs=1"
-    signal onSendData(string message)
+    property int targetId: 1
+
+    signal sendData(int targetId, string message, int time)
 
     function appendData(data){
         chatListModel.append(data)
+    }
+
+    // 设置聊天对象
+    function setArg(uid){
+        targetId = uid;
     }
 
     ListModel {
@@ -26,7 +33,7 @@ ColumnLayout {
             time: 1660893694
             message: "我长得好帅啊~"
             avatar: "https://tse2-mm.cn.bing.net/th/id/OIP-C.cS6phGwfJ3qgAtvSXv0rugAAAA?pid=ImgDet&rs=1"
-            type: 0
+            type: 0 // type 0: 文本消息 1:文件
         }
         ListElement {
             uid: 0
@@ -147,6 +154,7 @@ ColumnLayout {
                 onClicked: {
                     var message = messageField.text
                     if(message === "") return
+                    var time = Date.parse(new Date())/ 1000
                     chatListModel.append({
                                              "uid": myUid,
                                              "name": myName,
@@ -156,7 +164,7 @@ ColumnLayout {
                                          })
                     messageField.clear()
                     chatListView.currentIndex = chatListModel.count - 1;
-                    onSendData(message)
+                    sendData(targetId, message, time)
                 }
             }
         }
@@ -173,6 +181,7 @@ ColumnLayout {
 
                                  "fileName": "来来来.txt",
                                  "fileSize": 1389420,
+                                 "localPath": "d:/test/来来来.txt",
 
                                  "avatar": "https://ts1.cn.mm.bing.net/th/id/R-C.1eed2de61a172c6ca2d79fc5ea62eb01?rik=c7W7KrSN7xFOIg&riu=http%3a%2f%2fimg.crcz.com%2fallimg%2f202003%2f10%2f1583821081100057.jpg&ehk=q%2f9lt0hQhwZzKFdRKYyG2g4zxQKgTWKJ4gHeelom3Mo%3d&risl=&pid=ImgRaw&r=0&sres=1&sresct=1",
                                  "type": 1 // 1代表文件

@@ -16,6 +16,7 @@ Rectangle {
     color: ListView.isCurrentItem ? "#f2f2f2" : "white"
     radius: ListView.isCurrentItem ? 12 : 8
 
+
     RowLayout {
         height: parent.height
         spacing: 8
@@ -57,7 +58,5 @@ Rectangle {
                 font.pointSize: 8
             }
         }
-
-
     }
 }

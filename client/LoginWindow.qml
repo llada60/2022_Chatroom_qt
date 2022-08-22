@@ -4,7 +4,7 @@ import QtQuick.Controls 2.5
 import QtQuick.Controls.Material 2.0
 import QtGraphicalEffects 1.0
 import QtQuick.Dialogs 1.3
-
+import "./js/config_utils.js" as ConfigUtils
 
 Window {
     property int usrID: 0
@@ -22,6 +22,7 @@ Window {
 
     // 发送登陆信号，在数据库中验证
     signal loginSignal(int usrID,string usrPSW)
+
 
     MessageDialog
     {
