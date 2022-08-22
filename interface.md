@@ -4,8 +4,11 @@
 
 ### QML发出的信号与C++槽函数（响应QML）
 
-尽量用全局信号
+
+
 ```python
+尽量用全局信号
+
 signal loginSignal(int usrID,string usrPSW)
 
 void login(int id,QString password);
