@@ -24,14 +24,19 @@ Window {
 
     function registerBack(id)
     {
-        console.log("1")
         console.log(id)
     }
 
     function loginBack(isSuccess)
     {
-        console.log("1")
         console.log(isSuccess)
+    }
+
+    function sendToFriendBack(sendId,content,time)
+    {
+        console.log(sendId)
+        console.log(content)
+        console.log(time)
     }
 
 
