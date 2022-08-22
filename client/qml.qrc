@@ -1,6 +1,6 @@
 <RCC>
     <qresource prefix="/">
-        <file>main.qml</file>
+        <file>MainWindow.qml</file>
         <file>ChatScreen.qml</file>
         <file>qtquickcontrols2.conf</file>
         <file>FileWidget.qml</file>
@@ -15,5 +15,10 @@
         <file>components/AutoScrollTextEdit.qml</file>
         <file>components/RoundImage.qml</file>
         <file>js/time_utils.js</file>
+        <file>main.qml</file>
+        <file>LoginWindow.qml</file>
+        <file>RegisterWindow.qml</file>
+        <file>images/rightArrow.png</file>
+        <file>images/rightArrow1.png</file>
     </qresource>
 </RCC>
