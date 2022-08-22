@@ -4,7 +4,24 @@
 
 ### 成员变量
 
+//配置信息
+QUdpSocket* udpSocket;
 
+储存客户端udp套接字
+
+QHostAddress hostIp=QHostAddress("127.0.0.1");
+quint16 hostPort=9990;
+
+储存服务器ip和端口
+
+int clientId=0;
+
+储存当前id
+
+QQmlApplicationEngine* engine=NULL;
+QObject* root=NULL;
+
+储存代表QML对象的engine和root
 
 ### QML发出的请求信号与C++槽函数（响应QML）
 
