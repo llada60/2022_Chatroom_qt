@@ -20,5 +20,9 @@
         <file>RegisterWindow.qml</file>
         <file>images/rightArrow.png</file>
         <file>images/rightArrow1.png</file>
+        <file>images/message.png</file>
+        <file>images/message1.png</file>
+        <file>GroupInf.qml</file>
+        <file>PersonalInf.qml</file>
     </qresource>
 </RCC>
