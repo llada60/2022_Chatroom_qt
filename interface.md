@@ -6,7 +6,7 @@
 ### QML发出的信号与C++槽函数（响应QML）
 
 尽量用全局信号
-
+```python
 **signal** loginSignal(int usrID,string usrPSW) //登录请求
 **void** login(int id,QString password);
 
@@ -17,7 +17,7 @@
 **void** sendToFriend(int targetId,QString content,QString time);
 
 **signal** sendToGroupSignal()//参数待商定
-    
+```
     
 private:
 
