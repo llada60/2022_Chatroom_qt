@@ -26,5 +26,11 @@
         <file>PersonalInf.qml</file>
         <file>js/file_utils.js</file>
         <file>js/config_utils.js</file>
+        <file>images/addFriend.png</file>
+        <file>images/addFriend1.png</file>
+        <file>images/search.png</file>
+        <file>components/InfListItem.qml</file>
+        <file>components/SearchWidget.qml</file>
+        <file>AddFriendWindow.qml</file>
     </qresource>
 </RCC>
