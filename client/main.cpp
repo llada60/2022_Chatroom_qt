@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
     QQmlContext* root = engine.rootContext();
     root->setContextProperty("Config", &qSettingIni);
 
-    const QUrl url(QStringLiteral("qrc:/RegisterWindow.qml"));
+    const QUrl url(QStringLiteral("qrc:/LoginWindow.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                      &app, [url](QObject *obj, const QUrl &objUrl) {
         if (!obj && url == objUrl)

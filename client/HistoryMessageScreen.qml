@@ -66,7 +66,7 @@ Rectangle {
                 anchors.fill: parent
                 onClicked: {
                     historyMessageListView.currentIndex = index
-                    clickHistoryMessageItem(historyMessageListModel[index])
+                    clickHistoryMessageItem(historyMessageListModel.get(index))
                 }
             }
         }
