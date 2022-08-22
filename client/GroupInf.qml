@@ -13,7 +13,7 @@ Window {
     id: groupPage
     width: 338
     height: 506
-    visible: flase
+    visible: false
 
     property string groupHead: "https://c-ssl.dtstatic.com/uploads/item/202007/23/20200723100019_v4nJm.thumb.1000_0.jpeg"
     property string pBackground: "https://c-ssl.dtstatic.com/uploads/item/202004/25/20200425235603_ybgrj.thumb.1000_0.jpg"
@@ -71,10 +71,7 @@ Window {
                 id: reset
                 width: 15
                 height: 15
-                anchors.right: parent.right
-                anchors.rightMargin: 5
-                anchors.top:parent.top
-                anchors.topMargin: 10
+                Layout.alignment: Qt.AlignRight
 
                 visible: isOwner
 
@@ -128,10 +125,10 @@ Window {
             Rectangle
             {
                 id: img
-                anchors.centerIn: parent
-                anchors.verticalCenterOffset: -200
+                Layout.alignment: Qt.AlignHCenter
+                Layout.topMargin: -175
                 width: 338
-                height: 350
+                height: 325
                 radius: width/2
                 Image
                 {
@@ -179,12 +176,13 @@ Window {
             ColumnLayout
             {
                 id: belowInf
-                anchors.centerIn: img
-                anchors.verticalCenterOffset: 130
+                Layout.alignment: Qt.AlignHCenter
+                Layout.topMargin: -120
+
                 Text
                 {
                     id: name
-                    anchors.horizontalCenter: parent.horizontalCenter
+                    Layout.alignment: Qt.AlignHCenter
                     horizontalAlignment: Text.AlignHCenter
                     font.pixelSize: 20
                     font.family: "SimHei"
@@ -195,7 +193,7 @@ Window {
                 {
                     id: nameC
                     visible: false
-                    anchors.horizontalCenter: parent.horizontalCenter
+                    Layout.alignment: Qt.AlignHCenter
                     horizontalAlignment: Text.AlignHCenter
                     font.pixelSize: 20
                     font.family: "SimHei"
@@ -206,12 +204,10 @@ Window {
                 Text
                 {
                     id: groupNum
-                    anchors.top: groupName.bottom
-                    anchors.topMargin: 5
-                    anchors.horizontalCenter: parent.horizontalCenter
+                    Layout.topMargin: 0
+                    Layout.alignment: Qt.AlignHCenter
                     horizontalAlignment: Text.AlignHCenter
                     font.pixelSize: 12
-                    font.family: "LiSu"
                     color: "#767777"
                     text: qsTr("群号：") + groupID
                 }
@@ -219,18 +215,15 @@ Window {
                 {
                     //跳转页面到群聊天界面
                     id: sendMsg
-                    anchors.top: groupNum.bottom
-                    anchors.topMargin: 0
+                    Layout.alignment: Qt.AlignHCenter
+                    Layout.topMargin: -9
                     background:
                     {
-                        opacity:1
+                        opacity: 1
                     }
-
-
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    icon.source: sendMsg.pressed? "qrc:/img/message1.png":
-                                         sendMsg.hovered? "qrc:/img/message1.png" :
-                                                        ("qrc:/img/message.png")
+                    icon.source: sendMsg.pressed? "qrc:/images/message1.png":
+                                         sendMsg.hovered? "qrc:/images/message1.png" :
+                                                        ("qrc:/images/message.png")
                     icon.color:"transparent"
                 }
             }
@@ -240,9 +233,8 @@ Window {
         ColumnLayout
         {
             id:notice
-            anchors.top: belowInf.bottom
-            anchors.topMargin: setFlag? 20:40
-            anchors.horizontalCenter: parent.horizontalCenter
+            Layout.topMargin: 0
+            Layout.alignment: Qt.AlignHCenter
 
             Text {
                 text: qsTr("<font color='#9f9f9f'>群公告</font>")
@@ -250,19 +242,18 @@ Window {
             Rectangle
             {
                 width: 280
-                height: 60
                 Text
                 {
                     id: noticeContext
-                    anchors.fill: noticeContext
                     text: groupNotic
+                    font.pixelSize: 13
                 }
                 TextArea
                 {
                     id: noticeC
                     visible: false
                     width : parent.width
-                    anchors.fill:notice
+
                     text: groupNotic
                     font: font.pixelSize = 13
                     background: Rectangle
@@ -275,7 +266,6 @@ Window {
         //分割线
         Canvas
         {
-
             id: canvas1
             width: parent.width
             height: parent.height
@@ -292,8 +282,8 @@ Window {
                 ctx.lineWidth = 2
 
                 ctx.beginPath();                  // 开始一条路径
-                ctx.moveTo(40,360);         // 移动到指定位置
-                ctx.lineTo(298,360);
+                ctx.moveTo(40,340);         // 移动到指定位置
+                ctx.lineTo(298,340);
 
                 ctx.stroke();
              }
@@ -303,9 +293,8 @@ Window {
         ColumnLayout
         {
             id:summary
-            anchors.top: notice.bottom
-            anchors.topMargin: setFlag? 30:40
-            anchors.horizontalCenter: parent.horizontalCenter
+            Layout.alignment: Qt.AlignHCenter
+            Layout.topMargin: 50
 
             Text {
                 text: qsTr("<font color='#9f9f9f'>群介绍</font>")
@@ -317,7 +306,6 @@ Window {
                 Text
                 {
                     id: summaryDisplay
-                    anchors.fill: summary
                     text: groupSummary
                 }
                 TextArea
@@ -325,7 +313,6 @@ Window {
                     id:summaryC
                     visible: false
                     width: parent.width
-                    anchors.fill:summary
                     text: groupSummary
                     font: font.pixelSize = 13
                     background: Rectangle
