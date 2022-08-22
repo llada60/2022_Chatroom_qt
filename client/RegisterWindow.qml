@@ -9,7 +9,7 @@ Window {
     id: registerWindows
     width: 248
     height: 400
-    visible: false //窗口是否可见
+    visible: true //窗口是否可见
     title: qsTr("注册") //窗口标题
 
     property string usrName: ""
@@ -35,7 +35,7 @@ Window {
 
         Text {
             id: text
-            text: qsTr("您的账号：")  +  pID +  qsTr("\n您的用户名：") + usrName
+            text: qsTr("您的账号：")  +  usrID +  qsTr("\n您的用户名：") + usrName
             anchors.centerIn: parent
         }
 
@@ -83,6 +83,14 @@ Window {
             title: "提示"
             icon: StandardIcon.Warning
             text: "请输入用户名"
+            standardButtons: StandardButton.Cancel
+    }
+    MessageDialog
+    {
+            id: noPassword
+            title: "提示"
+            icon: StandardIcon.Warning
+            text: "请输入密码"
             standardButtons: StandardButton.Cancel
     }
 
@@ -145,6 +153,12 @@ Window {
                     console.log("no usr name")
                     noUsrName.open()
                 }
+                else if(password.text == "")
+                {
+                    console.log("no password")
+                    noPassword.open()
+                }
+
                 else
                 {
                     console.log("inf config ok")

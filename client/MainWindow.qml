@@ -7,7 +7,7 @@ import QtQuick.Layouts 1.3
 import "./components/"
 
 Window {
-    visible: true
+    visible: false
     width: 1000
     height: 600
     title: qsTr("WeTalk")

@@ -13,7 +13,7 @@ Window {
     id: groupPage
     width: 338
     height: 506
-    visible: true
+    visible: flase
 
     property string groupHead: "https://c-ssl.dtstatic.com/uploads/item/202007/23/20200723100019_v4nJm.thumb.1000_0.jpeg"
     property string pBackground: "https://c-ssl.dtstatic.com/uploads/item/202004/25/20200425235603_ybgrj.thumb.1000_0.jpg"

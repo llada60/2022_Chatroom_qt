@@ -10,7 +10,7 @@ import QtQuick.Controls 2.5
 Window {
     width: 338
     height: 506
-    visible: true
+    visible: false
 
     id: personalInfPage
 
