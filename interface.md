@@ -1,6 +1,10 @@
 # 接口文档
 
-## C++/QML交互函数
+## 客户端
+
+### 成员变量
+
+
 
 ### QML发出的请求信号与C++槽函数（响应QML）
 
@@ -70,7 +74,62 @@ void loginBack(QJsonObject obj);
 
 void sendToFriendBack(QJsonObject obj);
 
-收到消息
+收到消息后显示新消息
 
 ```
+
+## 服务端
+
+### 成员变量
+
+class User
+
+储存在线用户的节点，属性为ip，port，id
+
+QUdpSocket* udpSocket=NULL;
+
+储存当前服务端的Udp套接字
+
+QList<User*> onlineUser;
+
+储存当前在线用户的链表节点
+
+SqlAccountModel *atModel;
+SqlFriendModel *fdModel;
+
+指向数据库操作的实例对象。
+
+
+### 基本通信函数
+
+这一部分和客户端的逻辑一模一样。
+
+```c++
+//数据包通信解析
+void QQServer::parseCommand(QString jsonStr,QHostAddress ip,quint16 port);
+//不同参数类型的的发送信息
+void QQServer::sendMessage(QString content,QString ip,QString port);
+void QQServer::sendMessage(QString content,QHostAddress ip,quint16 port);
+void QQServer::sendMessage(QByteArray content,QHostAddress ip,quint16 port);
+void QQServer::sendMessage(QByteArray content,QString ip,QString port);
+```
+### 响应函数
+
+void QQServer::registerRespond(QJsonObject obj,QHostAddress ip,quint16 port);
+
+注册响应。将用户信息插入数据库，向客户端回传Json
+
+void QQServer::loginRespond(QJsonObject obj,QHostAddress ip,quint16 port);
+
+登录响应。登录后将当前用户的id，ip，port加入在线用户链表中，向客户端回传Json
+
+void QQServer::sendToFriendRespond(QJsonObject obj,QHostAddress ip,quint16 port);
+
+发消息响应。将用户的消息转发到目标客户端，同时将聊天记录插入数据库
+
+## 数据库
+
+
+
+
 
