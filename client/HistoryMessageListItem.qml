@@ -3,7 +3,8 @@ import QtQuick.Controls 2.5
 import QtQuick.Controls.Material 2.3
 import QtQuick.Layouts 1.3
 
-import "time_utils.js" as TimeUtils
+import "./js/time_utils.js" as TimeUtils
+import "./components"
 
 Rectangle {
     id: itemContainer

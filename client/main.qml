@@ -4,6 +4,8 @@ import QtQuick.Controls 2.5
 import QtQuick.Controls.Material 2.3
 import QtQuick.Layouts 1.3
 
+import "./components/"
+
 Window {
     visible: true
     width: 1000
@@ -42,11 +44,4 @@ Window {
 
 
     }
-
-
-
-
-    //    ChatScreen {
-    //        anchors.fill: parent
-    //    }
 }

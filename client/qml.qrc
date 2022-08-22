@@ -2,18 +2,18 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>ChatScreen.qml</file>
-        <file>RoundImage.qml</file>
         <file>qtquickcontrols2.conf</file>
-        <file>AutoScrollTextEdit.qml</file>
         <file>FileWidget.qml</file>
         <file>ChatListItem.qml</file>
         <file>images/icon_file.png</file>
         <file>HistoryMessageScreen.qml</file>
-        <file>time_utils.js</file>
         <file>HistoryMessageListItem.qml</file>
-        <file>VerticalTabWidget.qml</file>
         <file>images/icon_chat.png</file>
         <file>images/icon_contact.png</file>
         <file>images/icon_folder.png</file>
+        <file>components/VerticalTabWidget.qml</file>
+        <file>components/AutoScrollTextEdit.qml</file>
+        <file>components/RoundImage.qml</file>
+        <file>js/time_utils.js</file>
     </qresource>
 </RCC>

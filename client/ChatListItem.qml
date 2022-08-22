@@ -1,11 +1,9 @@
 import QtQuick 2.12
+import "./components"
 
-
-// delegate部分，注意是写在第二个qml文件中，Test2.qml
 Item {
     id: multiDelegate
 
-    //  width: multiDelegate.ListView.view.width-20
     anchors.left: parent.left
     anchors.right: parent.right
     height: childrenRect.height
@@ -78,17 +76,12 @@ Item {
             }
         }
 
-
-
     }
 
     Loader {
         id: itemDisplay
         anchors.left: parent.left
         anchors.right: parent.right
-//        anchors.fill: parent;
-//        anchors.topMargin: 2
-//        anchors.bottomMargin: 2
         sourceComponent: bestDelegate(type)
     }
 }

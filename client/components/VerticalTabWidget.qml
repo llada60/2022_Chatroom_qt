@@ -13,7 +13,7 @@ Item {
 
     property int current: 0
 
-    property var icons: ["./images/icon_chat.png", "./images/icon_contact.png"]
+    property var icons: ["../images/icon_chat.png", "../images/icon_contact.png"]
 
     onCurrentChanged: setOpacities()
     Component.onCompleted: setOpacities()
