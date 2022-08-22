@@ -14,8 +14,15 @@ ColumnLayout {
     property string myAvatar: "https://tse2-mm.cn.bing.net/th/id/OIP-C.cS6phGwfJ3qgAtvSXv0rugAAAA?pid=ImgDet&rs=1"
     property int targetId: 1
 
+    // 信号，当前端发送了一条信息时调用
+    // targetId: 发给谁
+    // message: 消息
+    // time: 消息发送的 unix 时间戳（类似 1660893694）
     signal sendData(int targetId, string message, int time)
 
+
+    // 函数： 当c++层接收到新的消息时调用，往UI里添加一条消息
+    // data 样例见下面的 chatListModel
     function appendData(data){
         chatListModel.append(data)
     }

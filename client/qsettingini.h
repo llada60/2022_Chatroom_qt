@@ -4,25 +4,27 @@
 #include <QSettings>
 #include <QString>
 #include <QVariant>
+#include <QObject>
+#include <QObject>
 
-
-#define DATACONFIG  QSettingIni::getInstance()->getIniConfig()
-
-
-class QSettingIni
+class QSettingIni: public QObject
 {
+    Q_OBJECT
 public:
-    static QSettingIni*getInstance(QString fileName);
-    void write(QString key, QVariant value);
+    QSettingIni(QString fileName){
+        qSettings = new QSettings(fileName, QSettings::IniFormat);
+    }
 
-    template<class T>
-    T read(QString key, T default){
+    Q_INVOKABLE void write(QString key, QVariant value){
+        qSettings->setValue(key, value);
+    };
 
+    Q_INVOKABLE QVariant read(QString key, QVariant defaultValue){
+        return qSettings->value(key, defaultValue);
     };
 
 private:
-    QSettingIni();
-    static QSettingIni* instance;
+    QSettings* qSettings;
 };
 
 

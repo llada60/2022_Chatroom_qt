@@ -2,17 +2,18 @@
 #include <QQmlApplicationEngine>
 #include <QSettings>
 #include <QQmlContext>
+#include "qsettingini.h"
 
 int main(int argc, char *argv[])
 {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     QGuiApplication app(argc, argv);
-    QSettings qSettings("config.ini", QSettings::IniFormat);
+    QSettingIni qSettingIni("config.ini");
 
     QQmlApplicationEngine engine;
     QQmlContext* root = engine.rootContext();
-    root->setContextProperty("INI", &qSettings);
+    root->setContextProperty("Config", &qSettingIni);
 
     const QUrl url(QStringLiteral("qrc:/RegisterWindow.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
