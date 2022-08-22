@@ -23,6 +23,7 @@ QQServer::QQServer(QWidget *parent)
     db.open();
     atModel = new SqlAccountModel(this, db);
     fdModel = new SqlFriendModel(this, db);
+    gpModel = new SqlGroupModel(this, db);
     //测试代码
 
 }
@@ -32,6 +33,7 @@ QQServer::~QQServer()
     delete ui;
     delete fdModel;
     delete atModel;
+    delete gpModel;
 }
 
 //收
@@ -111,6 +113,7 @@ void QQServer::parseCommand(QString jsonStr,QHostAddress ip, quint16 port)
     else if(command=="sendToGroup")
     {
         //群发
+        sendToGroupRespond(obj, ip, port);
     }
     else
     {
@@ -156,6 +159,7 @@ void QQServer::sendToFriendRespond(QJsonObject obj, QHostAddress ip, quint16 por
     int targetId=obj["targetId"].toInt();
     QString content=obj["content"].toString();
     QString time=obj["time"].toString();
+    int type=obj["type"].toInt();
     //取目标ip和port
     QHostAddress targetIp;
     quint16 targetPort;
@@ -176,7 +180,26 @@ void QQServer::sendToFriendRespond(QJsonObject obj, QHostAddress ip, quint16 por
     QString diagram=QJsonDocument(jsonObj).toJson();
     sendMessage(diagram,targetIp,targetPort);
     //数据库添加聊天记录
+    fdModel->sendMessage(sendId, targetId, type, time, content);
+}
 
-
+void QQServer::sendToGroupRespond(QJsonObject obj, QHostAddress ip, quint16 port)
+{
+    //解包
+    int sendId=obj["sendId"].toInt();
+    int targetId=obj["targetId"].toInt();
+    QString content=obj["content"].toString();
+    QString time=obj["time"].toString();
+    int type=obj["type"].toInt();
+    gpModel->sendMessage(targetId, sendId, type, time, content);
+    QByteArray bAry = gpModel->memberList(targetId);
+    QJsonParseError error;
+    QJsonObject jsonObj = QJsonDocument::fromJson(bAry, &error).object();
+    QJsonArray jsonAry = jsonObj.value("list").toArray();
+    QList<int> lt;
+    for(int i=0;i<jsonAry.size();i++)
+    {
+        lt.append(jsonAry[i].toObject().value("id").toInt());
+    }
 }
 

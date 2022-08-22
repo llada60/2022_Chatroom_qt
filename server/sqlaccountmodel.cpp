@@ -6,11 +6,10 @@
 #include <QtDebug>
 
 static const char *accountTableName = "USERINFO";
+static const char* friendMessageTableName = "FRIENDMESSAGEINFO";
 
-static void createTable()
+static void createTable(QSqlDatabase db)
 {
-    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE", "account");
-    db.setDatabaseName("Info.db");
     if(db.tables().contains(accountTableName))
     {
         return;
@@ -22,7 +21,7 @@ static void createTable()
                        "ID INTEGER PRIMARY KEY AUTOINCREMENT, "
                        "NAME CHAR(15) NOT NULL, "
                        "PASSWORD CHAR(15) NOT NULL,"
-                       "ICON TEXT,"
+                       "ICON TEXT DEFAULT 'https://c-ssl.duitang.com/uploads/blog/201408/15/20140815095903_ttcnF.jpeg',"
                        "GENDER BOOLEAN,"
                        "BIRTH TEXT,"
                        "AREA CHAR(20),"
@@ -32,14 +31,23 @@ static void createTable()
             qDebug() << "表创建发生错误";
             qDebug() << query.lastError();
         }
+        else
+        {
+            //根账号
+            if(!query.exec("INSERT INTO USERINFO(ID, NAME, PASSWORD) VALUES"
+                           "(100000, 'ADMIN', 'ADMIN')"))
+            {
+                qDebug() << "插入根账号错误";
+                qDebug() << query.lastError();
+            }
+        }
     }
-    db.close();
 }
 
 SqlAccountModel::SqlAccountModel(QObject *parent, QSqlDatabase db):
     QSqlTableModel(parent, db)
 {
-    createTable();
+    createTable(this->database());
     setEditStrategy(QSqlTableModel::OnFieldChange);
 }
 
@@ -75,8 +83,8 @@ QByteArray SqlAccountModel::addUserAccount(const QString& userName, const QStrin
             qDebug() << query.lastError();
         }
     }
-    obj.insert("command","registerBack");
     obj.insert("id", QJsonValue(id));
+    obj.insert("command", QJsonValue("registryback"));
     doc = QJsonDocument(obj);
     bArry = doc.toJson();
     return bArry;
@@ -111,11 +119,45 @@ QByteArray SqlAccountModel::checkAccount(const int& userID, const QString &userP
         }
         else rel = false;
     }
-    obj.insert("command","loginBack");
     obj.insert("result", QJsonValue(rel));
+    obj.insert("command", QJsonValue("loginback"));
     doc = QJsonDocument(obj);
     bArry = doc.toJson();
     return bArry;
+}
+
+QByteArray SqlAccountModel::userInfo(const int &userID)
+{
+    QSqlQuery query;
+    QByteArray bAry;
+    QJsonObject finalObj;
+    if(!query.exec(QString("SELECT * FROM USERINFO WHERE "
+                           "ID=%1 ").arg(QString::number(userID))))
+    {
+        qDebug() << "选择个人信息发生错误";
+        qDebug() << query.lastError();
+    }
+    else
+    {
+        qDebug() << "选择个人信息成功";
+        while(query.next())
+        {
+            QJsonObject obj;
+            obj.insert("id", QJsonValue(query.value("ID").toInt()));
+            obj.insert("name", QJsonValue(query.value("NAME").toString()));
+            obj.insert("icon", QJsonValue(query.value("ICON").toString()));
+            obj.insert("gender", QJsonValue(query.value("GENDER").toBool()));
+            obj.insert("birth", QJsonValue(query.value("BIRTH").toString()));
+            obj.insert("area", QJsonValue(query.value("AREA").toString()));
+            obj.insert("education", QJsonValue(query.value("EDUCATION").toString()));
+            obj.insert("signature", QJsonValue(query.value("SIGNATURE").toString()));
+            finalObj.insert("result", QJsonValue(obj));
+        }
+        qDebug() << finalObj;
+    }
+    finalObj.insert("command", QJsonValue("userinfoback"));
+    bAry = QJsonDocument(finalObj).toJson();
+    return bAry;
 }
 
 void SqlAccountModel::updateIcon(const int& userID, const QString &iconURL)
@@ -138,27 +180,7 @@ void SqlAccountModel::updateIcon(const int& userID, const QString &iconURL)
     }
 }
 
-void SqlAccountModel::updateName(const int &userID, const QString &name)
-{
-    setTable(accountTableName);
-    setFilter(QString("ID = %1").arg(userID));
-    if(!select())
-    {
-       qDebug() << lastError();
-    }
-    else
-    {
-       QSqlRecord record = QSqlTableModel::record(0);
-       record.setValue("NAME", name);
-       setRecord(0, record);
-       if(!submitAll())
-       {
-          qDebug() << lastError();
-       }
-    }
-}
-
-void SqlAccountModel::updateGender(const int &userID, const QString &gender)
+void SqlAccountModel::updateUserInfo(const int &userID, const QString &name, const int &gender, const QString &birth, const QString &area, const QString &education, const QString &signature)
 {
     setTable(accountTableName);
     setFilter(QString("ID = %1").arg(userID));
@@ -169,86 +191,11 @@ void SqlAccountModel::updateGender(const int &userID, const QString &gender)
     else
     {
         QSqlRecord record = QSqlTableModel::record(0);
+        record.setValue("NAME", name);
         record.setValue("GENDER", gender);
-        setRecord(0, record);
-        if(!submitAll())
-        {
-           qDebug() << lastError();
-        }
-    }
-}
-
-void SqlAccountModel::updateBirth(const int &userID, const QString &birth)
-{
-    setTable(accountTableName);
-    setFilter(QString("ID = %1").arg(userID));
-    if(!select())
-    {
-        qDebug() << lastError();
-    }
-    else
-    {
-        QSqlRecord record = QSqlTableModel::record(0);
         record.setValue("BIRTH", birth);
-        setRecord(0, record);
-        if(!submitAll())
-        {
-           qDebug() << lastError();
-        }
-    }
-}
-
-void SqlAccountModel::updateArea(const int &userID, const QString &area)
-{
-    setTable(accountTableName);
-    setFilter(QString("ID = %1").arg(userID));
-    if(!select())
-    {
-        qDebug() << lastError();
-    }
-    else
-    {
-        QSqlRecord record = QSqlTableModel::record(0);
         record.setValue("AREA", area);
-        setRecord(0, record);
-        if(!submitAll())
-        {
-           qDebug() << lastError();
-        }
-    }
-}
-
-void SqlAccountModel::updateEducation(const int &userID, const QString &education)
-{
-    setTable(accountTableName);
-    setFilter(QString("ID = %1").arg(userID));
-    if(!select())
-    {
-        qDebug() << lastError();
-    }
-    else
-    {
-        QSqlRecord record = QSqlTableModel::record(0);
         record.setValue("EDUCATION", education);
-        setRecord(0, record);
-        if(!submitAll())
-        {
-           qDebug() << lastError();
-        }
-    }
-}
-
-void SqlAccountModel::updateSignature(const int &userID, const QString &signature)
-{
-    setTable(accountTableName);
-    setFilter(QString("ID = %1").arg(userID));
-    if(!select())
-    {
-        qDebug() << lastError();
-    }
-    else
-    {
-        QSqlRecord record = QSqlTableModel::record(0);
         record.setValue("SIGNATURE", signature);
         setRecord(0, record);
         if(!submitAll())
@@ -257,6 +204,100 @@ void SqlAccountModel::updateSignature(const int &userID, const QString &signatur
         }
     }
 }
+
+QByteArray SqlAccountModel::messageList(const int &ID)
+{
+    setTable(friendMessageTableName);
+    QSqlQuery query;
+    QSqlQuery query1;
+    QJsonArray jsonItem;
+    QJsonObject jsonTotalF;
+    QJsonObject jsonTotalG;
+    QByteArray bAry;
+    QJsonObject finalObj;
+    int lastID=0;
+    if(!query.exec(QString("SELECT * FROM FRIENDMESSAGEINFO "
+                           "WHERE SENDID=%1 OR RECEIVEID=%2 "
+                           "ORDER BY ID ASC, DATETIME ASC").arg(QString::number(ID), QString::number(ID))))
+    {
+        qDebug() << "选择好友聊天信息错误";
+        qDebug() << query.lastError();
+    }
+    else
+    {
+        qDebug() << "选择好友聊天信息成功";
+        while(query.next())
+        {
+            QJsonObject obj;
+            if(lastID==0 || lastID==query.value("ID").toInt())
+            {
+
+                lastID = query.value("ID").toInt();
+                obj.insert("sid", QJsonValue(query.value("SENDID").toInt()));
+                obj.insert("rid", QJsonValue(query.value("RECEIVEID").toInt()));
+                obj.insert("datetime", QJsonValue(query.value("DATETIME").toString()));
+                obj.insert("message", QJsonValue(query.value("MESSAGE").toString()));
+                jsonItem.append(QJsonValue(obj));
+            }
+            else
+            {
+                jsonTotalF.insert(QString::number(lastID), QJsonValue(jsonItem));
+                lastID = query.value("ID").toInt();
+                while(!jsonItem.empty()) jsonItem.removeLast();
+                obj.insert("sid", QJsonValue(query.value("SENDID").toInt()));
+                obj.insert("rid", QJsonValue(query.value("RECEIVEID").toInt()));
+                obj.insert("datetime", QJsonValue(query.value("DATETIME").toString()));
+                obj.insert("message", QJsonValue(query.value("MESSAGE").toString()));
+                jsonItem.append(QJsonValue(obj));
+            }
+        }
+        jsonTotalF.insert(QString::number(lastID), QJsonValue(jsonItem));
+        finalObj.insert("friendlist", QJsonValue(jsonTotalF));
+    }
+    lastID = 0;
+    while(!jsonItem.empty()) jsonItem.removeLast();
+    if(!query.exec(QString("SELECT GROUPMESSAGEINFO.GID AS GID, GROUPMESSAGEINFO.MID AS MID, GROUPMESSAGEINFO.DATETIME AS DATETIME, GROUPMESSAGEINFO.MESSAGE AS MESSAGE "
+                           "FROM MEMBERINFO join GROUPMESSAGEINFO ON MEMBERINFO.GID=GROUPMESSAGEINFO.GID "
+                           "WHERE MEMBERINFO.MID=%1 ORDER BY GID ASC, DATETIME ASC").arg(QString::number(ID))))
+    {
+        qDebug() << "选择群聊天信息错误";
+        qDebug() << query.lastError();
+    }
+    else
+    {
+        qDebug() << "选择群聊天信息成功";
+        while(query.next())
+        {
+            QJsonObject obj;
+            if(lastID==0 || lastID==query.value("GID"))
+            {
+                lastID = query.value("GID").toInt();
+                obj.insert("mid", QJsonValue(query.value("MID").toInt()));
+                obj.insert("datetime", QJsonValue(query.value("DATETIME").toString()));
+                obj.insert("message", QJsonValue(query.value("MESSAGE").toString()));
+                jsonItem.append(QJsonValue(obj));
+            }
+            else
+            {
+                jsonTotalG.insert(QString::number(lastID), QJsonValue(jsonItem));
+                lastID = query.value("GID").toInt();
+                while(!jsonItem.empty()) jsonItem.removeLast();
+                obj.insert("mid", QJsonValue(query.value("MID").toInt()));
+                obj.insert("datetime", QJsonValue(query.value("DATETIME").toString()));
+                obj.insert("message", QJsonValue(query.value("MESSAGE").toString()));
+                jsonItem.append(QJsonValue(obj));
+            }
+        }
+        jsonTotalG.insert(QString::number(lastID), QJsonValue(jsonItem));
+        finalObj.insert("grouplist", QJsonValue(jsonTotalG));
+    }
+    finalObj.insert("command", QJsonValue("memberinfo"));
+    qDebug() << finalObj;
+    bAry = QJsonDocument(finalObj).toJson();
+    return bAry;
+}
+
+
 
 
 

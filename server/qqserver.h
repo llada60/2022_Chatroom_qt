@@ -10,6 +10,7 @@
 #include <iostream>
 #include "sqlaccountmodel.h"
 #include "sqlfriendmodel.h"
+#include "sqlgroupmodel.h"
 #include "onlinelist.h"
 #include <QList>
 
@@ -39,6 +40,7 @@ private:
     //数据库操作
     SqlAccountModel *atModel;
     SqlFriendModel *fdModel;
+    SqlGroupModel * gpModel;
     //数据包通信解析
     void parseCommand(QString jsonStr,QHostAddress ip,quint16 port);
     //不同参数类型的的发送信息
@@ -50,5 +52,6 @@ private:
     void registerRespond(QJsonObject obj,QHostAddress ip,quint16 port);
     void loginRespond(QJsonObject obj,QHostAddress ip,quint16 port);
     void sendToFriendRespond(QJsonObject obj,QHostAddress ip,quint16 port);
+    void sendToGroupRespond(QJsonObject obj,QHostAddress ip,quint16 port);
 };
 #endif // QQSERVER_H
