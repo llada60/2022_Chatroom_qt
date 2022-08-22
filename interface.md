@@ -5,21 +5,21 @@
 ### QML发出的请求信号与C++槽函数（响应QML）
 
 ```c++
-尽量用全局信号
+尽量用全局信号（信号为了显示美观，加了；，实际应用不需要；符号）
 
-signal loginSignal(int usrID,string usrPSW)
+signal loginSignal(int usrID,string usrPSW);
 
 void login(int id,QString password);
 
 这一对信号和槽函数负责像服务器发出登录请求
 
-signal registerSignal(string usrName,string usrPassword)
+signal registerSignal(string usrName,string usrPassword);
 
 void registerAccount(QString user,QString password);
 
 这一对信号和槽函数负责注册像服务器发出注册请求
 
-signal sendToFriendSignal(int targetId,string content,string time)
+signal sendToFriendSignal(int targetId,string content,string time);
 
 void sendToFriend(int targetId,QString content,QString time);
 
@@ -56,6 +56,21 @@ void parseCommand(QString jsonStr,QHostAddress ip,quint16 port);
 ### C++客户端响应函数与QML受控函数
 
 
+将服务器返回的Json处理后调用QML中同名函数
 
+```c++
 
+void registerBack(QJsonObject obj);
+
+负责注册后显示结果
+
+void loginBack(QJsonObject obj);
+
+负责登录后显示结果
+
+void sendToFriendBack(QJsonObject obj);
+
+收到消息
+
+```
 
