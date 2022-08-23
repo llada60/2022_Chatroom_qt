@@ -34,5 +34,8 @@
         <file>components/FriendList.qml</file>
         <file>AddFriendWindow.qml</file>
         <file>ContactScreen.qml</file>
+        <file>images/add.png</file>
+        <file>images/emoji.png</file>
+        <file>images/picture.png</file>
     </qresource>
 </RCC>
