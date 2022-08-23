@@ -14,6 +14,9 @@ ColumnLayout {
     property string myName: "Shen"
     property string myAvatar: "https://tse2-mm.cn.bing.net/th/id/OIP-C.cS6phGwfJ3qgAtvSXv0rugAAAA?pid=ImgDet&rs=1"
     property int targetId: 1
+    property string targetName: "ll"
+    property string targetAvatar: "https://tse2-mm.cn.bing.net/th/id/OIP-C.cS6phGwfJ3qgAtvSXv0rugAAAA?pid=ImgDet&rs=1"
+
 
 
     // 信号，当前端发送了一条信息时调用

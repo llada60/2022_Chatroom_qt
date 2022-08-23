@@ -7,6 +7,7 @@ Item {
     anchors.left: parent.left
     anchors.right: parent.right
     height: childrenRect.height
+    readonly property bool sentByMe: uid == myUid
 
     function bestDelegate(t) {
         if(t === 1)
@@ -20,10 +21,25 @@ Item {
         id:objectInf
     }
 
+    function openInfoWindow(){
+        //应增加从服务器扒取其余信息) 为什么没有传递成功啊！
+        objectInf.isMe = sentByMe
+        if(sentByMe){
+            objectInf.personalHead = myAvatar
+            objectInf.personalName = myName
+            objectInf.personalID = myUid
+        }else{
+            objectInf.personalID = targetId
+            // 抓其他信息
+
+        }
+        objectInf.show()
+    }
+
     Component {
         id: fileDelegate
         Row {
-            readonly property bool sentByMe: uid == myUid
+
             property var extraData: JSON.parse(message)
 
             layoutDirection: sentByMe ? Qt.RightToLeft : Qt.LeftToRight
@@ -39,16 +55,8 @@ Item {
                 {
                     anchors.fill: parent
                     acceptedButtons: Qt.LeftButton
-                    onClicked:
-                    {
-                        objectInf.show()
-                        console.log(myAvatar)
-                        //应增加从服务器扒取其余信息) 为什么没有传递成功啊！
-                        objectInf.isMe = true
-                        objectInf.personalHead = myAvatar
-                        objectInf.personalName = myName
-                        objectInf.personalID = myUid
-                    }
+                    onClicked: openInfoWindow()
+                    onHoveredChanged: cursorShape = Qt.PointingHandCursor
                 }
             }
 
@@ -65,7 +73,7 @@ Item {
     Component {
         id: txtDelegate
         Row {
-            readonly property bool sentByMe: uid == myUid
+//            readonly property bool sentByMe: uid == myUid
             layoutDirection: sentByMe ? Qt.RightToLeft : Qt.LeftToRight
 
             spacing: 6
@@ -79,13 +87,8 @@ Item {
                 {
                     anchors.fill: parent
                     acceptedButtons: Qt.LeftButton
-                    onClicked:
-                    {
-                        objectInf.show()
-                        //待增加。。。
-                        objectInf.isMe = false
-                        objectInf.personalID = targetId
-                    }
+                    onClicked: openInfoWindow()
+                    onHoveredChanged: cursorShape = Qt.PointingHandCursor
                 }
             }
 
