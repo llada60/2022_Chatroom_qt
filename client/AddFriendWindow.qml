@@ -25,6 +25,8 @@ Window {
     signal searchSignal(int idN)
     //发送添加信号
     signal addSignal(int idN)
+    //已添加新好友（群聊）信号
+    signal passSignal()
 
     //返回搜索结果
     function searchBack(data)
@@ -51,7 +53,9 @@ Window {
         else
         {
             addOk.open()
+            passSignal()
             close()
+
         }
     }
 

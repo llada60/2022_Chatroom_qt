@@ -13,11 +13,11 @@ Rectangle
 
         RoundImage
         {
-            id: avatarImg
-            img_src: avatar
+            id: avatarImgP
+            img_src: avatarImg
 
             width: 40
-            height: avatarImg.width
+            height: avatarImgP.width
             color: "black"
         }
         Text

@@ -37,8 +37,7 @@ RowLayout
     TextField
     {
         id: inputID
-        anchors.left: imgSearch.right
-        anchors.leftMargin: 12
+        Layout.leftMargin: 12
 
 
         padding: 5
@@ -59,8 +58,7 @@ RowLayout
     RoundButton
     {
         // 搜索好友/群
-        anchors.left: inputID.right
-        anchors.leftMargin: 5
+        Layout.leftMargin: 5
         id: search
         text: qsTr("搜索")
         flat: true

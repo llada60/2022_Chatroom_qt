@@ -73,7 +73,6 @@ Rectangle {
             id: contactListView
             model: contactListModel
 
-            //        anchors.top: labelFriend.bottom
             spacing: 8
             focus: true
             Layout.fillWidth: true

@@ -63,7 +63,7 @@ Window {
                                     addEmoji = ":)"
                                     break;
                             }
-                            //文本框中添加选择的表情内容(不知道能不能实现
+                            //文本框中添加选择的表情内容
                             clickEmoji(addEmoji);
 
                             close()

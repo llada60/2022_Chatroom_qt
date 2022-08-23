@@ -14,6 +14,12 @@ Item {
         return txtDelegate; // t == "text"
     }
 
+
+    PersonalInf
+    {
+        id:objectInf
+    }
+
     Component {
         id: fileDelegate
         Row {
@@ -27,6 +33,20 @@ Item {
                 width: height
                 height: 24
                 img_src: avatar
+                MouseArea
+                {
+                    anchors.fill: parent
+                    acceptedButtons: Qt.LeftButton
+                    onClicked:
+                    {
+                        objectInf.show()
+                        //应增加从服务器扒取其余信息)
+                        objectInf.isMe = true
+                        objectInf.personalHead = myAvatar
+                        objectInf.personalName = myName
+                        objectInf.personalID = myUid
+                    }
+                }
             }
 
             FileWidget {
@@ -36,7 +56,7 @@ Item {
             }
 
             Component.onCompleted: {
-                console.log(fileName)
+//                console.log(fileName)
             }
         }
 
@@ -56,6 +76,18 @@ Item {
                 width: height
                 height: 24
                 img_src: avatar
+                MouseArea
+                {
+                    anchors.fill: parent
+                    acceptedButtons: Qt.LeftButton
+                    onClicked:
+                    {
+                        objectInf.show()
+                        //待增加。。。
+                        objectInf.isMe = false
+                        objectInf.personalID = targetId
+                    }
+                }
             }
 
 
