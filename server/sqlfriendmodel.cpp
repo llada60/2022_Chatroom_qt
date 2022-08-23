@@ -1,0 +1,161 @@
+#include "sqlfriendmodel.h"
+#include <QtSql/QSqlDatabase>
+#include <QtSql/QSqlQuery>
+#include <QtSql/QSqlError>
+#include <QtSql/QSqlRecord>
+#include <QtDebug>
+#include <QtMath>
+
+static const char* friendTableName = "FRIENDINFO";
+static const char* friendMessageTableName = "FRIENDMESSAGEINFO";
+static void createTable(QSqlDatabase db)
+{
+    if(!db.tables().contains(friendTableName))
+    {
+        if(db.open())
+        {
+            QSqlQuery query(db);
+            if(!query.exec(QString("CREATE TABLE IF NOT EXISTS %1("
+                                   "ID INTEGER PRIMARY KEY AUTOINCREMENT,"
+                                   "USERID INTEGER NOT NULL, "
+                                   "FRIENDID INTEGER NOT NULL CHECK (USERID<=FRIENDID),"
+                                   "FOREIGN KEY (USERID) REFERENCES USERINFO(ID) ON DELETE CASCADE,"
+                                   "FOREIGN KEY (FRIENDID) REFERENCES USERINFO(ID) ON DELETE CASCADE)"
+                                   ).arg(friendTableName)))
+            {
+                qDebug() << "表创建发生错误";
+                qDebug() << query.lastError();
+            }
+        }
+    }
+    if(!db.tables().contains(friendMessageTableName))
+    {
+        if(db.open())
+        {
+            QSqlQuery query(db);
+            if(!query.exec(QString("CREATE TABLE IF NOT EXISTS %1("
+                                   "ID INTEGER REFERENCES FRIENDINFO(ID),"
+                                   "SENDID INTEGER NOT NULL, "
+                                   "RECEIVEID INTEGER NOT NULL,"
+                                   "DATETIME TEXT NOT NULL,"
+                                   "MESSAGE TEXT NOT NULL,"
+                                   "TYPE INTEGER NOT NULL,"
+                                   "PRIMARY KEY (SENDID, RECEIVEID, DATETIME),"
+                                   "FOREIGN KEY (SENDID) REFERENCES USERINFO(ID),"
+                                   "FOREIGN KEY (RECEIVEID) REFERENCES USERINFO(ID))"
+                                   ).arg(friendMessageTableName)))
+            {
+                qDebug() << "好友聊天表创建发生错误";
+                qDebug() << query.lastError();
+            }
+        }
+    }
+}
+
+SqlFriendModel::SqlFriendModel(QObject *parent, QSqlDatabase db):
+    QSqlTableModel(parent, db)
+{
+    createTable(this->database());
+}
+
+SqlFriendModel::~SqlFriendModel()
+{
+    database().close();
+}
+
+void SqlFriendModel::addFriend(const int &aID, const int &bID)
+{
+    setTable(friendTableName);
+    QSqlQuery query;
+    int id1, id2;
+    id1 = qMin(aID, bID);
+    id2 = qMax(aID, bID);
+    if(!query.exec(QString("INSERT INTO FRIENDINFO(USERID, FRIENDID) VALUES("
+                           "%1, %2)").arg(QString::number(id1), QString::number(id2))))
+    {
+        qDebug() << "添加好友发生错误";
+        qDebug() << query.lastError();
+    }
+    else
+    {
+        qDebug() << "添加好友成功";
+    }
+}
+
+void SqlFriendModel::delFriend(const int &aID, const int &bID)
+{
+    setTable(friendTableName);
+    QSqlQuery query;
+    int id1, id2;
+    id1 = qMin(aID, bID);
+    id2 = qMax(aID, bID);
+    if(!query.exec(QString("DELETE FROM FRIENDINFO WHERE "
+                           "USERID=%1 AND FRIENDID=%2").arg(QString::number(id1), QString::number(id2))))
+    {
+        qDebug() << "删除好友发生错误";
+        qDebug() << query.lastError();
+    }
+    else
+    {
+        qDebug() << "删除好友成功";
+    }
+}
+
+QByteArray SqlFriendModel::friendList(const int &ID)
+{
+    setTable(friendTableName);
+    QSqlQuery query;
+    QJsonArray jsonAry;
+    QByteArray bAry;
+    QJsonObject finalObj;
+    if(!query.exec(QString("SELECT * FROM (SELECT USERID AS ID FROM FRIENDINFO WHERE "
+                           "FRIENDID=%1 UNION "
+                           "SELECT FRIENDID AS ID FROM FRIENDINFO WHERE "
+                           "USERID=%2) AS A JOIN USERINFO AS B  "
+                           "ON A.ID=B.ID").arg(QString::number(ID), QString::number(ID))))
+    {
+        qDebug() << "选择好友发生错误";
+        qDebug() << query.lastError();
+    }
+    else
+    {
+        qDebug() << "选择好友成功";
+        while(query.next())
+        {
+            QJsonObject obj;
+            obj.insert("id", QJsonValue(query.value("ID").toInt()));
+            obj.insert("name", QJsonValue(query.value("NAME").toString()));
+            obj.insert("icon", QJsonValue(query.value("ICON").toString()));
+            jsonAry.append(QJsonValue(obj));
+        }
+        qDebug() << jsonAry;
+        finalObj.insert("list", QJsonValue(jsonAry));
+    }
+    finalObj.insert("command", QJsonValue("friendlistback"));
+    bAry = QJsonDocument(finalObj).toJson();
+    return bAry;
+}
+
+void SqlFriendModel::sendMessage(const int &sendID, const int &receiveID, const int& type, const QString &datetime, const QString &message)
+{
+    QSqlQuery query;
+    int id;
+    if(!query.exec(QString("SELECT ID FROM FRIENDINFO WHERE "
+                           "(USERID=%1 AND FRIENDID=%2) OR (USERID=%2 AND FRIENDID=%1)").arg(QString::number(sendID), QString::number(receiveID))))
+    {
+        qDebug() << "选择好友对编号发生错误";
+        qDebug() << query.lastError();
+    }
+    query.next();
+    id = query.value("ID").toInt();
+    if(!query.exec(QString("INSERT INTO FRIENDMESSAGEINFO VALUES("
+                           "%1, %2, %3, '%4', '%5', %6)").arg(QString::number(id),QString::number(sendID), QString::number(receiveID), datetime, message,QString::number(type))))
+    {
+        qDebug() << "添加好友聊天信息发生错误";
+        qDebug() << query.lastError();
+    }
+    else
+    {
+        qDebug() << "添加好友聊天信息成功";
+    }
+}

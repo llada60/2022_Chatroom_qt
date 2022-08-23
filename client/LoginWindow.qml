@@ -17,8 +17,8 @@ Window {
     visible: true //窗口是否可见
     title: qsTr("登陆") //窗口标题
 
-    RegisterWindow{id: registerWindows}
-    MainWindow{id: mainWindows}
+    RegisterWindow{id: registerWindows; visible: false;}
+    MainWindow{id: mainWindows; visible: false;}
 
     // 发送登陆信号，在数据库中验证
     signal loginSignal(int usrID,string usrPSW)
@@ -34,12 +34,12 @@ Window {
     }
 
     //接收服务器返回 登陆成功
-    function loginIsSuccess(v)
+    function loginBack(v)
     {
         if(1 == v)
         {
             mainWindows.show()
-            LoginWindows.hide()
+            loginWindows.hide()
         }
         else
         {

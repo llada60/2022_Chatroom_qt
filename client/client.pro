@@ -1,4 +1,4 @@
-QT += quick
+QT += quick network
 
 CONFIG += c++11
 
@@ -14,7 +14,10 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    main.cpp
+    main.cpp \
+    qqclient.cpp \
+    tcpclient.cpp \
+    tcpserver.cpp
 
 RESOURCES += qml.qrc
 
@@ -34,3 +37,7 @@ DISTFILES +=
 HEADERS += \
     qfileutils.h \
     qsettingini.h
+    qqclient.h \
+    qsettingini.h \
+    tcpclient.h \
+    tcpserver.h

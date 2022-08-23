@@ -4,6 +4,7 @@
 #include <QQmlContext>
 #include "qsettingini.h"
 #include "qfileutils.h"
+#include "qqclient.h"
 
 int main(int argc, char *argv[])
 {
@@ -26,6 +27,8 @@ int main(int argc, char *argv[])
             QCoreApplication::exit(-1);
     }, Qt::QueuedConnection);
     engine.load(url);
+    //C++后台通讯
+    QQClient* qqClient=new QQClient(&engine,&app);
 
     return app.exec();
 }
