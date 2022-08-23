@@ -41,6 +41,7 @@ Window {
 
         Text {
             id: text
+            font.pixelSize: 20
             text: qsTr("您的账号：")  +  usrID +  qsTr("\n您的用户名：") + usrName
             anchors.centerIn: parent
         }
@@ -48,9 +49,8 @@ Window {
 
         onAccepted:
         {
-            //TODO 这里跳转失败
             console.log("Having checked the new usr inf")
-            MainWindows.visible = true
+            mainWindows.show()
             registerWindows.hide()
         }
     }
