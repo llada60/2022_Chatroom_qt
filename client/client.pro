@@ -36,7 +36,7 @@ DISTFILES +=
 
 HEADERS += \
     qfileutils.h \
-    qsettingini.h
+    qsettingini.h \
     qqclient.h \
     qsettingini.h \
     tcpclient.h \

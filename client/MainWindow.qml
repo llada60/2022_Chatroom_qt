@@ -59,7 +59,7 @@ Window {
         RowLayout {
             id:rowLayout
             spacing: 12
-            anchors.fill: parent
+//            anchors.fill: parent
             objectName: "chatWindow2"
 
             HistoryMessageScreen {
