@@ -48,12 +48,12 @@ Window {
         RowLayout {
             id:rowLayout
             spacing: 12
-            // anchors.fill: parent
+//            anchors.fill: parent
 
             HistoryMessageScreen {
                 id: historyMessageScreen
                 Layout.fillHeight: true
-                Layout.preferredWidth: rowLayout.width * 0.3
+                implicitWidth: 270
                 Component.onCompleted: {
                     clickHistoryMessageItem.connect((data)=>{
                         // 历史消息列表与聊天窗口的同步
@@ -66,13 +66,14 @@ Window {
             ChatScreen {
                 id: chatScreen
                 Layout.fillHeight: true
-                Layout.preferredWidth: rowLayout.width * 0.68
+                // implicitWidth: rowLayout.width * 0.68
             }
         }
 
         // 联系人页面
-        Rectangle {
+        ContactScreen {
             // anchors.fill: parent
+
             radius: 4
         }
     }

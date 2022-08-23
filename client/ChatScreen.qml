@@ -30,6 +30,7 @@ ColumnLayout {
 
     // 设置聊天对象
     function setArg(uid){
+        console.log("uid:" + uid);
         targetId = uid;
     }
 
@@ -158,7 +159,7 @@ ColumnLayout {
                         MouseArea {
                             anchors.fill: parent
                             onClicked: {
-
+                                console.log("图片选择");
                             }
                             hoverEnabled: true
                             onHoveredChanged: cursorShape = Qt.PointingHandCursor

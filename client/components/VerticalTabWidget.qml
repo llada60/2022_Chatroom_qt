@@ -20,14 +20,6 @@ Item {
     onCurrentChanged: stack.replace(null, stack.children[current])
     Component.onCompleted: stack.push(stack.children[0])
 
-    function setOpacities() {
-        for (var i = 0; i < stack.children.length; ++i) {
-
-            if (i === current) stack.children[i].show()
-            else stack.children[i].hide();
-        }
-    }
-
     Column {
         id: side
 

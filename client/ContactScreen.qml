@@ -50,13 +50,19 @@ Rectangle {
         }
     }
 
+//    Label {
+//        id: labelFriend
+//        text: "好友"
+//    }
+
     ListView {
         id: contactListView
         model: contactListModel
         anchors.fill: parent
+//        anchors.top: labelFriend.bottom
         spacing: 8
         focus: true
-        anchors.margins: 8
+        anchors.margins: 12
         clip: true
 
         delegate: Rectangle
@@ -90,7 +96,7 @@ Rectangle {
 
                     Layout.leftMargin: 80
                     icon.source: "./images/icon_chat.png"
-                    icon.color: "transparent"
+                    icon.color: contactButton.hovered ? Material.accent : "transparent"
                 }
             }
         }
