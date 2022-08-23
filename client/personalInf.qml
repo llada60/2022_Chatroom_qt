@@ -10,17 +10,18 @@ import QtQuick.Controls 2.5
 Window {
     width: 338
     height: 520
-    visible: true
+    visible: false
 
     id: personalInfPage
 
     property bool isMe: true //1表示个人信息可设置，0表示他人信息不可设置
     property string personalHead: "https://c-ssl.dtstatic.com/uploads/blog/202203/19/20220319111710_f487b.thumb.1000_0.jpg"
+//    property string personalHead: ""
     property string pBackground: "https://c-ssl.dtstatic.com/uploads/item/202004/25/20200425235603_ybgrj.thumb.1000_0.jpg"
-    property string personalName: "我想开了"
+    property string personalName: "张三"
     property string personalSaying: "生如春花之烂漫，逝如秋叶之静美"
 
-    property int sex_num: 0 //1为男 0为女
+    property int sex_num: 1 //1为男 0为女
     property string sex: sex_num==1? "男":"女"
     function sexToNum()
     {
@@ -240,7 +241,7 @@ Window {
             Layout.topMargin: -70
 
             width: 338
-            height: 200
+            height: 250
             radius: width/2
             Image
             {
@@ -256,7 +257,7 @@ Window {
                 radius: imgHead.width/2
 
                 anchors.centerIn: img
-                anchors.verticalCenterOffset: 80
+                anchors.verticalCenterOffset: 100
 
                 Image {
                     id: _image
@@ -300,7 +301,7 @@ Window {
             {
                 id: usrName
                 Layout.alignment: Qt.AlignHCenter
-                Layout.topMargin: 40
+                Layout.topMargin: 20
                 font.pixelSize: 20
                 font.family: "SimHei"
                 font.bold: true
@@ -362,8 +363,8 @@ Window {
                 ctx.lineWidth = 2
 
                 ctx.beginPath();                  // 开始一条路径
-                ctx.moveTo(40,300);         // 移动到指定位置
-                ctx.lineTo(298,300);
+                ctx.moveTo(40,280);         // 移动到指定位置
+                ctx.lineTo(298,280);
 
                 ctx.stroke();
              }

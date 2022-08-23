@@ -56,6 +56,7 @@ Window {
             spacing: 12
 //            anchors.fill: parent
 
+
             HistoryMessageScreen {
                 id: historyMessageScreen
                 Layout.fillHeight: true

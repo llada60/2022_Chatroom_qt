@@ -22,10 +22,14 @@ Window {
     property bool finded: false // 是否查找到相应的用户/群聊
 
     //发送搜索内容（id）
-    signal addFriend(int idN)
+    signal searchSignal(int idN)
+    //发送添加信号
+    signal addSignal(int idN)
+    //已添加新好友（群聊）信号
+    signal passSignal()
 
     //返回搜索结果
-    function addFriendBack(data)
+    function searchBack(data)
     {
         finded = data.finded
         if(false == finded)
@@ -38,7 +42,21 @@ Window {
         isPerson = data.isPerson
         Window.height = 180
         searchResult.visible = true
+    }
+    //返回添加成功信号
+    function addBack(v)
+    {
+        if(v == 0)
+        {//添加失败
+            addFalse.open()
+        }
+        else
+        {
+            addOk.open()
+            passSignal()
+            close()
 
+        }
     }
 
     MessageDialog
@@ -46,6 +64,18 @@ Window {
         id:findFalse
         standardButtons: MessageDialog.Cancel
         text: "查无该用户/群聊"
+    }
+    MessageDialog
+    {
+        id:addFalse
+        standardButtons: MessageDialog.Cancel
+        text: "添加失败"
+    }
+    MessageDialog
+    {
+        id:addOk
+        standardButtons: MessageDialog.Ok
+        text: "添加成功"
     }
 
     // 搜索栏
