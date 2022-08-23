@@ -11,6 +11,7 @@ Window {
     height: 600
     title: qsTr("WeTalk")
     color: "#edf5f9"
+    objectName: "mainWindow"
 
     // 信号：开始请求历史消息，参数为我的UID
     signal requestHistoryMessage(int myUid)
@@ -39,11 +40,13 @@ Window {
         anchors.bottomMargin: 12
         anchors.topMargin: 12
         anchors.fill: parent
+        objectName: "chatWindow1"
 
         // 聊天页面
         RowLayout {
             spacing: 12
             anchors.fill: parent
+            objectName: "chatWindow2"
 
             HistoryMessageScreen {
                 id: historyMessageScreen
