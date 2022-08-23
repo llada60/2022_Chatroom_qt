@@ -283,12 +283,7 @@ ColumnLayout {
                                  "uid": 0,
                                  "name": "李四",
                                  "time": 1660893694,
-
-                                 "fileName": "来来来.txt",
-                                 "fileSize": 1389420,
-                                 "localPath": "d:/test/来来来.txt",
-                                 "message": "[文件]",
-
+                                 "message": `{"fileName": "来来来.txt","fileSize": 1389420,"localPath": "d:/test/来来来.txt"}`,
                                  "avatar": "https://ts1.cn.mm.bing.net/th/id/R-C.1eed2de61a172c6ca2d79fc5ea62eb01?rik=c7W7KrSN7xFOIg&riu=http%3a%2f%2fimg.crcz.com%2fallimg%2f202003%2f10%2f1583821081100057.jpg&ehk=q%2f9lt0hQhwZzKFdRKYyG2g4zxQKgTWKJ4gHeelom3Mo%3d&risl=&pid=ImgRaw&r=0&sres=1&sresct=1",
                                  "type": 1 // 1代表文件
                              })

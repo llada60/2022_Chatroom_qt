@@ -17,7 +17,6 @@ Item {
     property var icons: ["../images/icon_chat.png", "../images/icon_contact.png"]
 
     onCurrentChanged: stack.replace(null, stack.children[current])
-    Component.onCompleted: stack.push(stack.children[0])
 
     Column {
         id: side
@@ -60,6 +59,7 @@ Item {
         height: tabWidget.height
         anchors.left: side.right; anchors.right: tabWidget.right
         anchors.leftMargin: 12
+        initialItem: stack.children[0]
     }
 
 }

@@ -18,6 +18,8 @@ Item {
         id: fileDelegate
         Row {
             readonly property bool sentByMe: uid == myUid
+            property var extraData: JSON.parse(message)
+
             layoutDirection: sentByMe ? Qt.RightToLeft : Qt.LeftToRight
 
             spacing: 6
@@ -31,12 +33,8 @@ Item {
 
             FileWidget {
                 id: fileWidget
-                _fileName: message
-                _fileSize: 100
-            }
-
-            Component.onCompleted: {
-                console.log(fileName)
+                _fileName: extraData["fileName"]
+                _fileSize: extraData["fileSize"]
             }
         }
 
@@ -67,8 +65,6 @@ Item {
 
                 color: sentByMe ? "lightgrey" : "steelblue"
                 radius: 4
-                // Layout.margins: 8
-
                 Text {
                     id: messageText
                     anchors.centerIn: parent

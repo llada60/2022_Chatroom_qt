@@ -30,6 +30,10 @@ Window {
         historyMessageScreen.setMessages(messages);
     }
 
+    function startChatTo(uid, name, avatar){
+//        chatScreen.
+    }
+
     Component.onCompleted: {
         requestHistoryMessage(1);
     }
@@ -75,8 +79,14 @@ Window {
         // 联系人页面
         ContactScreen {
             // anchors.fill: parent
-
+            id: contactScreen
             radius: 4
+            onMessageWithConact: {
+
+            }
+            onMessageWithGroup: {
+
+            }
         }
 
 

@@ -9,7 +9,7 @@ Rectangle
     height: 40
     radius: width/2
 
-    AddFriendWindow{id:addFriendWindow}
+    AddFriendWindow{id:addFriendWindow; visible: false}
 
     Image {
         id: addImg
