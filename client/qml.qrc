@@ -32,5 +32,6 @@
         <file>components/InfListItem.qml</file>
         <file>components/SearchWidget.qml</file>
         <file>AddFriendWindow.qml</file>
+        <file>ContactScreen.qml</file>
     </qresource>
 </RCC>

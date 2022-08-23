@@ -31,8 +31,7 @@ Rectangle
             id: addFriendButton
             width: 20
             height: 20
-            background:
-            {
+            background: Item{
                 opacity:1
             }
             anchors.left: searchName.right

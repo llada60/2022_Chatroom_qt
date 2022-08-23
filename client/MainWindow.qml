@@ -67,7 +67,7 @@ Window {
         }
 
         // 联系人页面
-        Rectangle {
+        ContactScreen {
             anchors.fill: parent
             radius: 4
         }
