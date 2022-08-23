@@ -7,8 +7,6 @@ import "./components"
 
 Rectangle {
     id: rectangle
-
-
     radius: 4
 
     // 信号，点击和某人/群聊天触发，参数为对应项的data
@@ -88,50 +86,47 @@ Rectangle {
 
     Component {
         id: contactListItem
-        Rectangle
+        RowLayout
         {
-            width: 280
+
+            width: 240
             height: 64
-            RowLayout
+            RoundImage
             {
-                width: parent.width
-
-                RoundImage
-                {
-                    img_src: avatar
-                    width: 40
-                    height: width
-                    color: "black"
-                    Layout.alignment: Qt.AlignLeft
+                img_src: avatar
+                width: 40
+                height: width
+                color: "black"
+                Layout.alignment: Qt.AlignLeft
+            }
+            Text
+            {
+                Layout.leftMargin: 5
+                text: userName + qsTr("<font color=\"#54b4ef\">(") + userId + qsTr(")</font>")
+                elide: Text.ElideRight
+                Layout.alignment: Qt.AlignLeft
+            }
+            Button
+            {
+                id: contactButton
+                width: 20
+                height: 20
+                background: Item{
+                    opacity:1
                 }
-                Text
-                {
-                    Layout.leftMargin: 20
-                    text: userName + qsTr("<font color=\"#54b4ef\">(") + userId + qsTr(")</font>")
-                    elide: Text.ElideRight
-                    Layout.alignment: Qt.AlignLeft
-                }
-                Button
-                {
-                    id: contactButton
-                    width: 20
-                    height: 20
-                    background: Item{
-                        opacity:1
-                    }
-                    onClicked: {
+                onClicked: {
 
-                        if(100000 <= userId && userId <= 599999){
-                            messageWithConact(userId, userName, avatar);
-                        }else messageWithGroup(userId, userName, avatar);
-                    }
-
-                    Layout.alignment: Qt.AlignRight
-                    icon.source: "./images/icon_chat.png"
-                    icon.color: contactButton.hovered ? Material.accent : "transparent"
+                    if(100000 <= userId && userId <= 599999){
+                        messageWithConact(userId, userName, avatar);
+                    }else messageWithGroup(userId, userName, avatar);
                 }
+
+                Layout.alignment: Qt.AlignRight
+                icon.source: "./images/icon_chat.png"
+                icon.color: contactButton.hovered ? Material.accent : "transparent"
             }
         }
+
     }
 
 
@@ -158,7 +153,7 @@ Rectangle {
             focus: true
             Layout.fillWidth: true
             height: Math.min(contactListView.contentHeight, 280)
-//            Layout.fillHeight: true
+            //            Layout.fillHeight: true
             Layout.alignment: Qt.AlignLeft | Qt.AlignTop
             clip: true
             delegate: contactListItem
