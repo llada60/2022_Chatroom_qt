@@ -74,7 +74,7 @@ RowLayout
             else
             {
                 //将搜索内容发送
-                sendSearch(inputID.text)
+                searchSignal(inputID.text)
             }
 
 

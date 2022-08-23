@@ -4,6 +4,7 @@ import QtQuick.Controls 2.5
 
 Rectangle
 {
+
     width:parent.width
 
     RowLayout
@@ -38,6 +39,11 @@ Rectangle
                                  addFriendButton.hovered? "qrc:/images/addFriend1.png" :
                                                 ("qrc:/images/addFriend.png")
             icon.color: "transparent"
+            onClicked:
+            {
+                //发出好友（群聊）添加信号
+                addSignal()
+            }
         }
     }
 }
