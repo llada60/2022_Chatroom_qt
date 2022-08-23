@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.3
 import QtQuick.Controls.Material 2.0
 import QtGraphicalEffects 1.0
 import QtQuick.Controls 2.5
+import "./components"
 
 
 
@@ -15,8 +16,7 @@ Window {
     id: personalInfPage
 
     property bool isMe: true //1表示个人信息可设置，0表示他人信息不可设置
-    property string personalHead: "https://c-ssl.dtstatic.com/uploads/blog/202203/19/20220319111710_f487b.thumb.1000_0.jpg"
-//    property string personalHead: ""
+    property string personalHead: "https://c-ssl.dtstatic.com/uploads/item/201403/08/20140308212511_LYudw.thumb.1000_0.jpeg"
     property string pBackground: "https://c-ssl.dtstatic.com/uploads/item/202004/25/20200425235603_ybgrj.thumb.1000_0.jpg"
     property string personalName: "张三"
     property string personalSaying: "生如春花之烂漫，逝如秋叶之静美"
@@ -69,87 +69,10 @@ Window {
         edu = data.edu
     }
 
-    function getBirthYMD()
-    {
-        birth1 = birthday.split('-')
-        birthYear = Number(birth1[0])
-        birthMonth = Number(birth1[1])
-        birthDay = Number(birth1[2])
-    }
 
-    function checkShengXiao()
-    {
-        switch ((birthYear-1000)%12)
-        {
-            // 1000年为老鼠
-            case 0 :
-            {
-                return "鼠"
-                break;
-            }
-            case 1 :
-            {
-                return "牛"
-                break;
-            }
-            case 2 :
-            {
-                return "虎"
-                break;
-            }
-            case 3 :
-            {
-                return "兔"
-                break;
-            }
-            case 4 :
-            {
-                return "龙"
-                break;
-            }
-            case 5 :
-            {
-                return "蛇"
-                break;
-            }
-            case 6 :
-            {
-                return "马"
-                break;
-            }
-            case 7 :
-            {
-                return "羊"
-                break;
-            }
-            case 8 :
-            {
-                return "猴"
-                break;
-            }
-            case 9 :
-            {
-                return "鸡"
-                break;
-            }
-            case 10 :
-            {
-                return "狗"
-                break;
-            }
-            case 11 :
-            {
-                return "猪"
-                break;
-            }
-            default:
-            {
-                break;
-            }
-        }
-    }
 
     property string shengXiao: checkShengXiao()
+
 
 
 
@@ -194,6 +117,7 @@ Window {
                     birthdayC.visible = true
                     areaC.visible = true
                     eduC.visible = true
+                    headArea.acceptedButtons = Qt.LeftButton
                 }
 
                 else
@@ -220,6 +144,7 @@ Window {
                     eduC.visible = false
                     edu = eduC.text
 
+                    headArea.acceptedButtons = Qt.NoButton
                     console.log("个人信息修改已完成")
 
                     // 发送信号(string name,string saying,int usrid,int sexn,string area,string edul)
@@ -241,7 +166,7 @@ Window {
             Layout.topMargin: -70
 
             width: 338
-            height: 250
+            height: 200
             radius: width/2
             Image
             {
@@ -257,7 +182,7 @@ Window {
                 radius: imgHead.width/2
 
                 anchors.centerIn: img
-                anchors.verticalCenterOffset: 100
+                anchors.verticalCenterOffset: 90
 
                 Image {
                     id: _image
@@ -283,13 +208,17 @@ Window {
                     visible: true
                     antialiasing: true
                 }
-            }
-            //上传图片修改头像：上传方法暂不会
-            Button
-            {
-                id:changeHead
-                visible: false
-                text: "修改头像"
+
+                MouseArea
+                {
+                    id: headArea
+                    anchors.fill: parent
+                    acceptedButtons: Qt.NoButton
+                    onClicked:
+                    {
+                        selectAvatar.show()
+                    }
+                }
             }
         }
         //头像下部分信息
@@ -301,7 +230,7 @@ Window {
             {
                 id: usrName
                 Layout.alignment: Qt.AlignHCenter
-                Layout.topMargin: 20
+                Layout.topMargin: 50
                 font.pixelSize: 20
                 font.family: "SimHei"
                 font.bold: true
@@ -363,8 +292,8 @@ Window {
                 ctx.lineWidth = 2
 
                 ctx.beginPath();                  // 开始一条路径
-                ctx.moveTo(40,280);         // 移动到指定位置
-                ctx.lineTo(298,280);
+                ctx.moveTo(40,300);         // 移动到指定位置
+                ctx.lineTo(298,300);
 
                 ctx.stroke();
              }
@@ -476,7 +405,85 @@ Window {
         }
     }
 
+    function getBirthYMD()
+    {
+        birth1 = birthday.split('-')
+        birthYear = Number(birth1[0])
+        birthMonth = Number(birth1[1])
+        birthDay = Number(birth1[2])
+    }
 
+    function checkShengXiao()
+    {
+        switch ((birthYear-1000)%12)
+        {
+            // 1000年为老鼠
+            case 0 :
+            {
+                return "鼠"
+                break;
+            }
+            case 1 :
+            {
+                return "牛"
+                break;
+            }
+            case 2 :
+            {
+                return "虎"
+                break;
+            }
+            case 3 :
+            {
+                return "兔"
+                break;
+            }
+            case 4 :
+            {
+                return "龙"
+                break;
+            }
+            case 5 :
+            {
+                return "蛇"
+                break;
+            }
+            case 6 :
+            {
+                return "马"
+                break;
+            }
+            case 7 :
+            {
+                return "羊"
+                break;
+            }
+            case 8 :
+            {
+                return "猴"
+                break;
+            }
+            case 9 :
+            {
+                return "鸡"
+                break;
+            }
+            case 10 :
+            {
+                return "狗"
+                break;
+            }
+            case 11 :
+            {
+                return "猪"
+                break;
+            }
+            default:
+            {
+                break;
+            }
+        }
+    }
 
 
 

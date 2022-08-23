@@ -10,7 +10,7 @@ Window {
     id: registerWindows
     width: 248
     height: 400
-    visible: true //窗口是否可见
+    visible: false //窗口是否可见
     title: qsTr("注册") //窗口标题
 
     property string usrName: ""

@@ -42,7 +42,8 @@ Item {
                     onClicked:
                     {
                         objectInf.show()
-                        //应增加从服务器扒取其余信息)
+                        console.log(myAvatar)
+                        //应增加从服务器扒取其余信息) 为什么没有传递成功啊！
                         objectInf.isMe = true
                         objectInf.personalHead = myAvatar
                         objectInf.personalName = myName

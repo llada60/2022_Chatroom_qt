@@ -99,5 +99,6 @@
         <file>components/AddFriendWidget.qml</file>
         <file>images/icon_add_contact.png</file>
         <file>components/ChatScreenNameWidget.qml</file>
+        <file>components/SelectAvatar.qml</file>
     </qresource>
 </RCC>
