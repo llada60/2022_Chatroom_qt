@@ -22,7 +22,7 @@ public:
     //获取好友列表
     QByteArray friendList(const int& ID);
     //发送聊天信息
-    void sendMessage(const int& sendID, const int& receiveID, const int& type,const QString& datetime, const QString& message);
+    void sendMessage(const int& sendID, const int& receiveID, const int& type,const int& datetime, const QString& message);
 };
 
 #endif // SQLFRIENDSMODEL_H

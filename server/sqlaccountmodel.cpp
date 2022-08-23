@@ -235,7 +235,7 @@ QByteArray SqlAccountModel::messageList(const int &ID)
                 lastID = query.value("ID").toInt();
                 obj.insert("sid", QJsonValue(query.value("SENDID").toInt()));
                 obj.insert("rid", QJsonValue(query.value("RECEIVEID").toInt()));
-                obj.insert("datetime", QJsonValue(query.value("DATETIME").toString()));
+                obj.insert("datetime", QJsonValue(query.value("DATETIME").toInt()));
                 obj.insert("message", QJsonValue(query.value("MESSAGE").toString()));
                 jsonItem.append(QJsonValue(obj));
             }
@@ -246,7 +246,7 @@ QByteArray SqlAccountModel::messageList(const int &ID)
                 while(!jsonItem.empty()) jsonItem.removeLast();
                 obj.insert("sid", QJsonValue(query.value("SENDID").toInt()));
                 obj.insert("rid", QJsonValue(query.value("RECEIVEID").toInt()));
-                obj.insert("datetime", QJsonValue(query.value("DATETIME").toString()));
+                obj.insert("datetime", QJsonValue(query.value("DATETIME").toInt()));
                 obj.insert("message", QJsonValue(query.value("MESSAGE").toString()));
                 jsonItem.append(QJsonValue(obj));
             }

@@ -28,9 +28,11 @@ public:
     //退出群聊
     void quitGroup(const int& gID, const int& mID);
     //添加群消息
-    void sendMessage(const int& gID, const int& mID, const int& type, const QString& datetime, const QString& message);
+    void sendMessage(const int& gID, const int& mID, const int& type, const int& datetime, const QString& message);
     //获取用户加入的群信息
     QByteArray groupList(const int& mID);
+    //获取群信息
+    QByteArray groupInfo(const int& gID);
 };
 
 #endif // SQLGROUPMODEL_H
