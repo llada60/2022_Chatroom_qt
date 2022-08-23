@@ -213,6 +213,7 @@ QByteArray SqlAccountModel::messageList(const int &ID)
     QJsonArray jsonItem;
     QJsonObject jsonTotalF;
     QJsonObject jsonTotalG;
+    QSet<int> set;
     QByteArray bAry;
     QJsonObject finalObj;
     int lastID=0;
@@ -233,6 +234,8 @@ QByteArray SqlAccountModel::messageList(const int &ID)
             {
 
                 lastID = query.value("ID").toInt();
+                set.insert(query.value("SENDID").toInt());
+                set.insert(query.value("RECEIVEID").toInt());
                 obj.insert("sid", QJsonValue(query.value("SENDID").toInt()));
                 obj.insert("rid", QJsonValue(query.value("RECEIVEID").toInt()));
                 obj.insert("datetime", QJsonValue(query.value("DATETIME").toInt()));
@@ -241,8 +244,12 @@ QByteArray SqlAccountModel::messageList(const int &ID)
             }
             else
             {
-                jsonTotalF.insert(QString::number(lastID), QJsonValue(jsonItem));
+                set.remove(ID);
+                jsonTotalF.insert(QString::number(*(set.end())), QJsonValue(jsonItem));
+                set.clear();
                 lastID = query.value("ID").toInt();
+                set.insert(query.value("SENDID").toInt());
+                set.insert(query.value("RECEIVEID").toInt());
                 while(!jsonItem.empty()) jsonItem.removeLast();
                 obj.insert("sid", QJsonValue(query.value("SENDID").toInt()));
                 obj.insert("rid", QJsonValue(query.value("RECEIVEID").toInt()));
@@ -251,7 +258,8 @@ QByteArray SqlAccountModel::messageList(const int &ID)
                 jsonItem.append(QJsonValue(obj));
             }
         }
-        jsonTotalF.insert(QString::number(lastID), QJsonValue(jsonItem));
+        set.remove(ID);
+        jsonTotalF.insert(QString::number(*(set.end())), QJsonValue(jsonItem));
         finalObj.insert("friendlist", QJsonValue(jsonTotalF));
     }
     lastID = 0;
