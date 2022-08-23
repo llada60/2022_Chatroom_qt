@@ -28,10 +28,30 @@ Rectangle {
         }
     }
 
+    function startChatWith(uid, name, avatar){
+        for(let i =0; i < historyMessageListModel.count; i++){
+            if(historyMessageListModel.get(i).userId === uid){
+                historyMessageListView.currentIndex = i
+                clickHistoryMessageItem(historyMessageListModel.get(i))
+                console.log(`找到了和${uid}的历史聊天记录，位于${i}`)
+                return
+            }
+        }
+        console.log(`没找到和${uid}的历史聊天记录，新建一条`);
+        historyMessageListModel.insert(0, {
+                                           "userId": uid,
+                                           "userName": name,
+                                           "avatar": avatar,
+                                           "latestTime": Date.parse(new Date())/ 1000,
+                                           "latestMessage": ""
+                                       })
+        clickHistoryMessageItem(historyMessageListModel.get(0))
+    }
+
     ListModel {
         id: historyMessageListModel
         ListElement {
-            userId: 1
+            userId: 100001
             userName: "张三"
             avatar: "https://www.com8.cn/wp-content/uploads/2020/08/20200823052248-5f41fd28d49e4.jpg"
             latestTime: 1661053691
@@ -45,8 +65,8 @@ Rectangle {
             latestMessage: "你说咱们要不就继续加油吧"
         }
         ListElement {
-            userId: 1
-            userName: "张三"
+            userId: 100002
+            userName: "chen"
             avatar: "https://www.com8.cn/wp-content/uploads/2020/08/20200823052248-5f41fd28d49e4.jpg"
             latestTime: 1661053691
             latestMessage: "你说咱们要不就继续加油吧"

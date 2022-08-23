@@ -1,4 +1,4 @@
-QT += quick
+QT += quick network
 
 CONFIG += c++11
 
@@ -35,6 +35,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 DISTFILES +=
 
 HEADERS += \
+    qfileutils.h \
+    qsettingini.h \
     qqclient.h \
     qsettingini.h \
     tcpclient.h \

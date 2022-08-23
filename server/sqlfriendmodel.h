@@ -9,7 +9,6 @@
 #include <QJsonDocument>
 #include <QJsonValue>
 
-//负责好友数据库管理
 class SqlFriendModel : public QSqlTableModel
 {
     Q_OBJECT
@@ -18,8 +17,12 @@ public:
     ~SqlFriendModel();
     //添加好友
     void addFriend(const int& aID, const int& bID);
-    //获取好友列表及好友个人信息
-
+    //删除好友
+    void delFriend(const int& aID, const int& bID);
+    //获取好友列表
+    QByteArray friendList(const int& ID);
+    //发送聊天信息
+    void sendMessage(const int& sendID, const int& receiveID, const int& type,const int& datetime, const QString& message);
 };
 
 #endif // SQLFRIENDSMODEL_H

@@ -6,11 +6,13 @@ import QtQuick.Layouts 1.3
 import "./components/"
 
 Window {
+    id:mainWindowP
     visible: true
     width: 1000
     height: 600
     title: qsTr("WeTalk")
     color: "#edf5f9"
+    objectName: "mainWindow"
 
     // 信号：开始请求历史消息，参数为我的UID
     signal requestHistoryMessage(int myUid)
@@ -29,26 +31,41 @@ Window {
         historyMessageScreen.setMessages(messages);
     }
 
+    function startChatTo(uid, name, avatar){
+        console.log(`开始和${name}聊天……`)
+        historyMessageScreen.startChatWith(uid, name, avatar);
+        tabWidget.current = 0
+    }
+
     Component.onCompleted: {
         requestHistoryMessage(1);
     }
 
+    EmojiChoose{
+        id: emojiChoose;
+        onClickEmoji: (text)=>chatScreen.appendInputText(text)
+    }
+
     VerticalTabWidget {
+        id: tabWidget
         anchors.rightMargin: 12
         anchors.leftMargin: 12
         anchors.bottomMargin: 12
         anchors.topMargin: 12
         anchors.fill: parent
+        objectName: "chatWindow1"
 
         // 聊天页面
         RowLayout {
+            id:rowLayout
             spacing: 12
-            anchors.fill: parent
+//            anchors.fill: parent
+            objectName: "chatWindow2"
 
             HistoryMessageScreen {
                 id: historyMessageScreen
                 Layout.fillHeight: true
-                Layout.preferredWidth: parent.width * 0.3
+                implicitWidth: 270
                 Component.onCompleted: {
                     clickHistoryMessageItem.connect((data)=>{
                         // 历史消息列表与聊天窗口的同步
@@ -61,15 +78,19 @@ Window {
             ChatScreen {
                 id: chatScreen
                 Layout.fillHeight: true
-                Layout.preferredWidth: parent.width * 0.68
-
+                // implicitWidth: rowLayout.width * 0.68
             }
         }
 
         // 联系人页面
-        Rectangle {
-            anchors.fill: parent
+        ContactScreen {
+            // anchors.fill: parent
+            id: contactScreen
             radius: 4
+            onMessageWithConact: (uid, name, avatar)=>startChatTo(uid, name, avatar)
+            onMessageWithGroup: (uid, name, avatar)=>startChatTo(uid, name, avatar)
         }
+
+
     }
 }

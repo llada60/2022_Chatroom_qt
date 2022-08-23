@@ -32,14 +32,22 @@ Window {
             text: "账号或密码错误"
             standardButtons: StandardButton.Cancel
     }
+    MessageDialog
+    {
+            id: notNumInputText
+            title: "提示"
+            icon: StandardIcon.Warning
+            text: "请输入数字"
+            standardButtons: StandardButton.Cancel
+    }
 
     //接收服务器返回 登陆成功
     function loginBack(v)
     {
         if(1 == v)
         {
-            mainWindows.visible=true
-            LoginWindows.hide()
+            mainWindows.show()
+            loginWindows.hide()
         }
         else
         {
@@ -124,12 +132,19 @@ Window {
 
         onClicked:
         {
-            usrID = Number(inputID.text)
-            usrPSW = inputPSW.text
-            //发送消息
-            console.log(usrPSW)
-            console.log("登录")
-            loginSignal(usrID,usrPSW)
+            if(isNaN(inputID.text))
+            {
+                notNumInputText.open()
+            }
+            else
+            {
+                usrID = Number(inputID.text)
+                usrPSW = inputPSW.text
+                //发送消息
+                console.log(usrPSW)
+                console.log("登录")
+                loginSignal(usrID,usrPSW)
+            }
         }
     }
 

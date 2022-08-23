@@ -17,17 +17,17 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     main.cpp \
-    onlinelist.cpp \
     qqserver.cpp \
     sqlaccountmodel.cpp \
-    sqlfriendmodel.cpp
+    sqlfriendmodel.cpp \
+    sqlgroupmodel.cpp
 
 HEADERS += \
     ../../Tcp-Version/QQServer/onlinelist.h \
-    onlinelist.h \
     qqserver.h \
     sqlaccountmodel.h \
-    sqlfriendmodel.h
+    sqlfriendmodel.h \
+    sqlgroupmodel.h
 
 FORMS += \
     qqserver.ui

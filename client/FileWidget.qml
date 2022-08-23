@@ -5,9 +5,9 @@ import QtQuick.Layouts 1.3
 
 
 Rectangle {
-    property string fileName: "张三.txt"
-    property int fileSize: 10000
-    property double progress: 0.5
+    property string _fileName: "张三.txt"
+    property int _fileSize: 10000
+    property double _progress: 0.5
 
     id: fileContainer
     width: 180
@@ -40,7 +40,7 @@ Rectangle {
         ColumnLayout {
             Label {
                 color: "#dd000000"
-                text: fileName
+                text: _fileName
                 font.pointSize: 12
                 font.bold: true
                 styleColor: "#ffffff"
@@ -48,7 +48,7 @@ Rectangle {
 
             Label {
                 color: "#ddab9d9d"
-                text: bytesToSize(fileSize)
+                text: bytesToSize(_fileSize)
                 Layout.topMargin: 2
                 Layout.margins: 0
             }
@@ -79,8 +79,8 @@ Rectangle {
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
-        visible: 0 < progress && progress < 1
-        value: progress
+        visible: 0 < _progress && _progress < 1
+        value: _progress
         clip: true
     }
 

@@ -9,7 +9,6 @@
 #include <QJsonDocument>
 #include <QJsonValue>
 
-//负责用户账号数据库管理
 class SqlAccountModel : public QSqlTableModel
 {
     Q_OBJECT
@@ -21,20 +20,13 @@ public:
     QByteArray addUserAccount(const QString& userName, const QString& userPassword);
     //检查用户账号是否正确，如果正确返回true, 错误返回false, 包装在json下的result字段
     QByteArray checkAccount(const int& userID, const QString& userPassword);
+    //获取用户个人信息
+    QByteArray userInfo(const int& userID);
     //添加或更新用户头像的url
     void updateIcon(const int& userID, const QString& iconURL);
-    //更新用户名
-    void updateName(const int& userID, const QString& name);
-    //添加或更新用户性别
-    void updateGender(const int& userID, const QString& gender);
-    //添加或更新用户出生日期
-    void updateBirth(const int& userID, const QString& birth);
-    //添加或更新用户地区
-    void updateArea(const int& userID, const QString& area);
-    //添加或更新用户教育经历
-    void updateEducation(const int& userID, const QString& education);
-    //添加或更新用户个性签名
-    void updateSignature(const int& userID, const QString& signature);
+    //更新用户信息
+    void updateUserInfo(const int& userID, const QString& name, const int& gender, const QString& birth, const QString& area, const QString& education, const QString& signature);
+    //获取用户所有聊天信息
+    QByteArray messageList(const int& ID);
 };
-
 #endif // SQLACCOUNTMODEL_H

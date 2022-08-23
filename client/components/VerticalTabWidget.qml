@@ -1,7 +1,8 @@
 import QtQuick 2.12
+import QtQuick.Controls 2.5
 import QtGraphicalEffects 1.0
 import QtQuick.Controls.Material 2.3
-
+import QtQuick.Layouts 1.3
 Item {
     id: tabWidget
 
@@ -15,17 +16,12 @@ Item {
 
     property var icons: ["../images/icon_chat.png", "../images/icon_contact.png"]
 
-    onCurrentChanged: setOpacities()
-    Component.onCompleted: setOpacities()
-
-    function setOpacities() {
-        for (var i = 0; i < stack.children.length; ++i) {
-            stack.children[i].opacity = (i === current ? 1 : 0)
-        }
-    }
+    onCurrentChanged: stack.replace(null, stack.children[current])
 
     Column {
         id: side
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
 
         Repeater {
             model: icons.length
@@ -50,16 +46,20 @@ Item {
 
                 MouseArea {
                     anchors.fill: parent
-                    onClicked: tabWidget.current = index
+                    onClicked: {
+                        tabWidget.current = index
+                    }
                 }
             }
         }
     }
 
-    Item {
+    StackView {
         id: stack
         height: tabWidget.height
         anchors.left: side.right; anchors.right: tabWidget.right
         anchors.leftMargin: 12
+        initialItem: stack.children[0]
     }
+
 }

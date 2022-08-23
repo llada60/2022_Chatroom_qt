@@ -7,6 +7,7 @@ Item {
     anchors.left: parent.left
     anchors.right: parent.right
     height: childrenRect.height
+    readonly property bool sentByMe: uid == myUid
 
     function bestDelegate(t) {
         if(t === 1)
@@ -14,10 +15,26 @@ Item {
         return txtDelegate; // t == "text"
     }
 
+
+    PersonalInf {id:objectInf}
+    signal getPInfSignal(int uid)
+
+    function openInfoWindow(){
+        //应增加从服务器扒取其余信息
+        objectInf.isMe = sentByMe
+        objectInf.personalHead = avatar
+        objectInf.personalName = name
+        objectInf.personalID = uid
+        getPInfSignal(uid)
+        objectInf.show()
+    }
+
     Component {
         id: fileDelegate
         Row {
-            readonly property bool sentByMe: uid == myUid
+
+            property var extraData: JSON.parse(message)
+
             layoutDirection: sentByMe ? Qt.RightToLeft : Qt.LeftToRight
 
             spacing: 6
@@ -27,20 +44,29 @@ Item {
                 width: height
                 height: 24
                 img_src: avatar
+                MouseArea
+                {
+                    anchors.fill: parent
+                    acceptedButtons: Qt.LeftButton
+                    onClicked: openInfoWindow()
+                    onHoveredChanged: cursorShape = Qt.PointingHandCursor
+                }
             }
 
             FileWidget {
                 id: fileWidget
-                fileName: fileName
-                fileSize: fileSize
+                _fileName: extraData["fileName"]
+                _fileSize: extraData["fileSize"]
             }
         }
+
+
     }
 
     Component {
         id: txtDelegate
         Row {
-            readonly property bool sentByMe: uid == myUid
+            //            readonly property bool sentByMe: uid == myUid
             layoutDirection: sentByMe ? Qt.RightToLeft : Qt.LeftToRight
 
             spacing: 6
@@ -50,6 +76,13 @@ Item {
                 width: height
                 height: 24
                 img_src: avatar
+                MouseArea
+                {
+                    anchors.fill: parent
+                    acceptedButtons: Qt.LeftButton
+                    onClicked: openInfoWindow()
+                    onHoveredChanged: cursorShape = Qt.PointingHandCursor
+                }
             }
 
 
@@ -61,8 +94,6 @@ Item {
 
                 color: sentByMe ? "lightgrey" : "steelblue"
                 radius: 4
-                // Layout.margins: 8
-
                 Text {
                     id: messageText
                     anchors.centerIn: parent
