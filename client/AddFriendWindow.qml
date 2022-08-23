@@ -11,7 +11,7 @@ Window {
     id: addFriendWindow
     width: 300
     height: 100
-    visible: true
+    visible: false
     title: qsTr("加好友/群")
 
 

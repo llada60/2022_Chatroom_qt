@@ -6,6 +6,7 @@ import QtQuick.Layouts 1.3
 import "./components/"
 
 Window {
+    id:mainWindowP
     visible: true
     width: 1000
     height: 600
@@ -75,6 +76,12 @@ Window {
             // anchors.fill: parent
 
             radius: 4
+        }
+        //添加好友图标
+        AddFriendWidget
+        {
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 5
         }
     }
 }

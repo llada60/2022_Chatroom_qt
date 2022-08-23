@@ -58,4 +58,5 @@ Item {
         anchors.left: side.right; anchors.right: tabWidget.right
         anchors.leftMargin: 12
     }
+
 }

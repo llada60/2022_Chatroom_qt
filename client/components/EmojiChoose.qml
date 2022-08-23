@@ -3,12 +3,12 @@ import QtQuick.Window 2.2
 import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.0
 
+
 Window {
     id:emojiChoose
     visible: false
     height: gridView.cellHeight*5+4*2
     width: gridView.cellWidth*12+4*2
-//    flags: Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint
 
     ListModel {
         id: listModel
@@ -61,7 +61,8 @@ Window {
                                     break;
                             }
                             //文本框中添加选择的表情内容(不知道能不能实现
-                            messageField.text = messageFile.text + addEmoji
+
+
                             close()
                         }
                     }
