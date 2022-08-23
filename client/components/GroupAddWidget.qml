@@ -3,6 +3,7 @@ import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.5
 import QtQuick.Dialogs 1.3
 
+
 // 搜索栏
 RowLayout
 {
@@ -24,6 +25,7 @@ RowLayout
             text: "请输入数字"
             standardButtons: StandardButton.Cancel
     }
+
 
     Rectangle
     {
@@ -78,6 +80,7 @@ RowLayout
             {
                 console.log("输入非数字")
                 notNumInputText.open()
+                inputID.text = ""
             }
             else
             {

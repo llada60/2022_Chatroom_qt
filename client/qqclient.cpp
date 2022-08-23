@@ -302,6 +302,7 @@ void QQClient::loginBack(QJsonObject obj)
 {
     //登录
     bool isSuccess=obj["result"].toBool();
+    qDebug() << "loginBack::data" << obj;
     //如果登录失败就重置客户端id
     if (!isSuccess)
     {
