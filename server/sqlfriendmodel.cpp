@@ -37,7 +37,7 @@ static void createTable(QSqlDatabase db)
                                    "ID INTEGER REFERENCES FRIENDINFO(ID),"
                                    "SENDID INTEGER NOT NULL, "
                                    "RECEIVEID INTEGER NOT NULL,"
-                                   "DATETIME INTEGER NOT NULL,"
+                                   "DATETIME INT NOT NULL,"
                                    "MESSAGE TEXT NOT NULL,"
                                    "TYPE INTEGER NOT NULL,"
                                    "PRIMARY KEY (SENDID, RECEIVEID, DATETIME),"
@@ -126,12 +126,17 @@ QByteArray SqlFriendModel::friendList(const int &ID)
             obj.insert("id", QJsonValue(query.value("ID").toInt()));
             obj.insert("name", QJsonValue(query.value("NAME").toString()));
             obj.insert("icon", QJsonValue(query.value("ICON").toString()));
+            obj.insert("gender", QJsonValue(query.value("GENDER").toBool()));
+            obj.insert("birth", QJsonValue(query.value("BIRTH").toString()));
+            obj.insert("area", QJsonValue(query.value("AREA").toString()));
+            obj.insert("education", QJsonValue(query.value("EDUCATION").toString()));
+            obj.insert("signature", QJsonValue(query.value("SIGNATURE").toString()));
             jsonAry.append(QJsonValue(obj));
         }
         qDebug() << jsonAry;
         finalObj.insert("list", QJsonValue(jsonAry));
     }
-    finalObj.insert("command", QJsonValue("friendBack"));
+    finalObj.insert("command", QJsonValue("friendinfo"));
     bAry = QJsonDocument(finalObj).toJson();
     return bAry;
 }
@@ -158,4 +163,36 @@ void SqlFriendModel::sendMessage(const int &sendID, const int &receiveID, const 
     {
         qDebug() << "添加好友聊天信息成功";
     }
+}
+
+QByteArray SqlFriendModel::messageList(const int &aID, const int &bID)
+{
+    QSqlQuery query;
+    QJsonArray jsonItem;
+    QByteArray bAry;
+    QJsonObject finalObj;
+    if(!query.exec(QString("SELECT * FROM FRIENDMESSAGEINFO "
+                           "WHERE (SENDID=%1 AND RECEIVEID=%2) "
+                           "OR (SENDID=%2 AND RECEIVEID=%1) "
+                           "ORDER BY ID ASC, DATETIME ASC").arg(QString::number(aID), QString::number(bID))))
+    {
+        qDebug() << "选择好友聊天信息错误";
+        qDebug() << query.lastError();
+    }
+    else
+    {
+        qDebug() << "选择好友聊天信息成功";
+        while(query.next())
+        {
+            QJsonObject obj;
+            obj.insert("sid", QJsonValue(query.value("SENDID").toInt()));
+            obj.insert("rid", QJsonValue(query.value("RECEIVEID").toInt()));
+            obj.insert("datetime", QJsonValue(query.value("DATETIME").toInt()));
+            obj.insert("message", QJsonValue(query.value("MESSAGE").toString()));
+            jsonItem.append(QJsonValue(obj));
+        }
+        finalObj.insert("messagelist", QJsonValue(jsonItem));
+    }
+    bAry = QJsonDocument(finalObj).toJson();
+    return bAry;
 }
