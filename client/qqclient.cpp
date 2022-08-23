@@ -224,10 +224,8 @@ void QQClient::sendChatMessageBack(QJsonObject obj)
             ->findChild<QObject*>("chatWindow2")->findChild<QObject*>("chatScreen");
     QMetaObject::invokeMethod(chatScreen,"sendChatMessageBack",
                               Q_RETURN_ARG(QVariant,res),
+
                               Q_ARG(QVariant,sendId),
                               Q_ARG(QVariant,content),
                               Q_ARG(QVariant,time));
 }
-
-
-
