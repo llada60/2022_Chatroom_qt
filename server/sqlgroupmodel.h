@@ -33,6 +33,8 @@ public:
     QByteArray groupList(const int& mID);
     //获取特定群的聊天记录
     QByteArray messageList(const int& gID);
+    //获取特定群消息
+    QByteArray groupInfo(const int& gID);
 };
 
 #endif // SQLGROUPMODEL_H

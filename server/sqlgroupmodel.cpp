@@ -296,3 +296,34 @@ QByteArray SqlGroupModel::messageList(const int &gID)
     bAry = QJsonDocument(finalObj).toJson();
     return bAry;
 }
+
+QByteArray SqlGroupModel::groupInfo(const int &gID)
+{
+    QSqlQuery query;
+    QByteArray bAry;
+    QJsonObject finalObj;
+    if(!query.exec(QString("SELECT * FROM GROUPINFO WHERE "
+                           "ID=%1 ").arg(QString::number(gID))))
+    {
+        qDebug() << "选择群信息发生错误";
+        qDebug() << query.lastError();
+    }
+    else
+    {
+        qDebug() << "选择群信息成功";
+        while(query.next())
+        {
+            QJsonObject obj;
+            obj.insert("id", QJsonValue(query.value("ID").toInt()));
+            obj.insert("name", QJsonValue(query.value("NAME").toString()));
+            obj.insert("icon", QJsonValue(query.value("ICON").toString()));
+            obj.insert("intro", QJsonValue(query.value("INTRO").toString()));
+            obj.insert("notice", QJsonValue(query.value("NOTICE").toString()));
+            finalObj.insert("result", QJsonValue(obj));
+        }
+        qDebug() << finalObj;
+    }
+    finalObj.insert("command", QJsonValue("groupInfoBack"));
+    bAry = QJsonDocument(finalObj).toJson();
+    return bAry;
+}
