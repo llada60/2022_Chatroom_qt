@@ -38,8 +38,8 @@ Window {
     {
         if(1 == v)
         {
-            mainWindows.visible=true
-            LoginWindows.hide()
+            mainWindows.show()
+            loginWindows.hide()
         }
         else
         {
