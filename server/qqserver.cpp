@@ -62,7 +62,6 @@ void QQServer::on_udpSocket_readyRead()
     else
     {
         QString content=QString("收取失败");
-        ui->textEdit->append(content);
         qDebug()<<content<<'\n';
     }
 }
