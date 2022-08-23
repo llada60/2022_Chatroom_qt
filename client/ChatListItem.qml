@@ -31,10 +31,16 @@ Item {
 
             FileWidget {
                 id: fileWidget
-                fileName: fileName
-                fileSize: fileSize
+                _fileName: message
+                _fileSize: 100
+            }
+
+            Component.onCompleted: {
+                console.log(fileName)
             }
         }
+
+
     }
 
     Component {

@@ -26,8 +26,6 @@ Window {
       latestMessage: "你说咱们要不就继续加油吧" // 最后一条消息内容
     */
 
-    property string addEmoji: ":)"
-
     function setHistoryMessage(messages){
         historyMessageScreen.setMessages(messages);
     }
@@ -36,7 +34,10 @@ Window {
         requestHistoryMessage(1);
     }
 
-    EmojiChoose{id:emojiChoose}
+    EmojiChoose{
+        id: emojiChoose;
+        onClickEmoji: (text)=>chatScreen.appendInputText(text)
+    }
 
     VerticalTabWidget {
         anchors.rightMargin: 12
@@ -77,11 +78,7 @@ Window {
 
             radius: 4
         }
-        //添加好友图标
-        AddFriendWidget
-        {
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: 5
-        }
+
+
     }
 }

@@ -22,8 +22,7 @@ Rectangle
         Text
         {
             id: searchName
-            anchors.left: avatarImg.right
-            anchors.leftMargin: 20
+            Layout.leftMargin: 20
             text: userName + qsTr("<font color=\"#54b4ef\">(") + userid + qsTr(")</font>")
         }
         Button
@@ -34,8 +33,7 @@ Rectangle
             background: Item{
                 opacity:1
             }
-            anchors.left: searchName.right
-            anchors.leftMargin: 80
+            Layout.leftMargin: 80
             icon.source: addFriendButton.pressed? "qrc:/images/addFriend1.png":
                                  addFriendButton.hovered? "qrc:/images/addFriend1.png" :
                                                 ("qrc:/images/addFriend.png")

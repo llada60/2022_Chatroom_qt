@@ -3,6 +3,7 @@ import QtQuick.Controls 2.5
 import QtQuick.Controls.Material 2.3
 import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.0
+import Qt.labs.platform 1.0 as QtPlatform
 import "./components"
 
 ColumnLayout {
@@ -20,6 +21,7 @@ ColumnLayout {
     // message: 消息
     // time: 消息发送的 unix 时间戳（类似 1660893694）
     signal sendData(int targetId, string message, int time)
+    signal sendFileSignal(int targetId, string fileUrl, int time)
 
 
     // 函数： 当c++层接收到新的消息时调用，往UI里添加一条消息
@@ -28,10 +30,51 @@ ColumnLayout {
         chatListModel.append(data)
     }
 
+    // 下面的方法是qml用的
+
     // 设置聊天对象
     function setArg(uid){
         console.log("uid:" + uid);
         targetId = uid;
+    }
+
+    function appendInputText(text){
+        messageField.append(text)
+    }
+
+    QtPlatform.FileDialog {
+        id: openFileDialog
+        title: "打开文件"
+        nameFilters: ["All files(*.*)"]
+        onAccepted: {
+            try{
+                var url = openFileDialog.file.toString()
+                var time = Date.parse(new Date()) / 1000
+                var fileName = url.substring(url.lastIndexOf("/"))
+                var data = {
+                    "uid": myUid,
+                    "name": myName,
+                    "time": time,
+
+                    "fileName": fileName,
+                    "fileSize": QFileUtils.getFileSize(url),
+                    "localPath": url,
+                    "message": "[文件]",
+
+                    "avatar": myAvatar,
+                    "type": 1 // 1代表文件
+                }
+                console.log(fileName + "  " + data["fileSize"])
+                appendData(data)
+                sendFileSignal(targetId, url, time);
+                console.log("发送文件：" + url)
+            }catch(e){
+                console.trace("打开文件出错："+ e);
+            }finally{
+
+            }
+        }
+        onRejected: console.log("取消打开文件")
     }
 
     ListModel {
@@ -136,6 +179,7 @@ ColumnLayout {
                             anchors.fill: parent
                             onClicked: {
                                 console.log("click the folder_icon")
+                                openFileDialog.open();
                             }
                             hoverEnabled: true
                             onHoveredChanged: cursorShape = Qt.PointingHandCursor
@@ -172,18 +216,9 @@ ColumnLayout {
                     }
                 }
 
-
             }
 
-
-
-
-
-
         }
-
-
-
 
         RowLayout {
 
@@ -252,6 +287,7 @@ ColumnLayout {
                                  "fileName": "来来来.txt",
                                  "fileSize": 1389420,
                                  "localPath": "d:/test/来来来.txt",
+                                 "message": "[文件]",
 
                                  "avatar": "https://ts1.cn.mm.bing.net/th/id/R-C.1eed2de61a172c6ca2d79fc5ea62eb01?rik=c7W7KrSN7xFOIg&riu=http%3a%2f%2fimg.crcz.com%2fallimg%2f202003%2f10%2f1583821081100057.jpg&ehk=q%2f9lt0hQhwZzKFdRKYyG2g4zxQKgTWKJ4gHeelom3Mo%3d&risl=&pid=ImgRaw&r=0&sres=1&sresct=1",
                                  "type": 1 // 1代表文件

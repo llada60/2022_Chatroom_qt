@@ -97,5 +97,6 @@
         <file>images/emoji/Face_(9).png</file>
         <file>images/add1.png</file>
         <file>components/AddFriendWidget.qml</file>
+        <file>images/icon_add_contact.png</file>
     </qresource>
 </RCC>

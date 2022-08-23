@@ -10,6 +10,8 @@ Window {
     height: gridView.cellHeight*5+4*2
     width: gridView.cellWidth*12+4*2
 
+    signal clickEmoji(string emojiText)
+
     ListModel {
         id: listModel
     }
@@ -45,6 +47,7 @@ Window {
                         anchors.fill: parent
                         onClicked: {
                             console.debug(qsTr("选择的名称: ") + face)
+                            var addEmoji = "";
                             switch (face)
                             {
                                 case ("qrc:/images/emoji/Face_(0).png"):
@@ -61,7 +64,7 @@ Window {
                                     break;
                             }
                             //文本框中添加选择的表情内容(不知道能不能实现
-
+                            clickEmoji(addEmoji);
 
                             close()
                         }

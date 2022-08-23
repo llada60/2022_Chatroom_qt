@@ -3,6 +3,7 @@
 #include <QSettings>
 #include <QQmlContext>
 #include "qsettingini.h"
+#include "qfileutils.h"
 
 int main(int argc, char *argv[])
 {
@@ -10,10 +11,13 @@ int main(int argc, char *argv[])
 
     QGuiApplication app(argc, argv);
     QSettingIni qSettingIni("config.ini");
+    QFileUtils qFileUtils;
 
     QQmlApplicationEngine engine;
     QQmlContext* root = engine.rootContext();
+
     root->setContextProperty("Config", &qSettingIni);
+    root->setContextProperty("QFileUtils", &qFileUtils);
 
     const QUrl url(QStringLiteral("qrc:/MainWindow.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,

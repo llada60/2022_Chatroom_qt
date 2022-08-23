@@ -6,6 +6,7 @@ import QtQuick.Layouts 1.3
 import "./components"
 
 Rectangle {
+    id: rectangle
 
 
     radius: 4
@@ -31,6 +32,8 @@ Rectangle {
         }
     }
 
+    AddFriendWindow{ id : addFriendWindow }
+
     ListModel {
         id: contactListModel
         ListElement {
@@ -50,57 +53,92 @@ Rectangle {
         }
     }
 
-//    Label {
-//        id: labelFriend
-//        text: "好友"
-//    }
+    //    Label {
+    //        id: labelFriend
+    //        text: "好友"
+    //    }
 
-    ListView {
-        id: contactListView
-        model: contactListModel
-        anchors.fill: parent
-//        anchors.top: labelFriend.bottom
-        spacing: 8
-        focus: true
+
+    ColumnLayout {
         anchors.margins: 12
-        clip: true
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        width: 235
+        anchors.left: parent.left
+        anchors.leftMargin: 12
 
-        delegate: Rectangle
-        {
-            width:parent.width
-            height: 64
-            RowLayout
+
+
+        ListView {
+            id: contactListView
+            model: contactListModel
+
+            //        anchors.top: labelFriend.bottom
+            spacing: 8
+            focus: true
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+
+            clip: true
+
+            delegate: Rectangle
             {
-                Layout.fillWidth: true
+                width: 400
+                height: 64
+                RowLayout
+                {
+                    Layout.fillWidth: true
 
-                RoundImage
-                {
-                    img_src: avatar
-                    width: 40
-                    height: width
-                    color: "black"
-                }
-                Text
-                {
-                    Layout.leftMargin: 20
-                    text: userName + qsTr("<font color=\"#54b4ef\">(") + userId + qsTr(")</font>")
-                }
-                Button
-                {
-                    id: contactButton
-                    width: 20
-                    height: 20
-                    background: Item{
-                        opacity:1
+                    RoundImage
+                    {
+                        img_src: avatar
+                        width: 40
+                        height: width
+                        color: "black"
                     }
+                    Text
+                    {
+                        Layout.leftMargin: 20
+                        text: userName + qsTr("<font color=\"#54b4ef\">(") + userId + qsTr(")</font>")
+                    }
+                    Button
+                    {
+                        id: contactButton
+                        width: 20
+                        height: 20
+                        background: Item{
+                            opacity:1
+                        }
 
-                    Layout.leftMargin: 80
-                    icon.source: "./images/icon_chat.png"
-                    icon.color: contactButton.hovered ? Material.accent : "transparent"
+                        Layout.leftMargin: 80
+                        icon.source: "./images/icon_chat.png"
+                        icon.color: contactButton.hovered ? Material.accent : "transparent"
+                    }
                 }
+            }
+        }
+
+        Button {
+            height: 56; width: 56
+            background: Rectangle {
+                color: "transparent"
+            }
+            icon.source: "../images/addFriend.png"
+            icon.width: 32
+            icon.height: 32
+
+            Layout.alignment: Qt.AlignLeft
+            onClicked: {
+                addFriendWindow.show()
             }
         }
 
     }
 
 }
+
+/*##^##
+Designer {
+    D{i:0;autoSize:true;height:480;width:640}
+}
+##^##*/

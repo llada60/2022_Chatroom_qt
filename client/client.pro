@@ -32,4 +32,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 DISTFILES +=
 
 HEADERS += \
+    qfileutils.h \
     qsettingini.h
