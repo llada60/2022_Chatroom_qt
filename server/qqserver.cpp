@@ -113,6 +113,26 @@ void QQServer::parseCommand(QString jsonStr,QHostAddress ip, quint16 port)
     {
         searchRespond(obj,ip,port);
     }
+    else if(command=="add")//添加
+    {
+        addRespond(obj,ip,port);
+    }
+    else if(command=="delete")//删除
+    {
+        deleteRespond(obj,ip,port);
+    }
+    else if(command=="friendRequest")//好友列表
+    {
+        friendRespond(obj,ip,port);
+    }
+    else if(command=="groupRequest")//群列表
+    {
+        groupRespond(obj,ip,port);
+    }
+    else if(command=="messageRequest")//历史消息
+    {
+        messageRespond(obj,ip,port);
+    }
     else
     {
         //未知命令
@@ -223,12 +243,62 @@ void QQServer::searchRespond(QJsonObject obj, QHostAddress ip, quint16 port)
 
 void QQServer::addRespond(QJsonObject obj, QHostAddress ip, quint16 port)
 {
+    //解包
 
+    //处理
+    QJsonObject respondObj;
+    respondObj.insert("command","addBack");
+    //返回
+    QString diagram=QJsonDocument(respondObj).toJson();
+    sendMessage(diagram,ip,port);
 }
 
 void QQServer::deleteRespond(QJsonObject obj, QHostAddress ip, quint16 port)
 {
+    //解包
 
+    //处理
+    QJsonObject respondObj;
+    respondObj.insert("command","deleteBack");
+    //返回
+    QString diagram=QJsonDocument(respondObj).toJson();
+    sendMessage(diagram,ip,port);
+}
+
+void QQServer::friendRespond(QJsonObject obj, QHostAddress ip, quint16 port)
+{
+    //解包
+
+    //处理
+    QJsonObject respondObj;
+    respondObj.insert("command","friendBack");
+    //返回
+    QString diagram=QJsonDocument(respondObj).toJson();
+    sendMessage(diagram,ip,port);
+}
+
+void QQServer::groupRespond(QJsonObject obj, QHostAddress ip, quint16 port)
+{
+    //解包
+
+    //处理
+    QJsonObject respondObj;
+    respondObj.insert("command","groupBack");
+    //返回
+    QString diagram=QJsonDocument(respondObj).toJson();
+    sendMessage(diagram,ip,port);
+}
+
+void QQServer::messageRespond(QJsonObject obj, QHostAddress ip, quint16 port)
+{
+    //解包
+
+    //处理
+    QJsonObject respondObj;
+    respondObj.insert("command","messageBack");
+    //返回
+    QString diagram=QJsonDocument(respondObj).toJson();
+    sendMessage(diagram,ip,port);
 }
 
 

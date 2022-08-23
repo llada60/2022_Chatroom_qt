@@ -10,6 +10,38 @@
 #include <QDateTime>
 #include <iostream>
 
+class User //储存用户信息
+{
+public:
+    User(int id,QString name,QString icon)
+    {
+        this->id=id;
+        this->name=name;
+        this->icon=icon;
+    }
+
+    int id;
+    QString name;
+    QString icon;
+};
+
+class Group //储存群组信息
+{
+public:
+    Group(int id,QString name,QString icon,QString intro,QString notice)
+    {
+        this->id=id;
+        this->name=name;
+        this->icon=icon;
+        this->intro=intro;
+        this->notice=notice;
+    }
+    int id;
+    QString name;
+    QString icon;
+    QString intro;
+    QString notice;
+};
 
 
 class QQClient:public QObject
@@ -28,12 +60,18 @@ private slots:
     void search(int targetId);//查找群/人
     void add(int targetId);//加群/人
     void deleteRequest(int targetId);//删群/人
+    void friendRequest(int id);//请求好友列表（从服务端拉取数据的系列函数）
+    void messageRequest(int id);//请求历史聊天记录
+    void groupRequest(int id);//请求群列表
+
 private:
     //配置信息
     QUdpSocket* udpSocket;//服务器ip和端口
     QHostAddress hostIp=QHostAddress("127.0.0.1");
     quint16 hostPort=9990;
     int clientId=0;//储存当前id
+    QList<User*> friendList;//储存好友列表
+    QList<Group*> groupList;//储存群组列表
     //前端通信engine
     QQmlApplicationEngine* engine=NULL;
     QObject* root=NULL;
@@ -52,7 +90,11 @@ private:
     void searchBack(QJsonObject obj);
     void addBack(QJsonObject obj);
     void deleteBack(QJsonObject obj);
+    void friendBack(QJsonObject obj);//请求好友列表（从服务端拉取数据的系列函数）
+    void messageBack(QJsonObject obj);//请求历史聊天记录
+    void groupBack(QJsonObject obj);//请求群列表
 };
+
 
 
 #endif // QQCLIENT_H

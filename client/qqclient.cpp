@@ -27,6 +27,8 @@ QQClient::QQClient(QQmlApplicationEngine *engine, QObject *parent)
             ->findChild<QObject*>("chatWindow2")->findChild<QObject*>("chatScreen");
     QObject::connect(chatScreen,SIGNAL(sendMessageSignal(int,QString,int)),
                      this,SLOT(sendChatMessage(int,QString,int)));
+
+
     /*
     //c++调qml函数（例子）
     QVariant res;
@@ -131,11 +133,23 @@ void QQClient::parseCommand(QString jsonStr,QHostAddress ip, quint16 port)
     }
     else if(command=="addBack")//添加响应
     {
-
+        addBack(obj);
     }
     else if(command=="deleteBack")//删除响应
     {
-
+        deleteBack(obj);
+    }
+    else if(command=="friendBack")//好友列表响应
+    {
+        friendBack(obj);
+    }
+    else if(command=="groupBack")//群列表响应
+    {
+        groupBack(obj);
+    }
+    else if(command=="messageBack")//历史消息响应
+    {
+        messageBack(obj);
     }
     else
     {
@@ -173,7 +187,14 @@ void QQClient::login(int id, QString password)
     sendMessage(diagram,this->hostIp,this->hostPort);
     //设置临时客户端id
     clientId=id;
-    search(600000);
+    //测试代码
+    /*
+    add(100002);
+    deleteRequest(100002);
+    friendRequest(100001);
+    groupRequest(100001);
+    messageRequest(100001);
+    */
 }
 
 //单发请求
@@ -206,13 +227,58 @@ void QQClient::search(int targetId)
 //添加请求
 void QQClient::add(int targetId)
 {
-
+    //封装Json
+    QJsonObject jsonObj;
+    jsonObj.insert("command","add");
+    jsonObj.insert("targetId",targetId);
+    QString diagram=QJsonDocument(jsonObj).toJson();
+    //发送
+    sendMessage(diagram,this->hostIp,this->hostPort);
 }
 
 //删除请求
 void QQClient::deleteRequest(int targetId)
 {
-
+    //封装Json
+    QJsonObject jsonObj;
+    jsonObj.insert("command","delete");
+    jsonObj.insert("targetId",targetId);
+    QString diagram=QJsonDocument(jsonObj).toJson();
+    //发送
+    sendMessage(diagram,this->hostIp,this->hostPort);
+}
+//好友列表请求
+void QQClient::friendRequest(int id)
+{
+    //封装Json
+    QJsonObject jsonObj;
+    jsonObj.insert("command","friendRequest");
+    jsonObj.insert("id",id);
+    QString diagram=QJsonDocument(jsonObj).toJson();
+    //发送
+    sendMessage(diagram,this->hostIp,this->hostPort);
+}
+//历史消息请求
+void QQClient::messageRequest(int id)
+{
+    //封装Json
+    QJsonObject jsonObj;
+    jsonObj.insert("command","messageRequest");
+    jsonObj.insert("id",id);
+    QString diagram=QJsonDocument(jsonObj).toJson();
+    //发送
+    sendMessage(diagram,this->hostIp,this->hostPort);
+}
+//群列表请求
+void QQClient::groupRequest(int id)
+{
+    //封装Json
+    QJsonObject jsonObj;
+    jsonObj.insert("command","groupRequest");
+    jsonObj.insert("id",id);
+    QString diagram=QJsonDocument(jsonObj).toJson();
+    //发送
+    sendMessage(diagram,this->hostIp,this->hostPort);
 }
 
 //响应函数
@@ -277,15 +343,30 @@ void QQClient::searchBack(QJsonObject obj)
 {
     qDebug()<<"searchBack()"<<obj;
 }
-
+//添加响应
 void QQClient::addBack(QJsonObject obj)
 {
-
+    qDebug()<<"addBack()"<<obj;
 }
-
+//删除响应
 void QQClient::deleteBack(QJsonObject obj)
 {
-
+    qDebug()<<"deleteBack()"<<obj;
+}
+//朋友列表响应
+void QQClient::friendBack(QJsonObject obj)
+{
+    qDebug()<<"friendBack()"<<obj;
+}
+//历史消息响应
+void QQClient::messageBack(QJsonObject obj)
+{
+    qDebug()<<"messageBack()"<<obj;
+}
+//群列表响应
+void QQClient::groupBack(QJsonObject obj)
+{
+    qDebug()<<"groupBack()"<<obj;
 }
 
 
