@@ -24,15 +24,9 @@ Item {
     function openInfoWindow(){
         //应增加从服务器扒取其余信息) 为什么没有传递成功啊！
         objectInf.isMe = sentByMe
-        if(sentByMe){
-            objectInf.personalHead = myAvatar
-            objectInf.personalName = myName
-            objectInf.personalID = myUid
-        }else{
-            objectInf.personalID = targetId
-            // 抓其他信息
-
-        }
+        objectInf.personalHead = avatar
+        objectInf.personalName = name
+        objectInf.personalID = uid
         objectInf.show()
     }
 
@@ -73,7 +67,7 @@ Item {
     Component {
         id: txtDelegate
         Row {
-//            readonly property bool sentByMe: uid == myUid
+            //            readonly property bool sentByMe: uid == myUid
             layoutDirection: sentByMe ? Qt.RightToLeft : Qt.LeftToRight
 
             spacing: 6

@@ -154,8 +154,8 @@ Rectangle {
             spacing: 8
             focus: true
             Layout.fillWidth: true
-            height: parent.height * 0.4
-            Layout.fillHeight: true
+            height: Math.min(contactListView.contentHeight, 280)
+//            Layout.fillHeight: true
             Layout.alignment: Qt.AlignLeft | Qt.AlignTop
             clip: true
             delegate: contactListItem
