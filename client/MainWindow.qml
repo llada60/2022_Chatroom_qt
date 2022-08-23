@@ -25,6 +25,8 @@ Window {
       latestMessage: "你说咱们要不就继续加油吧" // 最后一条消息内容
     */
 
+    property string addEmoji: ":)"
+
     function setHistoryMessage(messages){
         historyMessageScreen.setMessages(messages);
     }
@@ -32,6 +34,8 @@ Window {
     Component.onCompleted: {
         requestHistoryMessage(1);
     }
+
+    EmojiChoose{id:emojiChoose}
 
     VerticalTabWidget {
         anchors.rightMargin: 12

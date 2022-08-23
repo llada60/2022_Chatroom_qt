@@ -14,6 +14,7 @@ ColumnLayout {
     property string myAvatar: "https://tse2-mm.cn.bing.net/th/id/OIP-C.cS6phGwfJ3qgAtvSXv0rugAAAA?pid=ImgDet&rs=1"
     property int targetId: 1
 
+
     // 信号，当前端发送了一条信息时调用
     // targetId: 发给谁
     // message: 消息
@@ -88,35 +89,96 @@ ColumnLayout {
 
         Item {
             id: imgContainer
-            width : 20
+            width : 100
             height: 20
             anchors.left: parent.left
             anchors.top: parent.top
             anchors.leftMargin: 12
             anchors.topMargin: 8
-            Image {
-                id: img
-                source: "./images/icon_folder.png"
-                width : parent.width
-                height: parent.height
-
-
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-
+            RowLayout
+            {
+                Rectangle
+                {
+                    id: emojiImgArea
+                    width : 20
+                    height: 20
+                    Image {
+                        id: emojiImg
+                        source: "./images/emoji.png"
+                        anchors.fill: parent
+                        MouseArea {
+                            anchors.fill: emojiImg
+                            onClicked: {
+                                console.log("clickedEmoji")
+                                emojiChoose.show()
+                            }
+                            hoverEnabled: true
+                            onHoveredChanged: cursorShape = Qt.PointingHandCursor
+                        }
                     }
-                    hoverEnabled: true
-                    onHoveredChanged: cursorShape = Qt.PointingHandCursor
-
+                    ColorOverlay {
+                        anchors.fill: emojiImg
+                        source: emojiImg
+                        color: Material.primary
+                    }
                 }
+                Rectangle
+                {
+                    width : 20
+                    height: 20
+                    Layout.leftMargin: 5
+                    Image {
+                        id: folderImg
+                        source: "./images/icon_folder.png"
+                        anchors.fill: parent
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: {
+                                console.log("click the folder_icon")
+                            }
+                            hoverEnabled: true
+                            onHoveredChanged: cursorShape = Qt.PointingHandCursor
+                        }
+                    }
+                    ColorOverlay {
+                        anchors.fill: folderImg
+                        source: folderImg
+                        color: Material.primary
+                    }
+                }
+                Rectangle
+                {
+                    width : 22
+                    height: 22
+                    Layout.leftMargin: 5
+                    Image {
+                        id: pictureImg
+                        source: "./images/picture.png"
+                        anchors.fill: parent
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: {
+
+                            }
+                            hoverEnabled: true
+                            onHoveredChanged: cursorShape = Qt.PointingHandCursor
+                        }
+                    }
+                    ColorOverlay {
+                        anchors.fill: pictureImg
+                        source: pictureImg
+                        color: Material.primary
+                    }
+                }
+
+
             }
 
-            ColorOverlay {
-                anchors.fill: img
-                source: img
-                color: Material.primary
-            }
+
+
+
+
+
         }
 
 
