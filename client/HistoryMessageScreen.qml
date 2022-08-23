@@ -65,8 +65,8 @@ Rectangle {
             latestMessage: "你说咱们要不就继续加油吧"
         }
         ListElement {
-            userId: 1
-            userName: "张三"
+            userId: 100002
+            userName: "chen"
             avatar: "https://www.com8.cn/wp-content/uploads/2020/08/20200823052248-5f41fd28d49e4.jpg"
             latestTime: 1661053691
             latestMessage: "你说咱们要不就继续加油吧"

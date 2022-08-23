@@ -16,7 +16,7 @@ QQServer::QQServer(QWidget *parent)
     udpSocket->bind(QHostAddress::Any,listenPort);
     //readyRead响应
     connect(udpSocket,&QUdpSocket::readyRead,
-            this,&QQServer::on_udpSocket_readyRead);
+            this,&QQServer::onUdpSocketReadyRead);
     //建立数据库连接，初始化数据模型
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName("Info.db");
@@ -25,6 +25,7 @@ QQServer::QQServer(QWidget *parent)
     fdModel = new SqlFriendModel(this, db);
     gpModel = new SqlGroupModel(this, db);
     //测试代码
+    test(atModel,fdModel,gpModel);
 
 }
 
@@ -37,11 +38,11 @@ QQServer::~QQServer()
 }
 
 //收
-void QQServer::on_udpSocket_readyRead()
+void QQServer::onUdpSocketReadyRead()
 {
     //收到UDP包，提取信息：对方IP，端口，报文
     //准备空间
-    char buf[1024]={0};
+    char buf[4096]={0};
     QHostAddress ip;
     quint16 port;
     //提取
@@ -62,7 +63,6 @@ void QQServer::on_udpSocket_readyRead()
     else
     {
         QString content=QString("收取失败");
-        ui->textEdit->append(content);
         qDebug()<<content<<'\n';
     }
 }
@@ -106,14 +106,33 @@ void QQServer::parseCommand(QString jsonStr,QHostAddress ip, quint16 port)
     {
         loginRespond(obj,ip,port);
     }
-    else if(command=="sendToFriend")//单发
+    else if(command=="sendChatMessage")//发消息
     {
-        sendToFriendRespond(obj,ip,port);
+        sendChatMessageRespond(obj,ip,port);
     }
-    else if(command=="sendToGroup")
+    else if(command=="search")//查找群/人
     {
-        //群发
-        sendToGroupRespond(obj, ip, port);
+        searchRespond(obj,ip,port);
+    }
+    else if(command=="add")//添加
+    {
+        addRespond(obj,ip,port);
+    }
+    else if(command=="delete")//删除
+    {
+        deleteRespond(obj,ip,port);
+    }
+    else if(command=="friendRequest")//好友列表
+    {
+        friendRespond(obj,ip,port);
+    }
+    else if(command=="groupRequest")//群列表
+    {
+        groupRespond(obj,ip,port);
+    }
+    else if(command=="messageRequest")//历史消息
+    {
+        messageRespond(obj,ip,port);
     }
     else
     {
@@ -152,13 +171,16 @@ void QQServer::loginRespond(QJsonObject obj,QHostAddress ip,quint16 port)
     sendMessage(respond,ip,port);
 }
 
+//临时用，后面要进行群和人id的区分以及细化操作
+//发消息从在线列表里法
+//存记录存所有记录
 void QQServer::sendChatMessageRespond(QJsonObject obj, QHostAddress ip, quint16 port)
 {
     //解包
     int sendId=obj["sendId"].toInt();
     int targetId=obj["targetId"].toInt();
     QString content=obj["content"].toString();
-    QString time=obj["time"].toString();
+    int time=obj["time"].toInt();
     int type=obj["type"].toInt();
     //取目标ip和port
     QHostAddress targetIp;
@@ -183,6 +205,129 @@ void QQServer::sendChatMessageRespond(QJsonObject obj, QHostAddress ip, quint16 
     fdModel->sendMessage(sendId, targetId, type, time, content);
 }
 
+void QQServer::searchRespond(QJsonObject obj, QHostAddress ip, quint16 port)
+{
+    //解包
+    int targetId=obj["targetId"].toInt();
+    //从数据库查数据
+    QJsonObject userObj=QJsonDocument::fromJson(atModel->userInfo(targetId)).object();
+    QJsonObject groupObj=QJsonDocument::fromJson(gpModel->groupInfo(targetId)).object();
+    //封装响应
+    QJsonObject respondObj;
+    respondObj.insert("command","searchBack");
+    if(!userObj["result"].isNull())//找到用户
+    {
+        respondObj.insert("finded",true);
+        respondObj.insert("isPerson",true);
+        respondObj.insert("pName",userObj["result"].toObject()["name"].toString());
+        respondObj.insert("headImg",userObj["result"].toObject()["icon"].toString());
+
+
+    }
+    else if(!groupObj["result"].isNull())//找到群
+    {
+        respondObj.insert("finded",true);
+        respondObj.insert("isPerson",false);
+        respondObj.insert("pName",userObj["result"].toObject()["name"].toString());
+        respondObj.insert("headImg",userObj["result"].toObject()["icon"].toString());
+    }
+    else //啥都没找到
+    {
+        respondObj.insert("finded",false);
+        respondObj.insert("isPerson",false);
+        respondObj.insert("pName","无结果");
+        respondObj.insert("headImg","无结果");
+    }
+    QString diagram=QJsonDocument(respondObj).toJson();
+    sendMessage(diagram,ip,port);
+}
+
+void QQServer::addRespond(QJsonObject obj, QHostAddress ip, quint16 port)
+{
+    //解包
+
+    //处理
+    QJsonObject respondObj;
+    respondObj.insert("command","addBack");
+    //返回
+    QString diagram=QJsonDocument(respondObj).toJson();
+    sendMessage(diagram,ip,port);
+}
+
+void QQServer::deleteRespond(QJsonObject obj, QHostAddress ip, quint16 port)
+{
+    //解包
+
+    //处理
+    QJsonObject respondObj;
+    respondObj.insert("command","deleteBack");
+    //返回
+    QString diagram=QJsonDocument(respondObj).toJson();
+    sendMessage(diagram,ip,port);
+}
+
+void QQServer::friendRespond(QJsonObject obj, QHostAddress ip, quint16 port)
+{
+    //解包
+    int id=obj["id"].toInt();
+    //处理+返回
+    sendMessage(fdModel->friendList(id),ip,port);
+}
+
+void QQServer::groupRespond(QJsonObject obj, QHostAddress ip, quint16 port)
+{
+    //解包
+    int id=obj["id"].toInt();
+    //处理+返回
+    sendMessage(gpModel->groupList(id),ip,port);
+}
+
+void QQServer::messageRespond(QJsonObject obj, QHostAddress ip, quint16 port)
+{
+    //解包
+    int id=obj["id"].toInt();
+    //处理+返回
+    QByteArray diagram=atModel->messageList(id);
+    sendMessage(diagram,ip,port);
+    //测试
+    QJsonObject testObj=QJsonDocument::fromJson(diagram).object();
+    qDebug()<<testObj;
+}
+
+void QQServer::test(SqlAccountModel *atModel, SqlFriendModel *fdModel, SqlGroupModel *gpModel)
+{
+    /*
+     * 这些语句留着备用，想用直接赋值粘贴到外面
+     *
+    atModel->addUserAccount("cyy","123");//创建
+    atModel->addUserAccount("chen","123");
+    gpModel->createGroup("group1");
+    gpModel->createGroup("group2");
+
+    fdModel->addFriend(100001,100002);//加好友
+    fdModel->addFriend(100002,100001);
+
+    gpModel->joinGroup(600001,100001,1);//加群
+    gpModel->joinGroup(600001,100002,0);
+    gpModel->joinGroup(600002,100001,1);
+    gpModel->joinGroup(600002,100002,0);
+
+    fdModel->sendMessage(100001,100002,0,1,"你好");
+    fdModel->sendMessage(100001,100002,0,1,"我是丁真");
+    fdModel->sendMessage(100002,100001,0,1,"我是雪豹");
+    fdModel->sendMessage(100002,100002,0,1,"嗷");
+
+    gpModel->sendMessage(600001,100001,0,1,"群发1");
+    gpModel->sendMessage(600001,100002,0,1,"群发2");
+    gpModel->sendMessage(600002,100001,0,1,"群发3");
+    gpModel->sendMessage(600002,100002,0,3,"群发5");
+    */
+
+}
+
+
+
+/*
 void QQServer::sendToGroupRespond(QJsonObject obj, QHostAddress ip, quint16 port)
 {
     //解包
@@ -202,4 +347,4 @@ void QQServer::sendToGroupRespond(QJsonObject obj, QHostAddress ip, quint16 port
         lt.append(jsonAry[i].toObject().value("id").toInt());
     }
 }
-
+*/

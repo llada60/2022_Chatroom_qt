@@ -37,7 +37,7 @@ static void createTable(QSqlDatabase db)
                                    "ID INTEGER REFERENCES FRIENDINFO(ID),"
                                    "SENDID INTEGER NOT NULL, "
                                    "RECEIVEID INTEGER NOT NULL,"
-                                   "DATETIME TEXT NOT NULL,"
+                                   "DATETIME INTEGER NOT NULL,"
                                    "MESSAGE TEXT NOT NULL,"
                                    "TYPE INTEGER NOT NULL,"
                                    "PRIMARY KEY (SENDID, RECEIVEID, DATETIME),"
@@ -131,12 +131,12 @@ QByteArray SqlFriendModel::friendList(const int &ID)
         qDebug() << jsonAry;
         finalObj.insert("list", QJsonValue(jsonAry));
     }
-    finalObj.insert("command", QJsonValue("friendlistback"));
+    finalObj.insert("command", QJsonValue("friendBack"));
     bAry = QJsonDocument(finalObj).toJson();
     return bAry;
 }
 
-void SqlFriendModel::sendMessage(const int &sendID, const int &receiveID, const int& type, const QString &datetime, const QString &message)
+void SqlFriendModel::sendMessage(const int &sendID, const int &receiveID, const int& type, const int &datetime, const QString &message)
 {
     QSqlQuery query;
     int id;
@@ -149,7 +149,7 @@ void SqlFriendModel::sendMessage(const int &sendID, const int &receiveID, const 
     query.next();
     id = query.value("ID").toInt();
     if(!query.exec(QString("INSERT INTO FRIENDMESSAGEINFO VALUES("
-                           "%1, %2, %3, '%4', '%5', %6)").arg(QString::number(id),QString::number(sendID), QString::number(receiveID), datetime, message,QString::number(type))))
+                           "%1, %2, %3, %4, '%5', %6)").arg(QString::number(id),QString::number(sendID), QString::number(receiveID), QString::number(datetime), message,QString::number(type))))
     {
         qDebug() << "添加好友聊天信息发生错误";
         qDebug() << query.lastError();

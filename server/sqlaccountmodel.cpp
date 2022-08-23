@@ -84,7 +84,7 @@ QByteArray SqlAccountModel::addUserAccount(const QString& userName, const QStrin
         }
     }
     obj.insert("id", QJsonValue(id));
-    obj.insert("command", QJsonValue("registryback"));
+    obj.insert("command", QJsonValue("registerBack"));//注意registerBack
     doc = QJsonDocument(obj);
     bArry = doc.toJson();
     return bArry;
@@ -120,7 +120,7 @@ QByteArray SqlAccountModel::checkAccount(const int& userID, const QString &userP
         else rel = false;
     }
     obj.insert("result", QJsonValue(rel));
-    obj.insert("command", QJsonValue("loginback"));
+    obj.insert("command", QJsonValue("loginBack"));
     doc = QJsonDocument(obj);
     bArry = doc.toJson();
     return bArry;
@@ -155,7 +155,7 @@ QByteArray SqlAccountModel::userInfo(const int &userID)
         }
         qDebug() << finalObj;
     }
-    finalObj.insert("command", QJsonValue("userinfoback"));
+    finalObj.insert("command", QJsonValue("userInfoBack"));
     bAry = QJsonDocument(finalObj).toJson();
     return bAry;
 }
@@ -235,7 +235,7 @@ QByteArray SqlAccountModel::messageList(const int &ID)
                 lastID = query.value("ID").toInt();
                 obj.insert("sid", QJsonValue(query.value("SENDID").toInt()));
                 obj.insert("rid", QJsonValue(query.value("RECEIVEID").toInt()));
-                obj.insert("datetime", QJsonValue(query.value("DATETIME").toString()));
+                obj.insert("datetime", QJsonValue(query.value("DATETIME").toInt()));
                 obj.insert("message", QJsonValue(query.value("MESSAGE").toString()));
                 jsonItem.append(QJsonValue(obj));
             }
@@ -246,7 +246,7 @@ QByteArray SqlAccountModel::messageList(const int &ID)
                 while(!jsonItem.empty()) jsonItem.removeLast();
                 obj.insert("sid", QJsonValue(query.value("SENDID").toInt()));
                 obj.insert("rid", QJsonValue(query.value("RECEIVEID").toInt()));
-                obj.insert("datetime", QJsonValue(query.value("DATETIME").toString()));
+                obj.insert("datetime", QJsonValue(query.value("DATETIME").toInt()));
                 obj.insert("message", QJsonValue(query.value("MESSAGE").toString()));
                 jsonItem.append(QJsonValue(obj));
             }
@@ -273,7 +273,7 @@ QByteArray SqlAccountModel::messageList(const int &ID)
             {
                 lastID = query.value("GID").toInt();
                 obj.insert("mid", QJsonValue(query.value("MID").toInt()));
-                obj.insert("datetime", QJsonValue(query.value("DATETIME").toString()));
+                obj.insert("datetime", QJsonValue(query.value("DATETIME").toInt()));
                 obj.insert("message", QJsonValue(query.value("MESSAGE").toString()));
                 jsonItem.append(QJsonValue(obj));
             }
@@ -283,7 +283,7 @@ QByteArray SqlAccountModel::messageList(const int &ID)
                 lastID = query.value("GID").toInt();
                 while(!jsonItem.empty()) jsonItem.removeLast();
                 obj.insert("mid", QJsonValue(query.value("MID").toInt()));
-                obj.insert("datetime", QJsonValue(query.value("DATETIME").toString()));
+                obj.insert("datetime", QJsonValue(query.value("DATETIME").toInt()));
                 obj.insert("message", QJsonValue(query.value("MESSAGE").toString()));
                 jsonItem.append(QJsonValue(obj));
             }
@@ -291,7 +291,7 @@ QByteArray SqlAccountModel::messageList(const int &ID)
         jsonTotalG.insert(QString::number(lastID), QJsonValue(jsonItem));
         finalObj.insert("grouplist", QJsonValue(jsonTotalG));
     }
-    finalObj.insert("command", QJsonValue("memberinfo"));
+    finalObj.insert("command", QJsonValue("messageBack"));
     qDebug() << finalObj;
     bAry = QJsonDocument(finalObj).toJson();
     return bAry;

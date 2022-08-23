@@ -97,30 +97,6 @@ ColumnLayout {
 
     ListModel {
         id: chatListModel
-        ListElement {
-            uid: 1
-            name: "张三"
-            time: 1660893694
-            message: "我长得好帅啊~"
-            avatar: "https://tse2-mm.cn.bing.net/th/id/OIP-C.cS6phGwfJ3qgAtvSXv0rugAAAA?pid=ImgDet&rs=1"
-            type: 0 // type 0: 文本消息 1:文件
-        }
-        ListElement {
-            uid: 0
-            name: "李四"
-            time: 1660893694
-            message: "是啊"
-            avatar: "https://ts1.cn.mm.bing.net/th/id/R-C.1eed2de61a172c6ca2d79fc5ea62eb01?rik=c7W7KrSN7xFOIg&riu=http%3a%2f%2fimg.crcz.com%2fallimg%2f202003%2f10%2f1583821081100057.jpg&ehk=q%2f9lt0hQhwZzKFdRKYyG2g4zxQKgTWKJ4gHeelom3Mo%3d&risl=&pid=ImgRaw&r=0&sres=1&sresct=1"
-            type: 0
-        }
-        ListElement {
-            uid: 0
-            name: "李四"
-            time: 1660893694
-            message: "这是一条很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长的消息"
-            avatar: "https://ts1.cn.mm.bing.net/th/id/R-C.1eed2de61a172c6ca2d79fc5ea62eb01?rik=c7W7KrSN7xFOIg&riu=http%3a%2f%2fimg.crcz.com%2fallimg%2f202003%2f10%2f1583821081100057.jpg&ehk=q%2f9lt0hQhwZzKFdRKYyG2g4zxQKgTWKJ4gHeelom3Mo%3d&risl=&pid=ImgRaw&r=0&sres=1&sresct=1"
-            type: 0
-        }
     }
 
 
@@ -295,7 +271,7 @@ ColumnLayout {
 
 
 
-
+    //初始化测试
     Component.onCompleted: {
         chatListModel.append({
                                  "uid": 0,
@@ -305,6 +281,25 @@ ColumnLayout {
                                  "avatar": "https://ts1.cn.mm.bing.net/th/id/R-C.1eed2de61a172c6ca2d79fc5ea62eb01?rik=c7W7KrSN7xFOIg&riu=http%3a%2f%2fimg.crcz.com%2fallimg%2f202003%2f10%2f1583821081100057.jpg&ehk=q%2f9lt0hQhwZzKFdRKYyG2g4zxQKgTWKJ4gHeelom3Mo%3d&risl=&pid=ImgRaw&r=0&sres=1&sresct=1",
                                  "type": 1 // 1代表文件
                              })
+        chatListModel.append({
+                                "uid": 0,
+                                "name": "李四",
+                                "time": 1660893694,
+
+                                "message": "这是一条很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长的消息",
+
+                                "avatar": "https://ts1.cn.mm.bing.net/th/id/R-C.1eed2de61a172c6ca2d79fc5ea62eb01?rik=c7W7KrSN7xFOIg&riu=http%3a%2f%2fimg.crcz.com%2fallimg%2f202003%2f10%2f1583821081100057.jpg&ehk=q%2f9lt0hQhwZzKFdRKYyG2g4zxQKgTWKJ4gHeelom3Mo%3d&risl=&pid=ImgRaw&r=0&sres=1&sresct=1",
+                                "type": 0
+                            })
+        chatListModel.append({
+                                "uid": 1,
+                                "name": "cyy",
+                                "time": 1660893694,
+
+                                "message": "你好，我是丁真",
+                                "avatar": "https://ts1.cn.mm.bing.net/th/id/R-C.1eed2de61a172c6ca2d79fc5ea62eb01?rik=c7W7KrSN7xFOIg&riu=http%3a%2f%2fimg.crcz.com%2fallimg%2f202003%2f10%2f1583821081100057.jpg&ehk=q%2f9lt0hQhwZzKFdRKYyG2g4zxQKgTWKJ4gHeelom3Mo%3d&risl=&pid=ImgRaw&r=0&sres=1&sresct=1",
+                                "type": 0
+                            })
     }
 
 
