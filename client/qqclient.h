@@ -4,6 +4,7 @@
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QJsonValue>
+#include <QJsonArray>
 #include <QHostAddress>
 #include <QUdpSocket>
 #include <QQmlApplicationEngine>

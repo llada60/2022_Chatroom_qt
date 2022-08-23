@@ -56,7 +56,7 @@ void QQClient::on_udpSocket_readyRead()
 {
     //收到UDP包，提取信息：对方IP，端口，报文
     //准备空间
-    char buf[1024]={0};
+    char buf[4096]={0};
     QHostAddress ip;
     quint16 port;
     QJsonParseError parseErr;
@@ -188,13 +188,13 @@ void QQClient::login(int id, QString password)
     //设置临时客户端id
     clientId=id;
     //测试代码
-    /*
-    add(100002);
-    deleteRequest(100002);
-    friendRequest(100001);
-    groupRequest(100001);
+
+    //add(100002);
+    //deleteRequest(100002);
+    //friendRequest(100001);
+    //groupRequest(100001);
     messageRequest(100001);
-    */
+
 }
 
 //单发请求
@@ -356,17 +356,58 @@ void QQClient::deleteBack(QJsonObject obj)
 //朋友列表响应
 void QQClient::friendBack(QJsonObject obj)
 {
-    qDebug()<<"friendBack()"<<obj;
+    //解包
+    QJsonArray friendJsonList=obj["list"].toArray();
+    //清空原有朋友列表
+    friendList.clear();
+    //遍历添加刷新后朋友列表
+    for(int i=0;i<friendJsonList.size();i++)
+    {
+        //解包
+        QJsonObject user=friendJsonList[i].toObject();
+        //添加对象
+        this->friendList.append(new User(
+                                    user["id"].toInt(),
+                                    user["name"].toString(),
+                                    user["icon"].toString())
+                                        );
+    }
 }
 //历史消息响应
 void QQClient::messageBack(QJsonObject obj)
 {
-    qDebug()<<"messageBack()"<<obj;
+    //解包
+    QJsonObject friendMessages=obj["friendlist"].toObject();
+    QJsonObject groupMessages=obj["grouplist"].toObject();
+    //时间还是string
+    qDebug()<<friendMessages;
+    qDebug()<<groupMessages;
+
 }
 //群列表响应
 void QQClient::groupBack(QJsonObject obj)
 {
-    qDebug()<<"groupBack()"<<obj;
+    //解包
+    QJsonArray groupJsonList=obj["groupList"].toArray();
+    //清空原有朋友列表
+    groupList.clear();
+    //遍历添加刷新后朋友列表
+    for(int i=0;i<groupJsonList.size();i++)
+    {
+        //解包
+        QJsonObject group=groupJsonList[i].toObject();
+        //添加对象
+        this->groupList.append(new Group(group["id"].toInt(),
+                               group["name"].toString(),
+                               group["icon"].toString(),
+                               group["intro"].toString(),
+                               group["notice"].toString())
+                               );
+    }
+    for(int i=0;i<groupList.length();i++)
+    {
+        qDebug()<<groupList[i]->name;
+    }
 }
 
 

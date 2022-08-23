@@ -18,6 +18,23 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class QQServer; }
 QT_END_NAMESPACE
 
+class User //在线成员的节点
+{
+public:
+    User(QHostAddress ip,quint16 port,int id) //把名字和IP PORT绑定。
+    {
+        this->id=id;
+        this->ip=ip;
+        this->port=port;
+    }
+    ~User();
+
+    int id;
+    QHostAddress ip;
+    quint16 port;
+};
+
+
 class QQServer : public QMainWindow
 {
     Q_OBJECT
@@ -29,7 +46,7 @@ public:
 
 private slots:
     //通用收信息函数
-    void on_udpSocket_readyRead();
+    void onUdpSocketReadyRead();
 
 private:
     Ui::QQServer *ui;
@@ -58,6 +75,8 @@ private:
     void friendRespond(QJsonObject obj,QHostAddress ip,quint16 port);//好友列表
     void groupRespond(QJsonObject obj,QHostAddress ip,quint16 port);//群列表
     void messageRespond(QJsonObject obj,QHostAddress ip,quint16 port);//历史消息
+    //测试代码
+    void test(SqlAccountModel* atModel,SqlFriendModel* fdModel,SqlGroupModel* gpModel);
 
 };
 #endif // QQSERVER_H

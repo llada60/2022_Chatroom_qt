@@ -16,7 +16,7 @@ QQServer::QQServer(QWidget *parent)
     udpSocket->bind(QHostAddress::Any,listenPort);
     //readyRead响应
     connect(udpSocket,&QUdpSocket::readyRead,
-            this,&QQServer::on_udpSocket_readyRead);
+            this,&QQServer::onUdpSocketReadyRead);
     //建立数据库连接，初始化数据模型
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName("Info.db");
@@ -25,7 +25,8 @@ QQServer::QQServer(QWidget *parent)
     fdModel = new SqlFriendModel(this, db);
     gpModel = new SqlGroupModel(this, db);
     //测试代码
-    //fdModel->sendMessage(100001, 100002, 0, 123, "雪豹");这里要改int的time
+    test(atModel,fdModel,gpModel);
+
 }
 
 QQServer::~QQServer()
@@ -37,11 +38,11 @@ QQServer::~QQServer()
 }
 
 //收
-void QQServer::on_udpSocket_readyRead()
+void QQServer::onUdpSocketReadyRead()
 {
     //收到UDP包，提取信息：对方IP，端口，报文
     //准备空间
-    char buf[1024]={0};
+    char buf[4096]={0};
     QHostAddress ip;
     quint16 port;
     //提取
@@ -268,37 +269,60 @@ void QQServer::deleteRespond(QJsonObject obj, QHostAddress ip, quint16 port)
 void QQServer::friendRespond(QJsonObject obj, QHostAddress ip, quint16 port)
 {
     //解包
-
-    //处理
-    QJsonObject respondObj;
-    respondObj.insert("command","friendBack");
-    //返回
-    QString diagram=QJsonDocument(respondObj).toJson();
-    sendMessage(diagram,ip,port);
+    int id=obj["id"].toInt();
+    //处理+返回
+    sendMessage(fdModel->friendList(id),ip,port);
 }
 
 void QQServer::groupRespond(QJsonObject obj, QHostAddress ip, quint16 port)
 {
     //解包
-
-    //处理
-    QJsonObject respondObj;
-    respondObj.insert("command","groupBack");
-    //返回
-    QString diagram=QJsonDocument(respondObj).toJson();
-    sendMessage(diagram,ip,port);
+    int id=obj["id"].toInt();
+    //处理+返回
+    sendMessage(gpModel->groupList(id),ip,port);
 }
 
 void QQServer::messageRespond(QJsonObject obj, QHostAddress ip, quint16 port)
 {
     //解包
-
-    //处理
-    QJsonObject respondObj;
-    respondObj.insert("command","messageBack");
-    //返回
-    QString diagram=QJsonDocument(respondObj).toJson();
+    int id=obj["id"].toInt();
+    //处理+返回
+    QByteArray diagram=atModel->messageList(id);
     sendMessage(diagram,ip,port);
+    //测试
+    QJsonObject testObj=QJsonDocument::fromJson(diagram).object();
+    qDebug()<<testObj;
+}
+
+void QQServer::test(SqlAccountModel *atModel, SqlFriendModel *fdModel, SqlGroupModel *gpModel)
+{
+    /*
+     * 这些语句留着备用，想用直接赋值粘贴到外面
+     *
+    atModel->addUserAccount("cyy","123");//创建
+    atModel->addUserAccount("chen","123");
+    gpModel->createGroup("group1");
+    gpModel->createGroup("group2");
+
+    fdModel->addFriend(100001,100002);//加好友
+    fdModel->addFriend(100002,100001);
+
+    gpModel->joinGroup(600001,100001,1);//加群
+    gpModel->joinGroup(600001,100002,0);
+    gpModel->joinGroup(600002,100001,1);
+    gpModel->joinGroup(600002,100002,0);
+
+    fdModel->sendMessage(100001,100002,0,1,"你好");
+    fdModel->sendMessage(100001,100002,0,1,"我是丁真");
+    fdModel->sendMessage(100002,100001,0,1,"我是雪豹");
+    fdModel->sendMessage(100002,100002,0,1,"嗷");
+
+    gpModel->sendMessage(600001,100001,0,1,"群发1");
+    gpModel->sendMessage(600001,100002,0,1,"群发2");
+    gpModel->sendMessage(600002,100001,0,1,"群发3");
+    gpModel->sendMessage(600002,100002,0,3,"群发5");
+    */
+
 }
 
 

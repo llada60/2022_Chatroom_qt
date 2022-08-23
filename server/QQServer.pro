@@ -17,7 +17,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     main.cpp \
-    onlinelist.cpp \
     qqserver.cpp \
     sqlaccountmodel.cpp \
     sqlfriendmodel.cpp \
@@ -25,7 +24,6 @@ SOURCES += \
 
 HEADERS += \
     ../../Tcp-Version/QQServer/onlinelist.h \
-    onlinelist.h \
     qqserver.h \
     sqlaccountmodel.h \
     sqlfriendmodel.h \
