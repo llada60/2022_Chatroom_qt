@@ -51,7 +51,7 @@ private:
     //对客户端请求响应
     void registerRespond(QJsonObject obj,QHostAddress ip,quint16 port);
     void loginRespond(QJsonObject obj,QHostAddress ip,quint16 port);
-    void sendToFriendRespond(QJsonObject obj,QHostAddress ip,quint16 port);
-    void sendToGroupRespond(QJsonObject obj,QHostAddress ip,quint16 port);
+    void sendChatMessageRespond(QJsonObject obj,QHostAddress ip,quint16 port);
+
 };
 #endif // QQSERVER_H

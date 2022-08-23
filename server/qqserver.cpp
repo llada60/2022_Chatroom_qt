@@ -106,14 +106,9 @@ void QQServer::parseCommand(QString jsonStr,QHostAddress ip, quint16 port)
     {
         loginRespond(obj,ip,port);
     }
-    else if(command=="sendToFriend")//单发
+    else if(command=="sendChatMessage")//发消息
     {
-        sendToFriendRespond(obj,ip,port);
-    }
-    else if(command=="sendToGroup")
-    {
-        //群发
-        sendToGroupRespond(obj, ip, port);
+        sendChatMessageRespond(obj,ip,port);
     }
     else
     {
@@ -180,9 +175,10 @@ void QQServer::sendChatMessageRespond(QJsonObject obj, QHostAddress ip, quint16 
     QString diagram=QJsonDocument(jsonObj).toJson();
     sendMessage(diagram,targetIp,targetPort);
     //数据库添加聊天记录
-    fdModel->sendMessage(sendId, targetId, type, time, content);
+    //fdModel->sendMessage(sendId, targetId, type, time, content);
 }
 
+/*
 void QQServer::sendToGroupRespond(QJsonObject obj, QHostAddress ip, quint16 port)
 {
     //解包
@@ -202,4 +198,4 @@ void QQServer::sendToGroupRespond(QJsonObject obj, QHostAddress ip, quint16 port
         lt.append(jsonAry[i].toObject().value("id").toInt());
     }
 }
-
+*/
