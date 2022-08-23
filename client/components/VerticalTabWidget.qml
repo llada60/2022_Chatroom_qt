@@ -1,6 +1,8 @@
 import QtQuick 2.12
+import QtQuick.Controls 2.5
 import QtGraphicalEffects 1.0
 import QtQuick.Controls.Material 2.3
+import QtQuick.Layouts 1.3
 
 Item {
     id: tabWidget
@@ -15,12 +17,14 @@ Item {
 
     property var icons: ["../images/icon_chat.png", "../images/icon_contact.png"]
 
-    onCurrentChanged: setOpacities()
-    Component.onCompleted: setOpacities()
+    onCurrentChanged: stack.replace(null, stack.children[current])
+    Component.onCompleted: stack.push(stack.children[0])
 
     function setOpacities() {
         for (var i = 0; i < stack.children.length; ++i) {
-            stack.children[i].opacity = (i === current ? 1 : 0)
+
+            if (i === current) stack.children[i].show()
+            else stack.children[i].hide();
         }
     }
 
@@ -56,7 +60,7 @@ Item {
         }
     }
 
-    Item {
+    StackView {
         id: stack
         height: tabWidget.height
         anchors.left: side.right; anchors.right: tabWidget.right
