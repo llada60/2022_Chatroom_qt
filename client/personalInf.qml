@@ -9,8 +9,8 @@ import QtQuick.Controls 2.5
 
 Window {
     width: 338
-    height: 506
-    visible: false
+    height: 520
+    visible: true
 
     id: personalInfPage
 
@@ -156,7 +156,9 @@ Window {
     ColumnLayout
     {
         z:1
-        anchors.fill: parent
+        Layout.fillWidth: true
+        Layout.fillHeight: true
+//        anchors.fill: parent
 
         //设置按钮: 切换到设置界面
         ToolButton
@@ -165,10 +167,7 @@ Window {
             id: reset
             width: 15
             height: 15
-            anchors.right: parent.right
-            anchors.rightMargin: 5
-            anchors.top:parent.top
-            anchors.topMargin: 10
+            Layout.alignment: Qt.AlignRight
             visible: isMe
 
             font.pixelSize :15
@@ -233,12 +232,13 @@ Window {
 
         }
 
-        // 头像
+        // 头像+背景图
         Rectangle
         {
             id: img
-            anchors.centerIn: parent
-            anchors.verticalCenterOffset: -200
+            Layout.alignment: Qt.AlignTop
+            Layout.topMargin: -70
+
             width: 338
             height: 200
             radius: width/2
@@ -295,14 +295,12 @@ Window {
         ColumnLayout
         {
             id: belowInf
-            anchors.centerIn: img
-            anchors.verticalCenterOffset: 180
+            Layout.alignment: Qt.AlignHCenter
             Text
             {
                 id: usrName
-                anchors.centerIn: belowInf
-                anchors.verticalCenterOffset: -25
-                horizontalAlignment: Text.AlignHCenter
+                Layout.alignment: Qt.AlignHCenter
+                Layout.topMargin: 40
                 font.pixelSize: 20
                 font.family: "SimHei"
                 font.bold: true
@@ -311,9 +309,8 @@ Window {
             Text
             {
                 id: usrSaying
-                anchors.top: usrName.bottom
-                anchors.topMargin: 8
-                horizontalAlignment: Text.AlignHCenter
+                Layout.alignment: Qt.AlignHCenter
+                Layout.topMargin: 5
                 font.pixelSize: 12
                 font.family: "LiSu"
                 color: "#767777"
@@ -323,9 +320,8 @@ Window {
             {
                 id: usrNameC
                 visible: false
-                anchors.centerIn: belowInf
-                anchors.verticalCenterOffset: -25
-                horizontalAlignment: Text.AlignHCenter
+                Layout.alignment: Qt.AlignHCenter
+                Layout.topMargin: 40
                 font.pixelSize: 20
                 font.family: "SimHei"
                 font.bold: true
@@ -336,9 +332,8 @@ Window {
             {
                 id: usrSayingC
                 visible: false
-                anchors.top: usrName.bottom
-                anchors.topMargin: 8
-                horizontalAlignment: Text.AlignHCenter
+                Layout.alignment: Qt.AlignHCenter
+                Layout.topMargin: 5
                 font.pixelSize: 12
                 font.family: "LiSu"
                 color: "#767777"
@@ -367,8 +362,8 @@ Window {
                 ctx.lineWidth = 2
 
                 ctx.beginPath();                  // 开始一条路径
-                ctx.moveTo(40,260);         // 移动到指定位置
-                ctx.lineTo(298,260);
+                ctx.moveTo(40,300);         // 移动到指定位置
+                ctx.lineTo(298,300);
 
                 ctx.stroke();
              }
@@ -378,9 +373,8 @@ Window {
         ColumnLayout
         {
             id: detailInf
-            anchors.top: belowInf.bottom
-            anchors.topMargin: setFlag? 40:30
-            anchors.horizontalCenter: parent.horizontalCenter
+            Layout.alignment: Qt.AlignHCenter
+            Layout.topMargin: 40
 
             spacing: 40
 

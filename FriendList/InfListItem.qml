@@ -13,7 +13,7 @@ Rectangle
         RoundImage
         {
             id: avatarImg
-            img_src: headImg
+            img_src: avatar
 
             width: 40
             height: avatarImg.width
@@ -22,8 +22,9 @@ Rectangle
         Text
         {
             id: searchName
-            Layout.leftMargin: 25
-            text: pName + qsTr("<font color=\"#54b4ef\">(") + pID + qsTr(")</font>")
+            anchors.left: avatarImg.right
+            anchors.leftMargin: 20
+            text: userName + qsTr("<font color=\"#54b4ef\">(") + userid + qsTr(")</font>")
         }
         Button
         {
@@ -34,7 +35,8 @@ Rectangle
             {
                 opacity:1
             }
-            Layout.leftMargin: 50
+            anchors.left: searchName.right
+            anchors.leftMargin: 80
             icon.source: addFriendButton.pressed? "qrc:/img/addFriend1.png":
                                  addFriendButton.hovered? "qrc:/img/addFriend1.png" :
                                                 ("qrc:/img/addFriend.png")

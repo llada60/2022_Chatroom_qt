@@ -17,6 +17,8 @@ Window {
     property string usrPassword: ""
     property int usrID: 0
 
+    MainWindow{id:mainWindow}
+
     MessageDialog
     {//注册失败提示
             id: wrongRegister
@@ -44,7 +46,7 @@ Window {
         onAccepted:
         {
             console.log("Having checked the new usr inf")
-            MainWindow.show()
+            mainWindow.show()
             registerWindows.hide()
         }
     }

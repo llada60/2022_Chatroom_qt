@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>qtquickcontrols2.conf</file>
+        <file>SearchWidget.qml</file>
+        <file>RoundImage.qml</file>
+        <file>InfListItem.qml</file>
+    </qresource>
+</RCC>
