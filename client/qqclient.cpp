@@ -411,4 +411,3 @@ void QQClient::groupBack(QJsonObject obj)
 }
 
 
-}
