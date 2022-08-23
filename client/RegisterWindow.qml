@@ -12,7 +12,7 @@ Window {
     height: 400
     visible: true //窗口是否可见
     title: qsTr("注册") //窗口标题
-    objectName: "registerWindows"
+    objectName: "registerWindow"
 
     property string usrName: ""
     property string usrPassword: ""
@@ -41,7 +41,6 @@ Window {
 
         Text {
             id: text
-            font.pixelSize: 20
             text: qsTr("您的账号：")  +  usrID +  qsTr("\n您的用户名：") + usrName
             anchors.centerIn: parent
         }
@@ -49,8 +48,9 @@ Window {
 
         onAccepted:
         {
+            //TODO 这里跳转失败
             console.log("Having checked the new usr inf")
-            mainWindows.show()
+            MainWindows.visible = true
             registerWindows.hide()
         }
     }

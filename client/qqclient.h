@@ -24,7 +24,7 @@ private slots:
     //请求函数：QML到C++的槽函数
     void registerAccount(QString user,QString password);
     void login(int id,QString password);
-    void sendToFriend(int targetId,QString content,QString time);
+    void sendChatMessage(int targetId,QString content,int time);
 private:
     //配置信息
     QUdpSocket* udpSocket;//服务器ip和端口
@@ -45,7 +45,7 @@ private:
     //响应函数：C++到QML的函数
     void registerBack(QJsonObject obj);
     void loginBack(QJsonObject obj);
-    void sendToFriendBack(QJsonObject obj);
+    void sendChatMessageBack(QJsonObject obj);
 };
 
 

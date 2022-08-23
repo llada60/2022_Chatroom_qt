@@ -104,18 +104,14 @@ void QQServer::parseCommand(QString jsonStr,QHostAddress ip, quint16 port)
     {
         loginRespond(obj,ip,port);
     }
-    else if(command=="sendToFriend")//单发
+    else if(command=="sendChatMessage")//单发
     {
-        sendToFriendRespond(obj,ip,port);
-    }
-    else if(command=="sendToGroup")
-    {
-        //群发
+        sendChatMessageRespond(obj,ip,port);
     }
     else
     {
         //未知命令
-        sendMessage(QString("未知命令"),ip,port);
+        qDebug()<<"未知命令";
     }
 
 }
@@ -149,7 +145,7 @@ void QQServer::loginRespond(QJsonObject obj,QHostAddress ip,quint16 port)
     sendMessage(respond,ip,port);
 }
 
-void QQServer::sendToFriendRespond(QJsonObject obj, QHostAddress ip, quint16 port)
+void QQServer::sendChatMessageRespond(QJsonObject obj, QHostAddress ip, quint16 port)
 {
     //解包
     int sendId=obj["sendId"].toInt();
@@ -169,7 +165,7 @@ void QQServer::sendToFriendRespond(QJsonObject obj, QHostAddress ip, quint16 por
     }
     //转发消息
     QJsonObject jsonObj;
-    jsonObj.insert("command","sendToFriendBack");
+    jsonObj.insert("command","sendChatMessageBack");
     jsonObj.insert("sendId",sendId);
     jsonObj.insert("content",content);
     jsonObj.insert("time",time);

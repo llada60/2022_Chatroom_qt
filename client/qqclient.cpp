@@ -20,10 +20,13 @@ QQClient::QQClient(QQmlApplicationEngine *engine, QObject *parent)
     //qml到C++(信号型通讯)
     QObject::connect(root,SIGNAL(loginSignal(int,QString)), //登录
                      this,SLOT(login(int,QString)));
-    QObject* registerWindows=root->findChild<QObject*>("registerWindows");
-    QObject::connect(registerWindows,SIGNAL(registerSignal(QString,QString)), //注册
+    QObject* registerWindow=root->findChild<QObject*>("registerWindow");
+    QObject::connect(registerWindow,SIGNAL(registerSignal(QString,QString)), //注册
                      this,SLOT(registerAccount(QString,QString)));
-
+    QObject* chatScreen=root->findChild<QObject*>("mainWindow")->findChild<QObject*>("chatWindow1")
+            ->findChild<QObject*>("chatWindow2")->findChild<QObject*>("chatScreen");
+    QObject::connect(chatScreen,SIGNAL(sendMessageSignal(int,QString,int)),
+                     this,SLOT(sendChatMessage(int,QString,int)));
     /*
     //c++调qml函数（例子）
     QVariant res;
@@ -35,7 +38,7 @@ QQClient::QQClient(QQmlApplicationEngine *engine, QObject *parent)
 
     /*
     // 节点测试
-    QObject* registerButton=root->findChild<QObject*>("registerWindows")
+    QObject* registerButton=root->findChild<QObject*>("registerWindow")
             ->findChild<QObject*>("registerButton");//注册按钮节点
     qDebug()<<loginButton->property("width"); //要是正常输出属性就说明找对了
     */
@@ -118,18 +121,14 @@ void QQClient::parseCommand(QString jsonStr,QHostAddress ip, quint16 port)
     {
         loginBack(obj);
     }
-    else if(command=="sendToFriendBack")//收到单发消息
+    else if(command=="sendChatMessageBack")//收到单发消息
     {
-        sendToFriendBack(obj);
-    }
-    else if(command=="sendToGroupBack")//收到群发消息
-    {
-        //群发
+        sendChatMessageBack(obj);
     }
     else
     {
         //未知命令
-        sendMessage(QString("未知命令"),ip,port);
+        qDebug()<<"未知命令";
     }
 
 }
@@ -165,11 +164,11 @@ void QQClient::login(int id, QString password)
 }
 
 //单发请求
-void QQClient::sendToFriend(int targetId, QString content,QString time)
+void QQClient::sendChatMessage(int targetId, QString content,int time)
 {
     //封装Json
     QJsonObject jsonObj;
-    jsonObj.insert("command","sendToFriend");
+    jsonObj.insert("command","sendChatMessage");
     jsonObj.insert("sendId",clientId);
     jsonObj.insert("targetId",targetId);
     jsonObj.insert("content",content);
@@ -189,8 +188,8 @@ void QQClient::registerBack(QJsonObject obj)
     qDebug()<<"register";
     //调用QML注册函数
     QVariant res; //如果QML函数没有返回值会不会报错？
-    QObject* registerWindows=root->findChild<QObject*>("registerWindows");
-    QMetaObject::invokeMethod(registerWindows,"registerBack",
+    QObject* registerWindow=root->findChild<QObject*>("registerWindow");
+    QMetaObject::invokeMethod(registerWindow,"registerBack",
                               Q_RETURN_ARG(QVariant,res),
                               Q_ARG(QVariant,id));
 }
@@ -213,15 +212,17 @@ void QQClient::loginBack(QJsonObject obj)
 
 }
 //单发响应
-void QQClient::sendToFriendBack(QJsonObject obj)
+void QQClient::sendChatMessageBack(QJsonObject obj)
 {
     //解包
     int sendId=obj["sendId"].toInt();
     QString content=obj["content"].toString();
-    QString time=obj["time"].toString();
+    int time=obj["time"].toInt();
     //调用QML函数
     QVariant res;
-    QMetaObject::invokeMethod(root,"sendToFriendBack",
+    QObject* chatScreen=root->findChild<QObject*>("mainWindow")->findChild<QObject*>("chatWindow1")
+            ->findChild<QObject*>("chatWindow2")->findChild<QObject*>("chatScreen");
+    QMetaObject::invokeMethod(chatScreen,"sendChatMessageBack",
                               Q_RETURN_ARG(QVariant,res),
                               Q_ARG(QVariant,sendId),
                               Q_ARG(QVariant,content),
