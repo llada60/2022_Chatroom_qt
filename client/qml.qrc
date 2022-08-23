@@ -31,6 +31,7 @@
         <file>images/search.png</file>
         <file>components/InfListItem.qml</file>
         <file>components/SearchWidget.qml</file>
+        <file>components/FriendList.qml</file>
         <file>AddFriendWindow.qml</file>
     </qresource>
 </RCC>

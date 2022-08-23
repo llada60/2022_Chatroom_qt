@@ -37,11 +37,12 @@ RowLayout
     TextField
     {
         id: inputID
-        Layout.leftMargin: 10
+        anchors.left: imgSearch.right
+        anchors.leftMargin: 12
 
 
         padding: 5
-        placeholderText: qsTr("<font size='2' family='LiSu'>好友账号/群号</font>")
+        placeholderText: qsTr("<font size='2' family='LiSu'>好友账号/群号/群名</font>")
 
 
         background: Rectangle
@@ -58,7 +59,8 @@ RowLayout
     RoundButton
     {
         // 搜索好友/群
-        Layout.leftMargin: 5
+        anchors.left: inputID.right
+        anchors.leftMargin: 5
         id: search
         text: qsTr("搜索")
         flat: true
