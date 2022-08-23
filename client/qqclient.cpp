@@ -224,9 +224,92 @@ void QQClient::sendChatMessageBack(QJsonObject obj)
             ->findChild<QObject*>("chatWindow2")->findChild<QObject*>("chatScreen");
     QMetaObject::invokeMethod(chatScreen,"sendChatMessageBack",
                               Q_RETURN_ARG(QVariant,res),
+<<<<<<< Updated upstream
                               Q_ARG(QVariant,sendId),
                               Q_ARG(QVariant,content),
                               Q_ARG(QVariant,time));
+=======
+                              Q_ARG(QVariant,jsonObj)
+                              );
+}
+//查找响应
+void QQClient::searchBack(QJsonObject obj)
+{
+    qDebug()<<"searchBack()"<<obj;
+}
+//添加响应
+void QQClient::addBack(QJsonObject obj)
+{
+    qDebug()<<"addBack()"<<obj;
+}
+//删除响应
+void QQClient::deleteBack(QJsonObject obj)
+{
+    qDebug()<<"deleteBack()"<<obj;
+}
+//朋友列表响应
+void QQClient::friendBack(QJsonObject obj)
+{
+    //解包
+    QJsonArray friendJsonList=obj["list"].toArray();
+    //清空原有朋友列表
+    friendList.clear();
+    //遍历添加刷新后朋友列表
+    for(int i=0;i<friendJsonList.size();i++)
+    {
+        //解包
+        QJsonObject user=friendJsonList[i].toObject();
+        //添加对象
+        this->friendList.append(new User(
+                                    user["id"].toInt(),
+                                    user["name"].toString(),
+                                    user["icon"].toString())
+                                        );
+    }
+}
+//历史消息响应
+void QQClient::messageBack(QJsonObject obj)
+{
+    //解包
+    QJsonObject friendMessages=obj["friendlist"].toObject();
+    QJsonObject groupMessages=obj["grouplist"].toObject();
+    //时间还是string
+    //qDebug()<<friendMessages;
+    //qDebug()<<groupMessages;
+    //遍历QJsonObject解析群聊
+    QJsonObject::Iterator it;
+    for(it=groupMessages.begin();it!=groupMessages.end();it++)
+    {
+        qDebug()<<it.key()<<it.value();
+    }
+
+
+}
+//群列表响应
+void QQClient::groupBack(QJsonObject obj)
+{
+    //解包
+    QJsonArray groupJsonList=obj["groupList"].toArray();
+    //清空原有朋友列表
+    groupList.clear();
+    //遍历添加刷新后朋友列表
+    for(int i=0;i<groupJsonList.size();i++)
+    {
+        //解包
+        QJsonObject group=groupJsonList[i].toObject();
+        //添加对象
+        this->groupList.append(new Group(group["id"].toInt(),
+                               group["name"].toString(),
+                               group["icon"].toString(),
+                               group["intro"].toString(),
+                               group["notice"].toString())
+                               );
+    }
+    for(int i=0;i<groupList.length();i++)
+    {
+        qDebug()<<groupList[i]->name;
+    }
+>>>>>>> Stashed changes
 }
 
 
