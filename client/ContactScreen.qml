@@ -45,6 +45,7 @@ Rectangle {
 
 
     AddFriendWindow{ id : addFriendWindow; visible: false;}
+    CreateGroup{id:createGroup; visible: false;}
 
     ListModel {
         id: contactListModel
@@ -178,21 +179,39 @@ Rectangle {
             delegate: contactListItem
 
         }
+        RowLayout
+        {
+            Button {
+                height: 56; width: 56
+                background: Rectangle {
+                    color: "transparent"
+                }
+                icon.source: "../images/addFriend.png"
+                icon.width: 32
+                icon.height: 32
 
-        Button {
-            height: 56; width: 56
-            background: Rectangle {
-                color: "transparent"
+                Layout.alignment: Qt.AlignLeft
+                onClicked: {
+                    addFriendWindow.show()
+                }
             }
-            icon.source: "../images/addFriend.png"
-            icon.width: 32
-            icon.height: 32
+            Button {
+                height: 56; width: 56
+                background: Rectangle {
+                    color: "transparent"
+                }
+                icon.source: "../images/addGroup.png"
+                icon.width: 25
+                icon.height: 25
 
-            Layout.alignment: Qt.AlignLeft
-            onClicked: {
-                addFriendWindow.show()
+                Layout.alignment: Qt.AlignLeft
+                onClicked: {
+                    createGroup.show()
+                }
             }
         }
+
+
 
     }
 

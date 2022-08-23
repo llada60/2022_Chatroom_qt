@@ -135,6 +135,7 @@ Window {
             if(isNaN(inputID.text))
             {
                 notNumInputText.open()
+                inputID.text = ""
             }
             else
             {
