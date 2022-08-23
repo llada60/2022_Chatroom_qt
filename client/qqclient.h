@@ -22,9 +22,12 @@ public:
 
 private slots:
     //请求函数：QML到C++的槽函数
-    void registerAccount(QString user,QString password);
-    void login(int id,QString password);
-    void sendChatMessage(int targetId,QString content,int time);
+    void registerAccount(QString user,QString password);//注册
+    void login(int id,QString password);//登录
+    void sendChatMessage(int targetId,QString content,int time);//发消息
+    void search(int targetId);//查找群/人
+    void add(int targetId);//加群/人
+    void deleteRequest(int targetId);//删群/人
 private:
     //配置信息
     QUdpSocket* udpSocket;//服务器ip和端口
@@ -46,6 +49,9 @@ private:
     void registerBack(QJsonObject obj);
     void loginBack(QJsonObject obj);
     void sendChatMessageBack(QJsonObject obj);
+    void searchBack(QJsonObject obj);
+    void addBack(QJsonObject obj);
+    void deleteBack(QJsonObject obj);
 };
 
 

@@ -125,6 +125,18 @@ void QQClient::parseCommand(QString jsonStr,QHostAddress ip, quint16 port)
     {
         sendChatMessageBack(obj);
     }
+    else if(command=="searchBack")//查找响应
+    {
+        searchBack(obj);
+    }
+    else if(command=="addBack")//添加响应
+    {
+
+    }
+    else if(command=="deleteBack")//删除响应
+    {
+
+    }
     else
     {
         //未知命令
@@ -161,6 +173,7 @@ void QQClient::login(int id, QString password)
     sendMessage(diagram,this->hostIp,this->hostPort);
     //设置临时客户端id
     clientId=id;
+    search(600000);
 }
 
 //单发请求
@@ -176,6 +189,30 @@ void QQClient::sendChatMessage(int targetId, QString content,int time)
     QString diagram=QJsonDocument(jsonObj).toJson();
     //发送
     sendMessage(diagram,this->hostIp,this->hostPort);
+}
+
+//查找请求
+void QQClient::search(int targetId)
+{
+    //封装Json
+    QJsonObject jsonObj;
+    jsonObj.insert("command","search");
+    jsonObj.insert("targetId",targetId);
+    QString diagram=QJsonDocument(jsonObj).toJson();
+    //发送
+    sendMessage(diagram,this->hostIp,this->hostPort);
+}
+
+//添加请求
+void QQClient::add(int targetId)
+{
+
+}
+
+//删除请求
+void QQClient::deleteRequest(int targetId)
+{
+
 }
 
 //响应函数
@@ -234,6 +271,21 @@ void QQClient::sendChatMessageBack(QJsonObject obj)
                               Q_RETURN_ARG(QVariant,res),
                               Q_ARG(QVariant,jsonObj)
                               );
+}
+//查找响应
+void QQClient::searchBack(QJsonObject obj)
+{
+    qDebug()<<"searchBack()"<<obj;
+}
+
+void QQClient::addBack(QJsonObject obj)
+{
+
+}
+
+void QQClient::deleteBack(QJsonObject obj)
+{
+
 }
 
 

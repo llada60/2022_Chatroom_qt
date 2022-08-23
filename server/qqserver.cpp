@@ -25,7 +25,7 @@ QQServer::QQServer(QWidget *parent)
     fdModel = new SqlFriendModel(this, db);
     gpModel = new SqlGroupModel(this, db);
     //测试代码
-
+    //fdModel->sendMessage(100001, 100002, 0, 123, "雪豹");这里要改int的time
 }
 
 QQServer::~QQServer()
@@ -109,6 +109,10 @@ void QQServer::parseCommand(QString jsonStr,QHostAddress ip, quint16 port)
     {
         sendChatMessageRespond(obj,ip,port);
     }
+    else if(command=="search")//查找群/人
+    {
+        searchRespond(obj,ip,port);
+    }
     else
     {
         //未知命令
@@ -146,13 +150,16 @@ void QQServer::loginRespond(QJsonObject obj,QHostAddress ip,quint16 port)
     sendMessage(respond,ip,port);
 }
 
+//临时用，后面要进行群和人id的区分以及细化操作
+//发消息从在线列表里法
+//存记录存所有记录
 void QQServer::sendChatMessageRespond(QJsonObject obj, QHostAddress ip, quint16 port)
 {
     //解包
     int sendId=obj["sendId"].toInt();
     int targetId=obj["targetId"].toInt();
     QString content=obj["content"].toString();
-    QString time=obj["time"].toString();
+    int time=obj["time"].toInt();
     int type=obj["type"].toInt();
     //取目标ip和port
     QHostAddress targetIp;
@@ -174,8 +181,57 @@ void QQServer::sendChatMessageRespond(QJsonObject obj, QHostAddress ip, quint16 
     QString diagram=QJsonDocument(jsonObj).toJson();
     sendMessage(diagram,targetIp,targetPort);
     //数据库添加聊天记录
-    //fdModel->sendMessage(sendId, targetId, type, time, content);
+    fdModel->sendMessage(sendId, targetId, type, time, content);
 }
+
+void QQServer::searchRespond(QJsonObject obj, QHostAddress ip, quint16 port)
+{
+    //解包
+    int targetId=obj["targetId"].toInt();
+    //从数据库查数据
+    QJsonObject userObj=QJsonDocument::fromJson(atModel->userInfo(targetId)).object();
+    QJsonObject groupObj=QJsonDocument::fromJson(gpModel->groupInfo(targetId)).object();
+    //封装响应
+    QJsonObject respondObj;
+    respondObj.insert("command","searchBack");
+    if(!userObj["result"].isNull())//找到用户
+    {
+        respondObj.insert("finded",true);
+        respondObj.insert("isPerson",true);
+        respondObj.insert("pName",userObj["result"].toObject()["name"].toString());
+        respondObj.insert("headImg",userObj["result"].toObject()["icon"].toString());
+
+
+    }
+    else if(!groupObj["result"].isNull())//找到群
+    {
+        respondObj.insert("finded",true);
+        respondObj.insert("isPerson",false);
+        respondObj.insert("pName",userObj["result"].toObject()["name"].toString());
+        respondObj.insert("headImg",userObj["result"].toObject()["icon"].toString());
+    }
+    else //啥都没找到
+    {
+        respondObj.insert("finded",false);
+        respondObj.insert("isPerson",false);
+        respondObj.insert("pName","无结果");
+        respondObj.insert("headImg","无结果");
+    }
+    QString diagram=QJsonDocument(respondObj).toJson();
+    sendMessage(diagram,ip,port);
+}
+
+void QQServer::addRespond(QJsonObject obj, QHostAddress ip, quint16 port)
+{
+
+}
+
+void QQServer::deleteRespond(QJsonObject obj, QHostAddress ip, quint16 port)
+{
+
+}
+
+
 
 /*
 void QQServer::sendToGroupRespond(QJsonObject obj, QHostAddress ip, quint16 port)

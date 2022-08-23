@@ -49,9 +49,12 @@ private:
     void sendMessage(QByteArray content,QHostAddress ip,quint16 port);
     void sendMessage(QByteArray content,QString ip,QString port);
     //对客户端请求响应
-    void registerRespond(QJsonObject obj,QHostAddress ip,quint16 port);
-    void loginRespond(QJsonObject obj,QHostAddress ip,quint16 port);
-    void sendChatMessageRespond(QJsonObject obj,QHostAddress ip,quint16 port);
+    void registerRespond(QJsonObject obj,QHostAddress ip,quint16 port);//注册
+    void loginRespond(QJsonObject obj,QHostAddress ip,quint16 port);//登录
+    void sendChatMessageRespond(QJsonObject obj,QHostAddress ip,quint16 port);//发消息（单发+群发）
+    void searchRespond(QJsonObject obj,QHostAddress ip,quint16 port);//查找（好友或群）
+    void addRespond(QJsonObject obj,QHostAddress ip,quint16 port);//添加（好友或群）
+    void deleteRespond(QJsonObject obj,QHostAddress ip,quint16 port);//删除（好友或群）
 
 };
 #endif // QQSERVER_H
