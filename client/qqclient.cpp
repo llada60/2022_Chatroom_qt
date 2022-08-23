@@ -218,15 +218,22 @@ void QQClient::sendChatMessageBack(QJsonObject obj)
     int sendId=obj["sendId"].toInt();
     QString content=obj["content"].toString();
     int time=obj["time"].toInt();
+    //结合本地数据构建消息包
+    QJsonObject jsonObj;
+    jsonObj.insert("uid",sendId);
+    jsonObj.insert("name","cyy");//这里要从id获取名字
+    jsonObj.insert("time",time);
+    jsonObj.insert("message",content);//头像应该也是从id获取
+    jsonObj.insert("avatar","https://ts1.cn.mm.bing.net/th/id/R-C.1eed2de61a172c6ca2d79fc5ea62eb01?rik=c7W7KrSN7xFOIg&riu=http%3a%2f%2fimg.crcz.com%2fallimg%2f202003%2f10%2f1583821081100057.jpg&ehk=q%2f9lt0hQhwZzKFdRKYyG2g4zxQKgTWKJ4gHeelom3Mo%3d&risl=&pid=ImgRaw&r=0&sres=1&sresct=1");
+    jsonObj.insert("type",0);
     //调用QML函数
     QVariant res;
     QObject* chatScreen=root->findChild<QObject*>("mainWindow")->findChild<QObject*>("chatWindow1")
             ->findChild<QObject*>("chatWindow2")->findChild<QObject*>("chatScreen");
-    QMetaObject::invokeMethod(chatScreen,"sendChatMessageBack",
+    QMetaObject::invokeMethod(chatScreen,"appendData",
                               Q_RETURN_ARG(QVariant,res),
-                              Q_ARG(QVariant,sendId),
-                              Q_ARG(QVariant,content),
-                              Q_ARG(QVariant,time));
+                              Q_ARG(QVariant,jsonObj)
+                              );
 }
 
 
