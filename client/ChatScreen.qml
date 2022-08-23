@@ -45,6 +45,14 @@ ColumnLayout {
         messageField.append(text)
     }
 
+    function chatWithUid(uid){
+        for(i in chatListModel){
+            if(chatListModel.get(i).uid === uid){
+                chatListView.currentIndex = i
+            }
+        }
+    }
+
     QtPlatform.FileDialog {
         id: openFileDialog
         title: "打开文件"

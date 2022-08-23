@@ -51,7 +51,7 @@ Rectangle {
     ListModel {
         id: contactListModel
         ListElement {
-            userId: 1
+            userId: 100001
             userName: "张三"
             avatar: "https://www.com8.cn/wp-content/uploads/2020/08/20200823052248-5f41fd28d49e4.jpg"
         }
@@ -90,11 +90,11 @@ Rectangle {
         id: contactListItem
         Rectangle
         {
-            width: 400
+            width: 280
             height: 64
             RowLayout
             {
-                Layout.fillWidth: true
+                width: parent.width
 
                 RoundImage
                 {
@@ -102,11 +102,14 @@ Rectangle {
                     width: 40
                     height: width
                     color: "black"
+                    Layout.alignment: Qt.AlignLeft
                 }
                 Text
                 {
                     Layout.leftMargin: 20
                     text: userName + qsTr("<font color=\"#54b4ef\">(") + userId + qsTr(")</font>")
+                    elide: Text.ElideRight
+                    Layout.alignment: Qt.AlignLeft
                 }
                 Button
                 {
@@ -117,13 +120,13 @@ Rectangle {
                         opacity:1
                     }
                     onClicked: {
-                        // 这里可能有bug，2xxx开头的id也会被当group处理
+
                         if(100000 <= userId && userId <= 599999){
                             messageWithConact(userId, userName, avatar);
                         }else messageWithGroup(userId, userName, avatar);
                     }
 
-                    Layout.leftMargin: 80
+                    Layout.alignment: Qt.AlignRight
                     icon.source: "./images/icon_chat.png"
                     icon.color: contactButton.hovered ? Material.accent : "transparent"
                 }

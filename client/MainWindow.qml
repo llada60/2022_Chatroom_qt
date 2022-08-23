@@ -31,7 +31,9 @@ Window {
     }
 
     function startChatTo(uid, name, avatar){
-//        chatScreen.
+        console.log(`开始和${name}聊天……`)
+        historyMessageScreen.startChatWith(uid, name, avatar);
+        tabWidget.current = 0
     }
 
     Component.onCompleted: {
@@ -44,6 +46,7 @@ Window {
     }
 
     VerticalTabWidget {
+        id: tabWidget
         anchors.rightMargin: 12
         anchors.leftMargin: 12
         anchors.bottomMargin: 12
@@ -82,12 +85,8 @@ Window {
             // anchors.fill: parent
             id: contactScreen
             radius: 4
-            onMessageWithConact: {
-
-            }
-            onMessageWithGroup: {
-
-            }
+            onMessageWithConact: (uid, name, avatar)=>startChatTo(uid, name, avatar)
+            onMessageWithGroup: (uid, name, avatar)=>startChatTo(uid, name, avatar)
         }
 
 
