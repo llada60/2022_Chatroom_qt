@@ -53,11 +53,15 @@ Window {
                                 case ("qrc:/images/emoji/Face_(1).png"):
                                     addEmoji = ":D"
                                     break;
+                                case ("qrc:/images/emoji/Face_(2).png"):
+                                    addEmoji = "^_^"
+                                    break;
                                 default:
                                     addEmoji = ":)"
                                     break;
                             }
-
+                            //文本框中添加选择的表情内容(不知道能不能实现
+                            messageField.text = messageFile.text + addEmoji
                             close()
                         }
                     }
