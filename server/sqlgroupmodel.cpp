@@ -87,7 +87,7 @@ SqlGroupModel::~SqlGroupModel()
     database().close();
 }
 
-QByteArray SqlGroupModel::createGroup(const QString& gName, const int& masterID)
+QByteArray SqlGroupModel::createGroup(const int& masterID)
 {
     setTable(groupTableName);
     QSqlQuery query;
@@ -96,7 +96,7 @@ QByteArray SqlGroupModel::createGroup(const QString& gName, const int& masterID)
     QByteArray bArry;
     int id = 0;
     if(!query.exec(QString("INSERT INTO GROUPINFO(NAME) VALUES("
-                           "'%1')").arg(gName)))
+                           "'%1')").arg(QString::number(masterID)+"'s Group")))
     {
         qDebug() << "创建群聊发生错误";
         qDebug() << query.lastError();
