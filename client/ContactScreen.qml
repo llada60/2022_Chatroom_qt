@@ -28,8 +28,6 @@ Rectangle {
     function setContacts(contacts){
         contactListModel.clear()
         for(let each of contacts){
-            console.log("refresh")
-            console.log(each)
             contactListModel.append(each)
         }
     }
@@ -39,7 +37,7 @@ Rectangle {
         contactListModel.append(data)
     }
 
-    // 设置群消息
+    // 设置群列表
     function setGroups(groups){
         groupListModel.clear()
         for(let each of groups){
