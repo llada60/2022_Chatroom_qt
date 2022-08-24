@@ -130,11 +130,13 @@ private slots:
 private:
     //配置信息
     QUdpSocket* udpSocket;//服务器ip和端口
-    QHostAddress hostIp=QHostAddress("192.168.81.108");
-    quint16 hostPort=9990;
+    QHostAddress hostIp=QHostAddress("81.68.194.103");
+    quint16 hostPort=8080;
     //临时数据
     int clientId=0;//储存当前id
     ClientInfo * clientInfo;//储存当前账户所有信息
+    QString clientName;
+    QString clientAvatar;
     QList<User*> friendList;//储存好友列表
     QList<Group*> groupList;//储存群组列表
     //前端通信engine

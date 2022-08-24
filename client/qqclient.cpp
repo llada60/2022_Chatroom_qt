@@ -491,6 +491,8 @@ void QQClient::friendBack(QJsonObject obj)
 
     QQmlContext* context = engine->rootContext();
     ClientInfo* info = new ClientInfo(clientObj);
+    clientName=clientObj["name"].toString();
+    clientAvatar=clientObj["icon"].toString();
     context->setContextProperty("ClientInfo", info);
 
     //遍历添加刷新后朋友列表
@@ -529,8 +531,8 @@ void QQClient::messageBack(QJsonObject obj)
             //利用sendId从本地获取名字，头像(不论是单发还是群聊，都用发送者的)
             if(sendId==clientId)//自己的信息从info抓
             {
-                jsonObj.insert("name",clientInfo->name());
-                jsonObj.insert("avatar",clientInfo->avatar());
+                jsonObj.insert("name",clientName);
+                jsonObj.insert("avatar",clientAvatar);
 
             }
             else //朋友信息
@@ -572,8 +574,8 @@ void QQClient::messageBack(QJsonObject obj)
             //利用sendId从本地获取名字，头像(不论是单发还是群聊，都用发送者的)
             if(sendId==clientId)//自己的信息从info抓
             {
-                jsonObj.insert("name",clientInfo->name());
-                jsonObj.insert("avatar",clientInfo->avatar());
+                jsonObj.insert("name",clientName);
+                jsonObj.insert("avatar",clientAvatar);
 
             }
             else //朋友信息
