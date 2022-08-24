@@ -38,9 +38,10 @@ Rectangle {
         contactListModel.append(data)
     }
 
+    // 设置群消息
     function setGroups(groups){
         groupListModel.clear()
-        for(each of groups){
+        for(let each of groups){
             groupListModel.append(each)
         }
     }

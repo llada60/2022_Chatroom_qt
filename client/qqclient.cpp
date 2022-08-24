@@ -35,6 +35,12 @@ QQClient::QQClient(QQmlApplicationEngine *engine, QObject *parent)
                      this,SLOT(search(int)));
     QObject::connect(addFriendWindow,SIGNAL(addSignal(int)),
                      this,SLOT(add(int)));
+    QObject* contactScreen=root->findChild<QObject*>("mainWindow")//通讯录刷新
+            ->findChild<QObject*>("chatWindow1")->findChild<QObject*>("contactScreen");
+    QObject::connect(contactScreen,SIGNAL(requestContactSignal()),
+                     this,SLOT(refreshContactFriend()));//人
+    QObject::connect(contactScreen,SIGNAL(requestGroupSignal()),
+                     this,SLOT(refreshContactGroup()));//群
     QObject* personInfoCheckScreen = chatScreen->findChild<QObject*>("chatListView");//->findChild<QObject*>("chatListItem");
     qDebug() << "personInfoCheck" << personInfoCheckScreen->findChildren<QObject*>()[0]->findChildren<QObject*>() << endl;
     QObject::connect(personInfoCheckScreen->findChildren<QObject*>()[1], SIGNAL(getPInfSignal(int)),
@@ -339,8 +345,10 @@ void QQClient::loginBack(QJsonObject obj)
         groupRequest(clientId);
         //测试
         refreshContact();
+        /*
         messageRequest(100002);
         messageRequest(600001);
+        */
     }
     //调用QML登录函数
     QVariant res; //如果QML函数没有返回值会不会报错？
@@ -484,9 +492,8 @@ void QQClient::personInfoBack(QJsonObject obj){
 }
 
 //刷新好友列表
-void QQClient::refreshContact()
+void QQClient::refreshContactFriend()
 {
-    //刷新好友列表
     friendRequest(clientId);
     //构造QJsonArray
     QJsonArray jsonArray;
@@ -506,5 +513,10 @@ void QQClient::refreshContact()
     QMetaObject::invokeMethod(contactScreen,"setContacts",
                               Q_RETURN_ARG(QVariant,res),
                               Q_ARG(QVariant,jsonArray));
+}
+//刷新群列表
+void QQClient::refreshContactGroup()
+{
+
 }
 
