@@ -18,11 +18,6 @@ Rectangle {
     signal requestContactSignal()
     signal requestGroupSignal()
 
-    Component.onCompleted: {
-        console.log("refresh")
-        requestContactSignal()
-        requestGroupSignal()
-    }
 
     // 获取到联系人后调这个函数，messages为QJsonArray。每一项的数据data参考如下
     /**
@@ -58,6 +53,13 @@ Rectangle {
     }
 
 
+    // 下面是qml用的
+    function sendRequestDataSignal(){
+        console.log("获取通讯录信息……")
+        requestContactSignal()
+        requestGroupSignal()
+    }
+
     AddFriendWindow{
         id : addFriendWindow; visible: false;
         onPassSignal: (uid, avatar, name, isPerson) => {
@@ -86,7 +88,7 @@ Rectangle {
         personalInf.areaFrom = data.areaFrom
         personalInf.edu = data.edu
 
-//        personalInf.visible = true
+        personalInf.visible = true
     }
     function openPInfoWindow(data,){
         //获得用户信息
@@ -97,7 +99,7 @@ Rectangle {
         personalInf.personalName = data["userName"]
         personalInf.personalID   = data["userId"]
 
-        personalInf.visible = true // 与服务器通讯后注释
+//        personalInf.visible = true // 与服务器通讯后注释
     }
 
     //接收返回的群组信息信号

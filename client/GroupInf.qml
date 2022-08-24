@@ -30,7 +30,7 @@ Window {
     signal sendGroupInf(string groupName,string groupNotic,string groupSummary)
 
 
-    flags:(Qt.Window | Qt.FramelessWindowHint)
+    flags:(Qt.Window | Qt.CustomizeWindowHint)
 
 
     Rectangle{
@@ -123,6 +123,8 @@ Window {
                         noticeContext.visible = true
                         noticeC.visible = false
                         groupNotic = noticeC.text
+
+                        avatar = groupHead
 
                         console.log("群组信息修改已完成")
 

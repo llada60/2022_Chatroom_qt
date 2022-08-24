@@ -38,7 +38,10 @@ Window {
     }
 
     Component.onCompleted: {
-        requestHistoryMessage(1);
+        ClientInfo.id = "100001"
+        ClientInfo.name = "Shen"
+        ClientInfo.avatar = "https://www.com8.cn/wp-content/uploads/2020/08/20200823052248-5f41fd28d49e4.jpg"
+        requestHistoryMessage(ClientInfo.id);
     }
 
     EmojiChoose{
@@ -54,6 +57,7 @@ Window {
         anchors.topMargin: 12
         anchors.fill: parent
         objectName: "chatWindow1"
+        onChangeToContact: contactScreen.sendRequestDataSignal()
 
         // 聊天页面
         RowLayout {
