@@ -24,7 +24,7 @@ public:
     //删除群聊
     void delGroup(const int& gID);
     //加入群聊
-    void joinGroup(const int& gID, const int& mID, const int& rank);
+    bool joinGroup(const int& gID, const int& mID, const int& rank);
     //退出群聊
     void quitGroup(const int& gID, const int& mID);
     //添加群消息

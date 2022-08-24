@@ -279,48 +279,47 @@ void QQServer::addRespond(QJsonObject obj, QHostAddress ip, quint16 port)
     //解包
     int sendId=obj["sendId"].toInt();
     int targetId=obj["targetId"].toInt();
-    //处理
-    bool succeed = fdModel->addFriend(sendId,targetId);
-    //双向返回信息
-    if(succeed)
+    if(targetId/100000==1)//加人
     {
+        //处理
+        bool succeed = fdModel->addFriend(sendId,targetId);
+        //双向返回信息
         //发送者回传
         QJsonObject respondObj;
         respondObj.insert("command","addBack");
-        respondObj.insert("friendId",targetId);
-        QString diagram=QJsonDocument(respondObj).toJson();
-        sendMessage(diagram,ip,port);
-        qDebug()<<"addRespond()"<<ip<<port;
         //接受者转发
         QJsonObject targetObj=getTargetIpPort(targetId);
         QJsonObject respondToTargetObj;
         QString targetIp=targetObj["ip"].toString();
         QString targetPort=QString("%1").arg(targetObj["port"].toInt());//int不能直接转str
         respondToTargetObj.insert("command","addBack");
-        respondToTargetObj.insert("friendId",sendId);
-        QString diagramToTarget=QJsonDocument(respondToTargetObj).toJson();
-        sendMessage(diagramToTarget,targetIp,targetPort);
-        qDebug()<<"addRespond()"<<targetIp<<targetPort;
+        if(succeed)
+        {
+            respondObj.insert("friendId",targetId);
+            sendMessage(QJsonDocument(respondObj).toJson(),ip,port);
+            respondToTargetObj.insert("friendId",sendId);
+            sendMessage(QJsonDocument(respondToTargetObj).toJson(),targetIp,targetPort);
+        }
+        else //加好友失败，id是0，只需要单边返回
+        {
+            respondObj.insert("friendId",0);
+            sendMessage(QJsonDocument(respondObj).toJson(),ip,port);
+        }
     }
-    else //加好友失败，id全是0
+    else //加群
     {
         QJsonObject respondObj;
         respondObj.insert("command","addBack");
-        respondObj.insert("friendId",0);
-        QString diagram=QJsonDocument(respondObj).toJson();
-        sendMessage(diagram,ip,port);
-        //找到接受者ip,port(不在线也无所谓)
-        QJsonObject targetObj=getTargetIpPort(targetId);
-        if(targetObj["port"].toInt()!=0)
+        if(true==gpModel->joinGroup(targetId,sendId,0))//成功
         {
-            QJsonObject respondToTargetObj;
-            respondToTargetObj.insert("command","addBack");
-            respondToTargetObj.insert("friendId",0);
-            QString diagramToTarget=QJsonDocument(respondToTargetObj).toJson();
-            sendMessage(diagramToTarget,targetObj["ip"].toString(),targetObj["port"].toString());
+            respondObj.insert("friendId",targetId);
         }
+        else
+        {
+            respondObj.insert("friendId",0);
+        }
+        sendMessage(QJsonDocument(respondObj).toJson(),ip,port);
     }
-
 }
 
 void QQServer::deleteRespond(QJsonObject obj, QHostAddress ip, quint16 port)

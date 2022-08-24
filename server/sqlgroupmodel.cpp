@@ -185,7 +185,7 @@ void SqlGroupModel::delGroup(const int & gID)
     }
 }
 
-void SqlGroupModel::joinGroup(const int & gID, const int & mID, const int & rank)
+bool SqlGroupModel::joinGroup(const int & gID, const int & mID, const int & rank)
 {
     setTable(memberTableName);
     QSqlQuery query;

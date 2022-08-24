@@ -19,6 +19,7 @@ Rectangle {
     signal requestGroupSignal()
 
     Component.onCompleted: {
+        console.log("refresh")
         requestContactSignal()
         requestGroupSignal()
     }

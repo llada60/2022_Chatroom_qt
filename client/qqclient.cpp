@@ -344,7 +344,6 @@ void QQClient::loginBack(QJsonObject obj)
         friendRequest(clientId);
         groupRequest(clientId);
         //测试
-        refreshContact();
         /*
         messageRequest(100002);
         messageRequest(600001);
@@ -494,6 +493,7 @@ void QQClient::personInfoBack(QJsonObject obj){
 //刷新好友列表
 void QQClient::refreshContactFriend()
 {
+    //更新本地群信息
     friendRequest(clientId);
     //构造QJsonArray
     QJsonArray jsonArray;
