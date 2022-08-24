@@ -26,6 +26,9 @@ Window {
     //创建群聊信号
     signal createGroupSignal(var mId)
 
+    //返回生成的群聊号和拉群成功指令
+
+
 
 
     function printMember()

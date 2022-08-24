@@ -86,6 +86,7 @@ Window {
         ContactScreen {
             // anchors.fill: parent
             id: contactScreen
+            visible: false
             radius: 4
             onMessageWithConact: (uid, name, avatar)=>startChatTo(uid, name, avatar)
             onMessageWithGroup: (uid, name, avatar)=>startChatTo(uid, name, avatar)

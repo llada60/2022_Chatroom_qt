@@ -27,7 +27,7 @@ Window {
     //发送添加信号
     signal addSignal(int idN)
     //已添加新好友（群聊）信号
-    signal passSignal()
+    signal passSignal(int idN,string usrAvatar,string usrName,bool isPerson)
 
     //返回搜索结果
     function searchBack(data)
@@ -47,16 +47,15 @@ Window {
     //返回添加成功信号
     function addBack(v)
     {
-        if(v == 0)
+        if(0 == v)
         {//添加失败
             addFalse.open()
         }
         else
         {
+            passSignal(usrid,avatarImg,userName,isPerson)
             addOk.open()
-            passSignal()
             close()
-
         }
     }
 

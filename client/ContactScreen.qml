@@ -132,6 +132,7 @@ Rectangle {
     }
 
 
+    // 好友群聊显示界面
     ColumnLayout {
         anchors.margins: 12
         anchors.top: parent.top
