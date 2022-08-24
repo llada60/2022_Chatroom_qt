@@ -152,6 +152,14 @@ void QQServer::parseCommand(QString jsonStr,QHostAddress ip, quint16 port)
     {
         messageRespond(obj,ip,port);
     }
+    else if(command=="getPersonalInfo")//查找个人信息
+    {
+        getPersonalInfoRespond(obj,ip,port);
+    }
+    else if(command=="getGroupInfo")//查找群信息
+    {
+        getGroupInfoRespond(obj,ip,port);
+    }
     else
     {
         //未知命令
@@ -354,6 +362,43 @@ void QQServer::messageRespond(QJsonObject obj, QHostAddress ip, quint16 port)
     QJsonObject testObj=QJsonDocument::fromJson(diagram).object();
     qDebug()<<testObj;
 }
+
+void QQServer::getPersonalInfoRespond(QJsonObject obj, QHostAddress ip, quint16 port)
+{
+    //解包
+    int targetId=obj["targetId"].toInt();
+    //从数据库查数据
+    QJsonObject userObj=QJsonDocument::fromJson(atModel->userInfo(targetId)).object();
+    //封装响应
+    QJsonObject respondObj;
+    respondObj.insert("command","getPersonalInfoBack");
+    respondObj.insert("personalSaying",userObj["result"].toObject()["signature"].toString());
+    respondObj.insert("sex_num",userObj["result"].toObject()["gender"].toString());
+    respondObj.insert("birthday",userObj["result"].toObject()["birth"].toString());
+    respondObj.insert("areaFrom",userObj["result"].toObject()["area"].toString());
+    respondObj.insert("edu",userObj["result"].toObject()["education"].toString());
+    QString diagram=QJsonDocument(respondObj).toJson();
+    sendMessage(diagram,ip,port);
+}
+
+void QQServer::getGroupInfoRespond(QJsonObject obj, QHostAddress ip, quint16 port)
+{
+    //解包
+    int targetId=obj["targetId"].toInt();
+    //从数据库查数据
+    QJsonObject groupObj=QJsonDocument::fromJson(gpModel->groupInfo(targetId)).object();
+    //封装响应
+    QJsonObject respondObj;
+    respondObj.insert("command","getGroupInfoBack");
+    respondObj.insert("groupNotice",groupObj["result"].toObject()["notice"].toString());
+    respondObj.insert("groupSummary",groupObj["result"].toObject()["intro"].toString());
+    respondObj.insert("isOwner",groupObj["result"].toObject()["id"].toString());
+    QString diagram=QJsonDocument(respondObj).toJson();
+    sendMessage(diagram,ip,port);
+}
+
+
+
 
 void QQServer::test(SqlAccountModel *atModel, SqlFriendModel *fdModel, SqlGroupModel *gpModel)
 {
