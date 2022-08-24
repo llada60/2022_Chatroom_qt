@@ -120,7 +120,8 @@ private slots:
     void groupRequest(int id);//请求群列表
     void personInfoRequest(int id);//请求某人的详细数据
     //其他函数
-    void refreshContact();//刷新联系人
+    void refreshContactFriend();//刷新联系人
+    void refreshContactGroup();//刷新群聊通讯录
 
 
 private:
