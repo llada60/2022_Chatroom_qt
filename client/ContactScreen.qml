@@ -14,7 +14,7 @@ Rectangle {
     signal messageWithConact(int id, string name, string avatar)
     signal messageWithGroup(int id, string name, string avatar)
 
-    // 获取到联系人后调这个函数，messages为json数组。每一项的数据data参考如下
+    // 获取到联系人后调这个函数，messages为QJsonArray。每一项的数据data参考如下
     /**
       userId: 1
       userName: "张三"
@@ -22,7 +22,9 @@ Rectangle {
     */
     function setContacts(contacts){
         contactListModel.clear()
-        for(each of contacts){
+        for(let each of contacts){
+            console.log("refresh")
+            console.log(each)
             contactListModel.append(each)
         }
     }

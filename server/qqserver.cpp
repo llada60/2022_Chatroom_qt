@@ -283,21 +283,23 @@ void QQServer::addRespond(QJsonObject obj, QHostAddress ip, quint16 port)
     //双向返回信息
     if(succeed)
     {
+        //发送者回传
         QJsonObject respondObj;
         respondObj.insert("command","addBack");
         respondObj.insert("friendId",targetId);
         QString diagram=QJsonDocument(respondObj).toJson();
         sendMessage(diagram,ip,port);
-        //找到接受者ip,port(不在线也无所谓)
+        qDebug()<<"addRespond()"<<ip<<port;
+        //接受者转发
         QJsonObject targetObj=getTargetIpPort(targetId);
-        if(targetObj["port"].toInt()!=0)
-        {
-            QJsonObject respondToTargetObj;
-            respondToTargetObj.insert("command","addBack");
-            respondToTargetObj.insert("friendId",sendId);
-            QString diagramToTarget=QJsonDocument(respondToTargetObj).toJson();
-            sendMessage(diagramToTarget,targetObj["ip"].toString(),targetObj["port"].toString());
-        }
+        QJsonObject respondToTargetObj;
+        QString targetIp=targetObj["ip"].toString();
+        QString targetPort=QString("%1").arg(targetObj["port"].toInt());//int不能直接转str
+        respondToTargetObj.insert("command","addBack");
+        respondToTargetObj.insert("friendId",sendId);
+        QString diagramToTarget=QJsonDocument(respondToTargetObj).toJson();
+        sendMessage(diagramToTarget,targetIp,targetPort);
+        qDebug()<<"addRespond()"<<targetIp<<targetPort;
     }
     else //加好友失败，id全是0
     {
