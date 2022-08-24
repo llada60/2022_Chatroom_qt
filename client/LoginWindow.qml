@@ -18,6 +18,7 @@ Window {
     height: 400
     visible: true //窗口是否可见
     title: qsTr("登陆") //窗口标题
+    flags: (Qt.Window | Qt.CustomizeWindowHint)
 
     RegisterWindow{id: registerWindows; visible: false;}
     MainWindow{id: mainWindows; visible: false;}
@@ -25,11 +26,19 @@ Window {
     // 发送登陆信号，在数据库中验证
     signal loginSignal(int usrID,string usrPSW)
 
+    // qml用
+    signal loginSuccess()
+
 //    // TODO 测试用，快速登录账号
 //    Component.onCompleted: {
 //        loginSignal(100001, "123");
 //        console.log("测试快速登录……")
 //    }
+
+    onClosing: {
+        console.log("被关闭了……")
+        close.accept = false
+    }
 
 
     MessageDialog
@@ -55,12 +64,20 @@ Window {
         if(1 == v)
         {
             mainWindows.show()
-            loginWindows.hide()
+            timer.start()
+            // loginWindows.visible = false
         }
         else
         {
             wrongLogin.open()
         }
+    }
+
+    Timer {
+        id: timer
+        onTriggered: loginWindows.hide()
+        repeat: false
+        interval: 1000
     }
 
 
@@ -134,10 +151,7 @@ Window {
         width: 40
         height: 40
         icon.source: sendMsg.pressed? "qrc:/images/rightArrow1.png":
-                                   sendMsg.hovered? "qrc:/images/rightArrow1.png" :
-                                                  ("qrc:/images/rightArrow.png")
-
-
+                                     ("qrc:/images/rightArrow.png")
         onClicked:
         {
             if(isNaN(inputID.text))

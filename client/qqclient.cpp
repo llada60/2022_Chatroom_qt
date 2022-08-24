@@ -344,7 +344,7 @@ void QQClient::loginBack(QJsonObject obj)
         friendRequest(clientId);
         groupRequest(clientId);
         //测试
-        refreshContact();
+        //refreshContact();
         /*
         messageRequest(100002);
         messageRequest(600001);

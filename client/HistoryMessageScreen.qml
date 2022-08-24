@@ -28,6 +28,18 @@ Rectangle {
         }
     }
 
+    function setMessageWithUid(uid, message, time){
+        for(let i =0; i < historyMessageListModel.count; i++){
+            let data = historyMessageListModel.get(i);
+            if(data.userId === uid){
+                data["latestTime"] = time
+                data["latestMessage"] = message
+                historyMessageListModel.set(i, data);
+                return
+            }
+        }
+    }
+
     function startChatWith(uid, name, avatar){
         for(let i =0; i < historyMessageListModel.count; i++){
             if(historyMessageListModel.get(i).userId === uid){
@@ -45,11 +57,26 @@ Rectangle {
                                            "latestTime": Date.parse(new Date())/ 1000,
                                            "latestMessage": ""
                                        })
+        historyMessageListView.currentIndex = 0
         clickHistoryMessageItem(historyMessageListModel.get(0))
     }
 
     ListModel {
         id: historyMessageListModel
+        ListElement {
+            userId: 1
+            userName: "张三"
+            avatar: "https://www.com8.cn/wp-content/uploads/2020/08/20200823052248-5f41fd28d49e4.jpg"
+            latestTime: 1661053691
+            latestMessage: "你说咱们要不就继续加油吧"
+        }
+        ListElement {
+            userId: 1
+            userName: "张三"
+            avatar: "https://www.com8.cn/wp-content/uploads/2020/08/20200823052248-5f41fd28d49e4.jpg"
+            latestTime: 1661053691
+            latestMessage: "你说咱们要不就继续加油吧"
+        }
     }
 
     ListView {

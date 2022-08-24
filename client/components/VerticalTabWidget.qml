@@ -11,6 +11,7 @@ Item {
     // See the "Property Binding"
     // documentation for details on default properties.
     default property alias content: stack.children
+    //property list content
 
     property int current: 0
 
@@ -18,7 +19,8 @@ Item {
 
     signal changeToContact()
 
-    onCurrentChanged: stack.replace(null, stack.children[current])
+    onCurrentChanged: stack.replace(null, content[current])
+
 
     Column {
         id: side
@@ -64,8 +66,9 @@ Item {
         id: stack
         height: tabWidget.height
         anchors.left: side.right; anchors.right: tabWidget.right
+//        anchors.fill: parent
         anchors.leftMargin: 12
-        initialItem: stack.children[0]
+        initialItem: content[0]
     }
 
 }
