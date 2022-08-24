@@ -11,20 +11,56 @@
 #include <QDateTime>
 #include <iostream>
 
-class ClientInfo//储存当前客户端用户
+class ClientInfo: public QObject//储存当前客户端用户
 {
+    Q_OBJECT
+    Q_PROPERTY(int id READ id WRITE setId NOTIFY idChanged)
+    Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
+    Q_PROPERTY(QString avatar READ avatar WRITE setAvatar NOTIFY avatarChanged)
+
 public:
+    ClientInfo(){}
     ClientInfo(QJsonObject infoObj)
     {
-        id=infoObj["id"].toInt();
-        name=infoObj["name"].toString();
-        icon=infoObj["icon"].toString();
-        qDebug()<<"ClientInfo"<<id<<name<<icon;
+        parse(infoObj);
     }
 
-    int id;
-    QString name;
-    QString icon;
+    int mId=0;
+    QString mName="默认昵称";
+    QString mAvatar="https://www.com8.cn/wp-content/uploads/2020/08/20200823052248-5f41fd28d49e4.jpg";
+
+    int id(){return mId;};
+    void setId(int id){if(id!=mId){
+            mId = id;
+            emit idChanged();
+        }}
+
+    QString name(){return mName;}
+    void setName(QString name){if(name != mName){
+            mName = name;
+            emit nameChanged();
+        }
+    }
+
+    QString avatar(){return mAvatar;}
+    void setAvatar(QString avatar){if(avatar != mAvatar){
+            mAvatar = avatar;
+            emit avatarChanged();
+        }
+    }
+
+    void parse(QJsonObject infoObj)
+    {
+        mId=infoObj["id"].toInt();
+        mName=infoObj["name"].toString();
+        mAvatar=infoObj["icon"].toString();
+        qDebug()<<"ClientInfo"<<mId<<mName<<mAvatar;
+    }
+
+signals:
+    void idChanged();
+    void nameChanged();
+    void avatarChanged();
 };
 
 class User //储存用户信息

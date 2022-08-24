@@ -7,12 +7,12 @@ import Qt.labs.platform 1.0 as QtPlatform
 import "./components"
 
 ColumnLayout {
-//    anchors.fill: parent
+
     spacing: 12
     anchors.margins: 24
-    property int myUid: 0
-    property string myName: "Shen"
-    property string myAvatar: "https://tse2-mm.cn.bing.net/th/id/OIP-C.cS6phGwfJ3qgAtvSXv0rugAAAA?pid=ImgDet&rs=1"
+    property int myUid: ClientInfo.id
+    property string myName: ClientInfo.name
+    property string myAvatar: ClientInfo.avatar
     property int targetId: 1
 
     property string targetName: "ll"
@@ -285,6 +285,7 @@ ColumnLayout {
 
     //初始化测试
     Component.onCompleted: {
+        console.log(`ClientInfo: id:${ClientInfo.id}`)
         chatListModel.append({
                                  "uid": 100002,
                                  "name": "李四",

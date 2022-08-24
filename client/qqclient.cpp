@@ -1,4 +1,5 @@
 #include "qqclient.h"
+#include <QQmlContext>
 
 QQClient::QQClient(QQmlApplicationEngine *engine, QObject *parent)
 {
@@ -413,7 +414,11 @@ void QQClient::friendBack(QJsonObject obj)
     friendList.clear();
     //自己的信息
     QJsonObject clientObj=friendJsonList[0].toObject();
-    clientInfo=new ClientInfo(clientObj);
+
+    QQmlContext* context = engine->rootContext();
+    ClientInfo* info = new ClientInfo(clientObj);
+    context->setContextProperty("ClientInfo", info);
+
     //遍历添加刷新后朋友列表
     for(int i=1;i<friendJsonList.size();i++)
     {
