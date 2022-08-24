@@ -194,6 +194,8 @@ QByteArray SqlFriendModel::messageList(const int &aID, const int &bID)
             obj.insert("message", QJsonValue(query.value("MESSAGE").toString()));
             jsonItem.append(QJsonValue(obj));
         }
+        finalObj.insert("command","messageBack");
+        finalObj.insert("targetId",bID);
         finalObj.insert("messagelist", QJsonValue(jsonItem));
     }
     bAry = QJsonDocument(finalObj).toJson();
