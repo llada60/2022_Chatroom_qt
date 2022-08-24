@@ -261,7 +261,7 @@ QByteArray SqlGroupModel::groupList(const int &mID)
         }
     }
     finalObj.insert("groupList", QJsonValue(jsonAry));
-    finalObj.insert("command", QJsonValue("grouplist"));
+    finalObj.insert("command", QJsonValue("groupBack"));
     bAry = QJsonDocument(finalObj).toJson();
     return bAry;
 }
