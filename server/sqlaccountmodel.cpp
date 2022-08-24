@@ -299,7 +299,7 @@ QByteArray SqlAccountModel::messageList(const int &ID)
         jsonTotalG.insert(QString::number(lastID), QJsonValue(jsonItem));
         finalObj.insert("grouplist", QJsonValue(jsonTotalG));
     }
-    finalObj.insert("command", QJsonValue("memberinfo"));
+    finalObj.insert("command", QJsonValue("messageBack"));
     qDebug() << finalObj;
     bAry = QJsonDocument(finalObj).toJson();
     return bAry;

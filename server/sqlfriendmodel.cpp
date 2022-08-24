@@ -136,7 +136,7 @@ QByteArray SqlFriendModel::friendList(const int &ID)
         qDebug() << jsonAry;
         finalObj.insert("list", QJsonValue(jsonAry));
     }
-    finalObj.insert("command", QJsonValue("friendinfo"));
+    finalObj.insert("command", QJsonValue("friendBack"));
     bAry = QJsonDocument(finalObj).toJson();
     return bAry;
 }
