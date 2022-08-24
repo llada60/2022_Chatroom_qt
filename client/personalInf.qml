@@ -45,29 +45,12 @@ Window {
     property string edu: "北理"
     property bool setFlag: true //1：readOnly界面 0:修改界面
 
-    // 1）发送：设置信息返回服务器端->数据库端存储
+    // 发送：设置信息返回服务器端->数据库端存储
     signal setUsrInfSignal(string name,string saying,int usrid,string personalHead,int sexn,string area,string edul)
 
 
 
-    // 2）接受数据库发送的个人/好友信息，并展示
-    function getIsMeValue(v)
-    {
-        //v为bool类型
-        //v=1表示为个人信息 v=0表示好友信息
-        isMe = v
-    }
-    function getPInfBack(data)
-    {
-        personalHead = data.personalHead;
-        personalName = data.personalName
-        personalSaying = data.personalSaying
-        personalID = data.personalID
-        sex_num = data.sex
-        birthday = data.birthday
-        areaFrom = data.areaFrom
-        edu = data.edu
-    }
+
 
 
 

@@ -56,8 +56,68 @@ Rectangle {
     }
     CreateGroup{id:createGroup; visible: false;}
 
-    PersonalInf{id: personalInf;visible: false}
+    /*
+      获取好友/群聊信息=>信息界面
+      */
 
+    PersonalInf{id: personalInf; visible: false}
+    GroupInf{id:groupInf; visible:false}
+
+    //向服务器发送获取个人信息的信号
+    signal personInfSignal(int uid,bool isGroup)
+
+    //接收返回的个人信息信号
+    function personalInfBack(data)
+    {
+        personalInf.personalSaying = data.personalSaying
+        personalInf.sex_num = data.sex
+        personalInf.birthday = data.birthday
+        personalInf.areaFrom = data.areaFrom
+        personalInf.edu = data.edu
+
+//        personalInf.visible = true
+    }
+    function openPInfoWindow(){
+        //获得用户信息
+        personInfSignal(userId,isGroup)
+
+        personalInf.isMe = false
+        personalInf.personalHead = avatar
+        personalInf.personalName = userName
+        personalInf.personalID = userId
+
+        personalInf.visible = true // 与服务器通讯后注释
+    }
+
+    //向服务器发送获取个人信息的信号
+    signal groupInfSignal(int gid, bool isGroup)
+
+    //接收返回的群组信息信号
+    function groupInfBack(data)
+    {
+        groupNotic = data.groupNotic //群公告
+        groupSummary = data.groupSummary //群简介
+        isOwner = data.isOwner
+
+        //groupInf.visible = true
+
+
+    }
+    function openGInfoWindow(){
+        //获得群组信息
+        groupInfSignal(userId,isGroup)
+
+        groupInf.groupHead = avatar
+        groupInf.groupName = userName
+        groupInf.groupID = userId
+
+        groupInf.visible = true //与服务器通讯后注释
+    }
+
+
+    /*
+      ui界面
+      */
     ListModel {
         id: contactListModel
         ListElement {
@@ -86,19 +146,19 @@ Rectangle {
             userId: 1
             userName: "张三"
             avatar: "https://www.com8.cn/wp-content/uploads/2020/08/20200823052248-5f41fd28d49e4.jpg"
-            isGroup: false
+            isGroup: true
         }
         ListElement {
             userId: 1
             userName: "张三"
             avatar: "https://www.com8.cn/wp-content/uploads/2020/08/20200823052248-5f41fd28d49e4.jpg"
-            isGroup: false
+            isGroup: true
         }
         ListElement {
             userId: 1
             userName: "张三"
             avatar: "https://www.com8.cn/wp-content/uploads/2020/08/20200823052248-5f41fd28d49e4.jpg"
-            isGroup: false
+            isGroup: true
         }
     }
 
@@ -128,7 +188,15 @@ Rectangle {
                     acceptedButtons: Qt.LeftButton
                     onClicked:
                     {
-
+                        //问题在哪啊，avatar/userId/userName
+                        if(false == isGroup)
+                        {
+                            openPInfoWindow()
+                        }
+                        else
+                        {
+                            openGInfoWindow()
+                        }
                     }
 
                 }

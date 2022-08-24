@@ -26,33 +26,7 @@ Window {
     //接收发来信号判断是否是群主，若是群主拥有设置权限
     property bool isOwner: true
 
-    // 1）接受数据库传来的信息并display
-    function receiveGroupInf(data)
-    {
-        groupHead = data.groupHead
-        groupName = data.groupName
-        groupID = data.groupID
-        groupNotic = data.groupNotic //群公告
-        groupSummary = data.groupSummary //群简介
-        isOwner = data.isOwner
-    }
-    function receiveIsOwner(v)
-    {
-        /*
-          v==1:群主（拥有设置修改权限）
-          v==0:成员
-          */
-        if (1 == v)
-        {
-            isOwner = true
-        }
-        else
-        {
-            isOwner = false
-        }
-    }
-
-    // 2）若为群主对信息进行修改，向服务器推送修改后的信息
+    // 若为群主对信息进行修改，向服务器推送修改后的信息
     signal sendGroupInf(string groupName,string groupNotic,string groupSummary)
 
 
@@ -74,7 +48,7 @@ Window {
                 radius: 15/2
                 anchors.fill: parent
                 Text {
-                    id: name
+                    id: closeName
                     anchors.centerIn: parent
                     text: qsTr("X")
                     color:"#FFFFFF"
