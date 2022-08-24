@@ -196,7 +196,6 @@ Rectangle {
                     acceptedButtons: Qt.LeftButton
                     onClicked:
                     {
-                        //问题在哪啊，avatar/userId/userName
                         if(!isGroup)
                         {
                             openPInfoWindow(contactListModel.get(index))

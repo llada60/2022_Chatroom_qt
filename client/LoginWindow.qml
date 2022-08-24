@@ -52,7 +52,8 @@ Window {
             ClientInfo.id = Number(usrID)
             ClientInfo.avatar = usrHead
             mainWindows.show()
-            loginWindows.hide()
+//            loginWindows.hide()
+            loginWindows.visible = false
         }
         else
         {
