@@ -191,7 +191,7 @@ Rectangle {
         }
         RowLayout
         {
-            Button {
+            Button {// 添加好友
                 height: 56; width: 56
                 background: Rectangle {
                     color: "transparent"
@@ -205,7 +205,7 @@ Rectangle {
                     addFriendWindow.show()
                 }
             }
-            Button {
+            Button {// 创建群聊
                 height: 56; width: 56
                 background: Rectangle {
                     color: "transparent"

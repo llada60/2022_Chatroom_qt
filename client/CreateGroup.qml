@@ -12,9 +12,11 @@ Window {
     id: createGroupWindow
     width: 300
     height: 200
-    visible: true
+    visible: false
 
     title: qsTr("创建群聊")
+
+    flags:(Qt.Window | Qt.FramelessWindowHint)
 
 
     property string avatarImg: "https://c-ssl.dtstatic.com/uploads/blog/202203/25/20220325232426_17909.thumb.1000_0.jpeg"
@@ -47,12 +49,6 @@ Window {
     function printMember()
     {
         printStr = "确认拉取成员创建群聊？\n"
-//        console.log(mId.length)
-//        for(var i=0;i<mId.length;i++)
-//        {
-//            console.log(i)
-//            printStr = printStr + memberId[i].toString() + qsTr("\n")
-//        }
         return printStr
     }
 
@@ -101,6 +97,39 @@ Window {
         }
     }
 
+
+    Rectangle{
+            id:closeButton
+            width:10
+            height:10
+            radius: closeButton.width/2
+            anchors.top: parent.top
+            anchors.right: parent.right
+
+            Rectangle{
+                width:15
+                height:15
+                radius: 15/2
+                anchors{
+                    right:closeButton.right
+                    top:closeButton.top
+                }
+                Text {
+                    id: name
+                    anchors.centerIn: parent
+                    text: qsTr("X")
+                    color:"#FFFFFF"
+                    font.pixelSize: 16
+                }
+                color:"green"
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        createGroupWindow.visible = false
+                    }
+                }
+            }
+        }
 
 
     // 搜索栏
@@ -228,8 +257,8 @@ Window {
                 else
                 {
                     idDialog.open()
-//                    //窗体无法关闭的bug
-//                    close()
+                    console.log("拉群成功")
+                    createGroup.close()
                 }
             }
         }

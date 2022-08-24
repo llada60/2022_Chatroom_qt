@@ -28,6 +28,15 @@ RowLayout
             standardButtons: StandardButton.Cancel
     }
 
+    MessageDialog
+    {
+            id: cantAddMyself
+            title: "提示"
+            icon: StandardIcon.Warning
+            text: "不能添加自己为好友"
+            standardButtons: StandardButton.Cancel
+    }
+
     Rectangle
     {
         id: imgSearch
@@ -82,6 +91,12 @@ RowLayout
                 notNumInputText.open()
                 inputID.text = ""
             }
+            else if(ClientInfo.id == Number(inputID.text))
+            {
+                cantAddMyself.open()
+                inputID.text = ""
+            }
+
             else
             {
                 //将搜索内容发送

@@ -121,7 +121,6 @@ Window {
     // 确认
     Button
     {
-        //signal loginSignal(int usrID,string usrPSW)
         id: sendMsg
         objectName: "loginButton"
         anchors.centerIn: parent

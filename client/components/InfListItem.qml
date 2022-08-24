@@ -1,11 +1,21 @@
 import QtQuick 2.12
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.5
+import QtQuick.Dialogs 2.0
 
 Rectangle
 {
 
     width:parent.width
+
+    MessageDialog
+    {//不可搜索自身提示
+            id: cantSearchMyself
+            title: "提示"
+            icon: StandardIcon.Warning
+            text: "不可搜索自身"
+            standardButtons: StandardButton.Cancel
+    }
 
     RowLayout
     {
@@ -41,6 +51,12 @@ Rectangle
             icon.color: "transparent"
             onClicked:
             {
+                // 不可搜索自身id
+                if(Config.read() ==  userid)
+                {
+                    cantSearchMyself.open()
+                }
+
                 //发出好友（群聊）添加信号
                 addSignal(userid);
             }
