@@ -41,6 +41,16 @@ QQClient::QQClient(QQmlApplicationEngine *engine, QObject *parent)
                      this,SLOT(refreshContactFriend()));//人
     QObject::connect(contactScreen,SIGNAL(requestGroupSignal()),
                      this,SLOT(refreshContactGroup()));//群
+    QObject* infoCheckScreen = chatScreen->findChild<QObject*>("chatListView");//->findChild<QObject*>("chatListItem");
+    qDebug() << "personInfoCheck" << infoCheckScreen->findChildren<QObject*>()[0]->findChildren<QObject*>() << endl;
+    QObject::connect(infoCheckScreen->findChildren<QObject*>()[1], SIGNAL(personInfSignal(int,bool)),
+                     this,SLOT(infoRequest(int,bool)));
+    /*
+    clientId=100002;
+    sendChatMessage(100001,"nihao",123);
+    sendChatMessage(600001,"你们好",824);
+    */
+
 
     /*
     //c++调qml函数（例子）
@@ -379,16 +389,26 @@ void QQClient::loginBack(QJsonObject obj)
 void QQClient::sendChatMessageBack(QJsonObject obj)
 {
     //解包
+    //groupId,sendId
     int sendId=obj["sendId"].toInt();
     QString content=obj["content"].toString();
     int time=obj["time"].toInt();
     //结合本地数据构建消息包
     QJsonObject jsonObj;
-    jsonObj.insert("uid",sendId);
-    jsonObj.insert("name","cyy");//这里要从id获取名字
+    jsonObj.insert("uid",sendId);//id
+    jsonObj.insert("groupId",obj["groupId"].toInt()); //groupId: 0是单发，或者是600001这种，群发
+    //利用sendId从本地获取名字，头像(不论是单发还是群聊，都用发送者的)
+    for(int i=0;i<friendList.length();i++)
+    {
+        if(friendList[i]->id==sendId)
+        {
+            jsonObj.insert("name",friendList[i]->name);
+            jsonObj.insert("avatar",friendList[i]->icon);
+        }
+    }
     jsonObj.insert("time",time);
-    jsonObj.insert("message",content);//头像应该也是从id获取
-    jsonObj.insert("avatar","https://ts1.cn.mm.bing.net/th/id/R-C.1eed2de61a172c6ca2d79fc5ea62eb01?rik=c7W7KrSN7xFOIg&riu=http%3a%2f%2fimg.crcz.com%2fallimg%2f202003%2f10%2f1583821081100057.jpg&ehk=q%2f9lt0hQhwZzKFdRKYyG2g4zxQKgTWKJ4gHeelom3Mo%3d&risl=&pid=ImgRaw&r=0&sres=1&sresct=1");
+    jsonObj.insert("message",content);
+
     jsonObj.insert("type",0);
     //调用QML函数
     QVariant res;
@@ -507,10 +527,22 @@ void QQClient::groupBack(QJsonObject obj)
     }
 }
 void QQClient::personInfoBack(QJsonObject obj){
-    qDebug() << "personInfoBack\n" << obj << endl;
+//    qDebug() << "personInfoBack\n" << obj << endl;
+    QVariant res;
+    QObject* personInfoWindow=root->findChild<QObject*>("mainWindow")
+            ->findChild<QObject*>("chatWindow1")->findChild<QObject*>("contactScreen");
+    QMetaObject::invokeMethod(personInfoWindow,"personalInfBack",
+                              Q_RETURN_ARG(QVariant,res),
+                              Q_ARG(QVariant,obj));
 }
 void QQClient::groupInfoBack(QJsonObject obj){
-    qDebug() << "groupInfoBack\n" << obj << endl;
+//    qDebug() << "groupInfoBack\n" << obj << endl;
+    QVariant res;
+    QObject* groupInfoWindow=root->findChild<QObject*>("mainWindow")
+            ->findChild<QObject*>("chatWindow1")->findChild<QObject*>("contactScreen");
+    QMetaObject::invokeMethod(groupInfoWindow,"groupInfBack",
+                              Q_RETURN_ARG(QVariant,res),
+                              Q_ARG(QVariant,obj));
 }
 //刷新好友列表
 void QQClient::refreshContactFriend()

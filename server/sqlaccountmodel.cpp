@@ -26,7 +26,7 @@ static void createTable(QSqlDatabase db)
                        "BIRTH TEXT,"
                        "AREA CHAR(20),"
                        "EDUCATION CHAR(20),"
-                       "SIGNATURE TEXT)"))
+                       "SIGNATURE TEXT DEFAULT '这个人太懒了，没有个性签名')"))
         {
             qDebug() << "表创建发生错误";
             qDebug() << query.lastError();

@@ -218,6 +218,7 @@ void QQServer::sendChatMessageRespond(QJsonObject obj, QHostAddress ip, quint16 
         //转发消息
         QJsonObject jsonObj;
         jsonObj.insert("command","sendChatMessageBack");
+        jsonObj.insert("groupId",0); //groupId==0代表单发
         jsonObj.insert("sendId",sendId);
         jsonObj.insert("content",content);
         jsonObj.insert("time",time);
@@ -230,9 +231,30 @@ void QQServer::sendChatMessageRespond(QJsonObject obj, QHostAddress ip, quint16 
     {
         //取群成员
         Group* group = new Group(targetId,gpModel);
-        //遍历发送
-
-        //添加数据库
+        //遍历发送(跳过自己)
+        for(int i=0;i<group->memberList.length();i++)
+        {
+            if(group->memberList[i]==sendId)
+            {
+                continue;
+            }
+            //发送
+            int memberId=group->memberList[i];
+            //转发消息
+            QJsonObject memberObj=getTargetIpPort(memberId);
+            QString memberIp=memberObj["ip"].toString();
+            QString memberPort=QString("%1").arg(memberObj["port"].toInt());
+            QJsonObject jsonObj;
+            jsonObj.insert("command","sendChatMessageBack");
+            jsonObj.insert("groupId",targetId);
+            jsonObj.insert("sendId",sendId);
+            jsonObj.insert("content",content);
+            jsonObj.insert("time",time);
+            QString diagram=QJsonDocument(jsonObj).toJson();
+            sendMessage(diagram,memberIp,memberPort);
+        }
+        //数据库添加聊天记录
+        gpModel->sendMessage(targetId,sendId,type,time,content);
     }
 
 }
@@ -439,6 +461,9 @@ void QQServer::test(SqlAccountModel *atModel, SqlFriendModel *fdModel, SqlGroupM
     gpModel->sendMessage(600002,100002,0,3,"群发5");
     gpModel->sendMessage(600002,100003,0,3,"群发5");
     */
+    QJsonObject obj;
+    obj.insert("comm","1");
+    qDebug()<<obj["groupId"].toInt();
 }
 
 
