@@ -152,7 +152,7 @@ void QQServer::parseCommand(QString jsonStr,QHostAddress ip, quint16 port)
     {
         messageRespond(obj,ip,port);
     }
-    else if(command=="getPersonalInfo")//查找个人信息
+    else if(command=="personInfoRequest")//查找个人信息
     {
         getPersonalInfoRespond(obj,ip,port);
     }
