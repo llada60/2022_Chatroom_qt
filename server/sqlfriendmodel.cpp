@@ -19,6 +19,7 @@ static void createTable(QSqlDatabase db)
                                    "ID INTEGER PRIMARY KEY AUTOINCREMENT,"
                                    "USERID INTEGER NOT NULL, "
                                    "FRIENDID INTEGER NOT NULL CHECK (USERID<=FRIENDID),"
+                                   "UNIQUE (USERID, FRIENDID),"
                                    "FOREIGN KEY (USERID) REFERENCES USERINFO(ID) ON DELETE CASCADE,"
                                    "FOREIGN KEY (FRIENDID) REFERENCES USERINFO(ID) ON DELETE CASCADE)"
                                    ).arg(friendTableName)))
