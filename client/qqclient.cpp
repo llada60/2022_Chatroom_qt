@@ -33,6 +33,11 @@ QQClient::QQClient(QQmlApplicationEngine *engine, QObject *parent)
     QObject::connect(addFriendWindow,SIGNAL(searchSignal(int)),
                      this,SLOT(search(int)));
 
+    QObject* personInfoCheckScreen = chatScreen->findChild<QObject*>("chatListView");//->findChild<QObject*>("chatListItem");
+    qDebug() << "personInfoCheck" << personInfoCheckScreen->findChildren<QObject*>()[0]->findChildren<QObject*>() << endl;
+    QObject::connect(personInfoCheckScreen->findChildren<QObject*>()[1], SIGNAL(getPInfSignal(int)),
+                     this,SLOT(personInfoRequest(int)));
+
     /*
     //c++调qml函数（例子）
     QVariant res;
@@ -154,6 +159,9 @@ void QQClient::parseCommand(QString jsonStr,QHostAddress ip, quint16 port)
     else if(command=="messageBack")//历史消息响应
     {
         messageBack(obj);
+    }
+    else if(command == "personInfoBack"){//查询某人信息
+
     }
     else
     {
@@ -279,6 +287,16 @@ void QQClient::groupRequest(int id)
     //封装Json
     QJsonObject jsonObj;
     jsonObj.insert("command","groupRequest");
+    jsonObj.insert("id",id);
+    QString diagram=QJsonDocument(jsonObj).toJson();
+    //发送
+    sendMessage(diagram,this->hostIp,this->hostPort);
+}
+
+void QQClient::personInfoRequest(int id){
+    //封装Json
+    QJsonObject jsonObj;
+    jsonObj.insert("command","personInfoRequest");
     jsonObj.insert("id",id);
     QString diagram=QJsonDocument(jsonObj).toJson();
     //发送
@@ -426,5 +444,7 @@ void QQClient::groupBack(QJsonObject obj)
         qDebug()<<groupList[i]->name;
     }
 }
-
+void QQClient::personInfoBack(QJsonObject obj){
+    qDebug() << "personInfoBack\n" << obj << endl;
+}
 

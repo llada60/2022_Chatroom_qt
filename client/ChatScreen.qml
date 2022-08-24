@@ -118,6 +118,7 @@ ColumnLayout {
 
         ListView {
             id: chatListView
+            objectName: "chatListView"
             anchors.fill: parent
             anchors.margins: 16
             clip: true

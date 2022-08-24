@@ -14,12 +14,13 @@
 class ClientInfo//储存当前客户端用户
 {
 public:
+    int userId = 0;
+    QString userName = "默认名称";
+    QString avatar = "https://www.com8.cn/wp-content/uploads/2020/08/20200823052248-5f41fd28d49e4.jpg";
     ClientInfo(QJsonObject infoObj)
     {
 
     }
-
-
 };
 
 class User //储存用户信息
@@ -77,6 +78,8 @@ private slots:
     void friendRequest(int id);//请求好友列表（从服务端拉取数据的系列函数）
     void messageRequest(int id);//请求历史聊天记录
     void groupRequest(int id);//请求群列表
+    void personInfoRequest(int id);//请求某人的详细数据
+
 
 private:
     //配置信息
@@ -108,6 +111,7 @@ private:
     void friendBack(QJsonObject obj);//请求好友列表（从服务端拉取数据的系列函数）
     void messageBack(QJsonObject obj);//请求历史聊天记录
     void groupBack(QJsonObject obj);//请求群列表
+    void personInfoBack(QJsonObject obj);//某人信息
 };
 
 

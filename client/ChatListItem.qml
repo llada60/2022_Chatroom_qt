@@ -8,6 +8,7 @@ Item {
     anchors.right: parent.right
     height: childrenRect.height
     readonly property bool sentByMe: uid == myUid
+    objectName: "chatListItem"
 
     function bestDelegate(t) {
         if(t === 1)
