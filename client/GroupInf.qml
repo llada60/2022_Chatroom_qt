@@ -30,7 +30,7 @@ Window {
     signal sendGroupInf(string groupName,string groupNotic,string groupSummary)
 
 
-    flags:(Qt.Window | Qt.FramelessWindowHint)
+    flags:(Qt.Window | Qt.CustomizeWindowHint)
 
 
     Rectangle{
@@ -123,6 +123,8 @@ Window {
                         noticeContext.visible = true
                         noticeC.visible = false
                         groupNotic = noticeC.text
+
+                        avatar = groupHead
 
                         console.log("群组信息修改已完成")
 
@@ -230,8 +232,8 @@ Window {
                     Layout.alignment: Qt.AlignHCenter
                     Layout.topMargin: -9
                     background:
-                    Item {
-                        opacity: 0
+                    {
+                        opacity: 1
                     }
                     icon.source: sendMsg.pressed? "qrc:/images/message1.png":
                                          sendMsg.hovered? "qrc:/images/message1.png" :

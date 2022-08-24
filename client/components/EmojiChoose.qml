@@ -10,7 +10,7 @@ Window {
     height: gridView.cellHeight*5+4*2
     width: gridView.cellWidth*12+4*2+5
 
-    flags:(Qt.Window | Qt.FramelessWindowHint)
+    flags:(Qt.Window | Qt.CustomizeWindowHint)
 
     signal clickEmoji(string emojiText)
 
