@@ -53,7 +53,8 @@ Window {
         }
         else
         {
-            passSignal(usrid,avatarImg,userName,isPerson)
+            //这里应该把好友添加到通讯录
+            passSignal(userid,avatarImg,userName,isPerson)
             addOk.open()
             close()
         }

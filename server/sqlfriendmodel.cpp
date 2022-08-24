@@ -63,7 +63,7 @@ SqlFriendModel::~SqlFriendModel()
     database().close();
 }
 
-void SqlFriendModel::addFriend(const int &aID, const int &bID)
+bool SqlFriendModel::addFriend(const int &aID, const int &bID)
 {
     setTable(friendTableName);
     QSqlQuery query;
@@ -75,10 +75,12 @@ void SqlFriendModel::addFriend(const int &aID, const int &bID)
     {
         qDebug() << "添加好友发生错误";
         qDebug() << query.lastError();
+        return false;
     }
     else
     {
         qDebug() << "添加好友成功";
+        return true;
     }
 }
 

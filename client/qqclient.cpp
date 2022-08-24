@@ -32,6 +32,13 @@ QQClient::QQClient(QQmlApplicationEngine *engine, QObject *parent)
             ->findChild<QObject*>("addFriendWindow");
     QObject::connect(addFriendWindow,SIGNAL(searchSignal(int)),
                      this,SLOT(search(int)));
+    QObject::connect(addFriendWindow,SIGNAL(addSignal(int)),
+                     this,SLOT(add(int)));
+
+    QObject* personInfoCheckScreen = chatScreen->findChild<QObject*>("chatListView");//->findChild<QObject*>("chatListItem");
+    qDebug() << "personInfoCheck" << personInfoCheckScreen->findChildren<QObject*>()[0]->findChildren<QObject*>() << endl;
+    QObject::connect(personInfoCheckScreen->findChildren<QObject*>()[1], SIGNAL(getPInfSignal(int)),
+                     this,SLOT(personInfoRequest(int)));
 
     /*
     //c++调qml函数（例子）
@@ -155,6 +162,9 @@ void QQClient::parseCommand(QString jsonStr,QHostAddress ip, quint16 port)
     {
         messageBack(obj);
     }
+    else if(command == "personInfoBack"){//查询某人信息
+
+    }
     else
     {
         //未知命令
@@ -234,8 +244,10 @@ void QQClient::add(int targetId)
     //封装Json
     QJsonObject jsonObj;
     jsonObj.insert("command","add");
+    jsonObj.insert("sendId",clientId);
     jsonObj.insert("targetId",targetId);
     QString diagram=QJsonDocument(jsonObj).toJson();
+    qDebug()<<diagram;
     //发送
     sendMessage(diagram,this->hostIp,this->hostPort);
 }
@@ -285,6 +297,16 @@ void QQClient::groupRequest(int id)
     sendMessage(diagram,this->hostIp,this->hostPort);
 }
 
+void QQClient::personInfoRequest(int id){
+    //封装Json
+    QJsonObject jsonObj;
+    jsonObj.insert("command","personInfoRequest");
+    jsonObj.insert("id",id);
+    QString diagram=QJsonDocument(jsonObj).toJson();
+    //发送
+    sendMessage(diagram,this->hostIp,this->hostPort);
+}
+
 //响应函数
 //注册响应
 
@@ -316,6 +338,8 @@ void QQClient::loginBack(QJsonObject obj)
     {
         friendRequest(clientId);
         groupRequest(clientId);
+        //聊天记录
+        //个人信息
     }
     //调用QML登录函数
     QVariant res; //如果QML函数没有返回值会不会报错？
@@ -363,22 +387,35 @@ void QQClient::searchBack(QJsonObject obj)
 //添加响应
 void QQClient::addBack(QJsonObject obj)
 {
-    qDebug()<<"addBack()"<<obj;
+    //解包
+    int friendId=obj["friendId"].toInt();
+    //调用QML函数
+    QVariant res; //如果QML函数没有返回值会不会报错？
+    QObject* addFriendWindow=root->findChild<QObject*>("mainWindow") //加好友
+            ->findChild<QObject*>("chatWindow1")->findChild<QObject*>("contactScreen")
+            ->findChild<QObject*>("addFriendWindow");
+    QMetaObject::invokeMethod(addFriendWindow,"addBack",
+                              Q_RETURN_ARG(QVariant,res),
+                              Q_ARG(QVariant,friendId));
+
 }
 //删除响应
 void QQClient::deleteBack(QJsonObject obj)
 {
     qDebug()<<"deleteBack()"<<obj;
 }
-//朋友列表响应
+//朋友列表响应(同时更新clientInfo)
 void QQClient::friendBack(QJsonObject obj)
 {
     //解包
     QJsonArray friendJsonList=obj["list"].toArray();
     //清空原有朋友列表
     friendList.clear();
+    //自己的信息
+    QJsonObject clientObj=friendJsonList[0].toObject();
+    clientInfo=new ClientInfo(clientObj);
     //遍历添加刷新后朋友列表
-    for(int i=0;i<friendJsonList.size();i++)
+    for(int i=1;i<friendJsonList.size();i++)
     {
         //解包
         QJsonObject user=friendJsonList[i].toObject();
@@ -426,5 +463,7 @@ void QQClient::groupBack(QJsonObject obj)
         qDebug()<<groupList[i]->name;
     }
 }
-
+void QQClient::personInfoBack(QJsonObject obj){
+    qDebug() << "personInfoBack\n" << obj << endl;
+}
 

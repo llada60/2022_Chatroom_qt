@@ -16,10 +16,15 @@ class ClientInfo//储存当前客户端用户
 public:
     ClientInfo(QJsonObject infoObj)
     {
-
+        id=infoObj["id"].toInt();
+        name=infoObj["name"].toString();
+        icon=infoObj["icon"].toString();
+        qDebug()<<"ClientInfo"<<id<<name<<icon;
     }
 
-
+    int id;
+    QString name;
+    QString icon;
 };
 
 class User //储存用户信息
@@ -77,6 +82,8 @@ private slots:
     void friendRequest(int id);//请求好友列表（从服务端拉取数据的系列函数）
     void messageRequest(int id);//请求历史聊天记录
     void groupRequest(int id);//请求群列表
+    void personInfoRequest(int id);//请求某人的详细数据
+
 
 private:
     //配置信息
@@ -85,6 +92,7 @@ private:
     quint16 hostPort=9990;
     //临时数据
     int clientId=0;//储存当前id
+    ClientInfo * clientInfo;//储存当前账户所有信息
     QList<User*> friendList;//储存好友列表
     QList<Group*> groupList;//储存群组列表
     //前端通信engine
@@ -108,6 +116,7 @@ private:
     void friendBack(QJsonObject obj);//请求好友列表（从服务端拉取数据的系列函数）
     void messageBack(QJsonObject obj);//请求历史聊天记录
     void groupBack(QJsonObject obj);//请求群列表
+    void personInfoBack(QJsonObject obj);//某人信息
 };
 
 
