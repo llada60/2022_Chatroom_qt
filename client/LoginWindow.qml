@@ -7,9 +7,9 @@ import QtQuick.Dialogs 1.3
 import "./js/config_utils.js" as ConfigUtils
 
 Window {
-    property int usrID: 0
+    property string usrID: Config.read("myID","") //置空失败
     property string usrPSW: ""
-    property string usrHead: "https://c-ssl.duitang.com/uploads/blog/201408/15/20140815095903_ttcnF.jpeg" //登陆时若本地就有头像自动获取；否则使用自带默认头像（类qq的企鹅）
+    property string usrHead: Config.read("myHead", "https://c-ssl.duitang.com/uploads/blog/201408/15/20140815095903_ttcnF.jpeg")     //登陆时若本地就有头像自动获取；否则使用自带默认头像（类qq的企鹅）
     property string usrName: ""
     property string usrPassword: ""
 
@@ -25,20 +25,6 @@ Window {
 
     // 发送登陆信号，在数据库中验证
     signal loginSignal(int usrID,string usrPSW)
-
-    // qml用
-    signal loginSuccess()
-
-//    // TODO 测试用，快速登录账号
-//    Component.onCompleted: {
-//        loginSignal(100001, "123");
-//        console.log("测试快速登录……")
-//    }
-
-    onClosing: {
-        console.log("被关闭了……")
-        close.accept = false
-    }
 
 
     MessageDialog
@@ -63,21 +49,17 @@ Window {
     {
         if(1 == v)
         {
+            Config.write("myID", usrID)
+            ClientInfo.id = Number(usrID)
+            ClientInfo.avatar = usrHead
             mainWindows.show()
-            timer.start()
-            // loginWindows.visible = false
+//            loginWindows.hide()
+            loginWindows.visible = false
         }
         else
         {
             wrongLogin.open()
         }
-    }
-
-    Timer {
-        id: timer
-        onTriggered: loginWindows.hide()
-        repeat: false
-        interval: 1000
     }
 
 
@@ -127,6 +109,7 @@ Window {
         x:20
         leftPadding: 4
         placeholderText: qsTr("<center>账号</center>")
+        text: usrID
     }
     TextField
     {

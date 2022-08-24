@@ -49,17 +49,12 @@ Window {
     signal setUsrInfSignal(string name,string saying,int usrid,string personalHead,int sexn,string area,string edul)
 
 
-
-
-
-
-
     property string shengXiao: checkShengXiao()
 
     SelectAvatar{id:selectAvatar}
 
 
-    flags:(Qt.Window | Qt.FramelessWindowHint)
+    flags:(Qt.Window | Qt.CustomizeWindowHint)
 
 
     Rectangle{
@@ -166,9 +161,13 @@ Window {
 
                     headArea.acceptedButtons = Qt.NoButton
 
+                    avatar = personalHead
+
+                    Config.write("myHead", personalHead)
+
                     console.log("个人信息修改已完成")
 
-                    // 发送信号(string name,string saying,int usrid,int sexn,string area,string edul)
+                    // 发送信号(string name,string saying,int usrid,string avatar, int sexn,string area,string edul)
                     setUsrInfSignal(personalName,personalSaying,personalID,personalHead,sexToNum(),areaFrom,edu)
                 }
 
@@ -184,7 +183,7 @@ Window {
         {
             id: img
             Layout.alignment: Qt.AlignTop
-            Layout.topMargin: -70
+            Layout.topMargin: isMe?-70:-49
 
             width: 338
             height: 200
@@ -313,8 +312,19 @@ Window {
                 ctx.lineWidth = 2
 
                 ctx.beginPath();                  // 开始一条路径
-                ctx.moveTo(40,300);         // 移动到指定位置
-                ctx.lineTo(298,300);
+                if(1 == isMe)
+                {
+                    ctx.moveTo(40,300);         // 移动到指定位置
+                    ctx.lineTo(298,300);
+
+                }
+                else
+                {
+                    ctx.moveTo(40,280);         // 移动到指定位置
+                    ctx.lineTo(298,280);
+
+                }
+
 
                 ctx.stroke();
              }

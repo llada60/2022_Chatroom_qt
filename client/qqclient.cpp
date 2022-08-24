@@ -41,10 +41,10 @@ QQClient::QQClient(QQmlApplicationEngine *engine, QObject *parent)
                      this,SLOT(refreshContactFriend()));//人
     QObject::connect(contactScreen,SIGNAL(requestGroupSignal()),
                      this,SLOT(refreshContactGroup()));//群
-    QObject* personInfoCheckScreen = chatScreen->findChild<QObject*>("chatListView");//->findChild<QObject*>("chatListItem");
-    qDebug() << "personInfoCheck" << personInfoCheckScreen->findChildren<QObject*>()[0]->findChildren<QObject*>() << endl;
-    QObject::connect(personInfoCheckScreen->findChildren<QObject*>()[1], SIGNAL(getPInfSignal(int)),
-                     this,SLOT(personInfoRequest(int)));
+    QObject* infoCheckScreen = chatScreen->findChild<QObject*>("chatListView");//->findChild<QObject*>("chatListItem");
+    qDebug() << "personInfoCheck" << infoCheckScreen->findChildren<QObject*>()[0]->findChildren<QObject*>() << endl;
+    QObject::connect(infoCheckScreen->findChildren<QObject*>()[1], SIGNAL(getInfSignal(int,bool)),
+                     this,SLOT(infoRequest(int,bool)));
     /*
     //c++调qml函数（例子）
     QVariant res;
@@ -168,7 +168,10 @@ void QQClient::parseCommand(QString jsonStr,QHostAddress ip, quint16 port)
         messageBack(obj);
     }
     else if(command == "personInfoBack"){//查询某人信息
-
+        personInfoBack(obj);
+    }
+    else if(command == "groupInfoBack"){//查询某群信息
+        groupInfoBack(obj);
     }
     else
     {
@@ -301,6 +304,15 @@ void QQClient::groupRequest(int id)
     //发送
     sendMessage(diagram,this->hostIp,this->hostPort);
 }
+void QQClient::infoRequest(int id, bool isGroup){
+    if(isGroup == true){
+        groupInfoRequest(id);
+    }
+    else{
+        personInfoRequest(id);
+    }
+}
+
 
 void QQClient::personInfoRequest(int id){
     //封装Json
@@ -312,6 +324,15 @@ void QQClient::personInfoRequest(int id){
     sendMessage(diagram,this->hostIp,this->hostPort);
 }
 
+void QQClient::groupInfoRequest(int id){
+    //封装Json
+    QJsonObject jsonObj;
+    jsonObj.insert("command","groupInfoRequest");
+    jsonObj.insert("id",id);
+    QString diagram=QJsonDocument(jsonObj).toJson();
+    //发送
+    sendMessage(diagram,this->hostIp,this->hostPort);
+}
 //响应函数
 //注册响应
 
@@ -344,7 +365,6 @@ void QQClient::loginBack(QJsonObject obj)
         friendRequest(clientId);
         groupRequest(clientId);
         //测试
-        //refreshContact();
         /*
         messageRequest(100002);
         messageRequest(600001);
@@ -490,10 +510,13 @@ void QQClient::groupBack(QJsonObject obj)
 void QQClient::personInfoBack(QJsonObject obj){
     qDebug() << "personInfoBack\n" << obj << endl;
 }
-
+void QQClient::groupInfoBack(QJsonObject obj){
+    qDebug() << "groupInfoBack\n" << obj << endl;
+}
 //刷新好友列表
 void QQClient::refreshContactFriend()
 {
+    //更新本地朋友信息
     friendRequest(clientId);
     //构造QJsonArray
     QJsonArray jsonArray;
@@ -509,7 +532,6 @@ void QQClient::refreshContactFriend()
     QVariant res; //如果QML函数没有返回值会不会报错？
     QObject* contactScreen=root->findChild<QObject*>("mainWindow") //加好友
             ->findChild<QObject*>("chatWindow1")->findChild<QObject*>("contactScreen");
-    qDebug()<<contactScreen->property("radius");
     QMetaObject::invokeMethod(contactScreen,"setContacts",
                               Q_RETURN_ARG(QVariant,res),
                               Q_ARG(QVariant,jsonArray));
@@ -517,6 +539,24 @@ void QQClient::refreshContactFriend()
 //刷新群列表
 void QQClient::refreshContactGroup()
 {
-
+    //更新本地群信息
+    groupRequest(clientId);
+    //构造QJsonArray
+    QJsonArray jsonArray;
+    for(int i=0;i<groupList.length();i++)
+    {
+        QJsonObject groupObj;
+        groupObj.insert("userId",groupList[i]->id);
+        groupObj.insert("userName",groupList[i]->name);
+        groupObj.insert("avatar",groupList[i]->icon);
+        jsonArray.append(groupObj);
+    }
+    //调用QML刷新函数
+    QVariant res; //如果QML函数没有返回值会不会报错？
+    QObject* contactScreen=root->findChild<QObject*>("mainWindow") //加好友
+            ->findChild<QObject*>("chatWindow1")->findChild<QObject*>("contactScreen");
+    QMetaObject::invokeMethod(contactScreen,"setGroups",
+                              Q_RETURN_ARG(QVariant,res),
+                              Q_ARG(QVariant,jsonArray));
 }
 

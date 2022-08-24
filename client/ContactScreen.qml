@@ -18,6 +18,7 @@ Rectangle {
     signal requestContactSignal()
     signal requestGroupSignal()
 
+
     // 获取到联系人后调这个函数，messages为QJsonArray。每一项的数据data参考如下
     /**
       userId: 1
@@ -27,8 +28,6 @@ Rectangle {
     function setContacts(contacts){
         contactListModel.clear()
         for(let each of contacts){
-            console.log("refresh")
-            console.log(each)
             contactListModel.append(each)
         }
     }
@@ -38,7 +37,7 @@ Rectangle {
         contactListModel.append(data)
     }
 
-    // 设置群消息
+    // 设置群列表
     function setGroups(groups){
         groupListModel.clear()
         for(let each of groups){
@@ -51,13 +50,13 @@ Rectangle {
         groupListModel.append(data)
     }
 
+
     // 下面是qml用的
     function sendRequestDataSignal(){
         console.log("获取通讯录信息……")
         requestContactSignal()
         requestGroupSignal()
     }
-
 
     AddFriendWindow{
         id : addFriendWindow; visible: false;
@@ -87,7 +86,7 @@ Rectangle {
         personalInf.areaFrom = data.areaFrom
         personalInf.edu = data.edu
 
-//        personalInf.visible = true
+        personalInf.visible = true
     }
     function openPInfoWindow(data,){
         //获得用户信息
@@ -98,7 +97,7 @@ Rectangle {
         personalInf.personalName = data["userName"]
         personalInf.personalID   = data["userId"]
 
-        personalInf.visible = true // 与服务器通讯后注释
+//        personalInf.visible = true // 与服务器通讯后注释
     }
 
     //接收返回的群组信息信号
@@ -215,7 +214,6 @@ Rectangle {
                     acceptedButtons: Qt.LeftButton
                     onClicked:
                     {
-                        //问题在哪啊，avatar/userId/userName
                         if(!isGroup)
                         {
                             openPInfoWindow(contactListModel.get(index))
