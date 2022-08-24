@@ -11,6 +11,7 @@ Rectangle {
     // data 的数据参考同下
 
     signal clickHistoryMessageItem(var data)
+    signal refreshChatListSignal(int targetId)
 
     // 获取到聊天记录后调这个函数，messages为json数组。每一项的数据data参考如下
     /**
@@ -45,6 +46,7 @@ Rectangle {
             if(historyMessageListModel.get(i).userId === uid){
                 historyMessageListView.currentIndex = i
                 clickHistoryMessageItem(historyMessageListModel.get(i))
+                refreshChatListSignal(historyMessageListModel.get(i).userId)
                 console.log(`找到了和${uid}的历史聊天记录，位于${i}`)
                 return
             }
@@ -59,6 +61,7 @@ Rectangle {
                                        })
         historyMessageListView.currentIndex = 0
         clickHistoryMessageItem(historyMessageListModel.get(0))
+        refreshChatListSignal(historyMessageListModel.get(0).userId)
     }
 
     ListModel {
@@ -93,6 +96,7 @@ Rectangle {
                 onClicked: {
                     historyMessageListView.currentIndex = index
                     clickHistoryMessageItem(historyMessageListModel.get(index))
+                    refreshChatListSignal(historyMessageListModel.get(index).userId)
                 }
             }
         }
