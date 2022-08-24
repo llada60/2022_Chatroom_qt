@@ -122,6 +122,7 @@ private slots:
     void infoRequest(int id, bool isGroup);//请求某人或某群的详细数据
     void personInfoRequest(int id);//请求某人的详细数据
     void groupInfoRequest(int id);//请求某群的详细数据
+    void changePInfoRequest(QString,QString,int,QString,int,QString,QString,QString);
     //其他函数
     void refreshContactFriend();//刷新联系人
     void refreshContactGroup();//刷新群聊通讯录

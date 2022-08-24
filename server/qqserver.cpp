@@ -160,6 +160,10 @@ void QQServer::parseCommand(QString jsonStr,QHostAddress ip, quint16 port)
     {
         getGroupInfoRespond(obj,ip,port);
     }
+    else if(command=="changePInfoRequest")//更新个人信息
+    {
+        changePInfo(obj,ip,port);
+    }
     else
     {
         //未知命令
@@ -196,6 +200,26 @@ void QQServer::loginRespond(QJsonObject obj,QHostAddress ip,quint16 port)
     //返回信息
     sendMessage(respond,ip,port);
 }
+
+void QQServer::changePInfo(QJsonObject obj, QHostAddress, quint16){
+
+    //解包
+    int id=obj["id"].toInt();
+    QString name=obj["name"].toString();
+    QString icon=obj["icon"].toString();
+    int gender=obj["gender"].toInt();
+    QString area=obj["area"].toString();
+    QString edu=obj["edu"].toString();
+    QString saying=obj["saying"].toString();
+    QString birth=obj["birth"].toString();
+
+    atModel->updateUserInfo(id, name,gender, birth, area, edu, saying);
+}
+
+
+
+
+
 
 //临时用，后面要进行群和人id的区分以及细化操作
 //发消息从在线列表里法

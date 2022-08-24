@@ -56,6 +56,15 @@ QQClient::QQClient(QQmlApplicationEngine *engine, QObject *parent)
     qDebug() << "personInfoCheck" << infoCheckScreen->findChildren<QObject*>()[0]->findChildren<QObject*>() << endl;
     QObject::connect(infoCheckScreen->findChildren<QObject*>()[1], SIGNAL(personInfSignal(int,bool)),
                      this,SLOT(infoRequest(int,bool)));
+
+    //修改个人信息
+    QObject* changePInfo=root->findChild<QObject*>("personalInfPage");
+    QObject::connect(changePInfo,
+                     SIGNAL(setUsrInfSignal(QString,QString,int,QString,int,QString,QString)),
+                     this,
+                     SLOT(changePInfoRequest(QString,QString,int,QString,int,QString,QString)));
+
+
     /*
     clientId=100002;
     sendChatMessage(100001,"nihao",123);
@@ -360,6 +369,23 @@ void QQClient::groupInfoRequest(int id){
     QJsonObject jsonObj;
     jsonObj.insert("command","groupInfoRequest");
     jsonObj.insert("id",id);
+    QString diagram=QJsonDocument(jsonObj).toJson();
+    //发送
+    sendMessage(diagram,this->hostIp,this->hostPort);
+}
+
+void QQClient::changePInfoRequest(QString name, QString saying, int id, QString personalHead, int sexn,
+                                  QString area, QString edul)
+{
+    //封装Json
+    QJsonObject jsonObj;
+    jsonObj.insert("command","changePInfoRequest");
+    jsonObj.insert("id",id);
+    jsonObj.insert("name", name);
+    jsonObj.insert("icon", personalHead);
+    jsonObj.insert("gender", sexn);
+    jsonObj.insert("area", area);
+    jsonObj.insert("edu", edul);
     QString diagram=QJsonDocument(jsonObj).toJson();
     //发送
     sendMessage(diagram,this->hostIp,this->hostPort);
