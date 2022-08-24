@@ -288,15 +288,20 @@ void QQClient::add(int targetId)
 
 void QQClient::createGroup(QVariant var)
 {
-    qDebug()<<"create(C++)";
     QVariantList memberList=var.toList();
     //建群
-
+    QJsonObject obj;
+    obj.insert("command","createGroup");
+    obj.insert("id",clientId);
+    QJsonArray memberArray;
     for(int i=0;i<memberList.length();i++) //加群
     {
-       int memberId=memberList[i].toInt();
+       memberArray.append(memberList[i].toInt());
     }
-
+    obj.insert("members",memberArray);
+    //发送
+    QString diagram=QJsonDocument(obj).toJson();
+    sendMessage(diagram,this->hostIp,this->hostPort);
 }
 
 //删除请求
@@ -548,14 +553,26 @@ void QQClient::messageBack(QJsonObject obj)
             jsonObj.insert("uid",sendId);//id
             jsonObj.insert("groupId",0); //groupId: 0是单发，或者是600001这种，群发
             //利用sendId从本地获取名字，头像(不论是单发还是群聊，都用发送者的)
-            for(int i=0;i<friendList.length();i++)
+            if(sendId==clientId)//自己的信息从info抓
             {
-                if(friendList[i]->id==sendId)
+                jsonObj.insert("name",clientInfo->name());
+                jsonObj.insert("avatar",clientInfo->avatar());
+
+            }
+            else //朋友信息
+            {
+                for(int i=0;i<friendList.length();i++)
                 {
-                    jsonObj.insert("name",friendList[i]->name);
-                    jsonObj.insert("avatar",friendList[i]->icon);
+                    qDebug()<<friendList[i]->id;
+                    if(friendList[i]->id==sendId)
+                    {
+
+                        jsonObj.insert("name",friendList[i]->name);
+                        jsonObj.insert("avatar",friendList[i]->icon);
+                    }
                 }
             }
+
             jsonObj.insert("time",time);
             jsonObj.insert("message",content);
             jsonObj.insert("type",0);
@@ -579,12 +596,23 @@ void QQClient::messageBack(QJsonObject obj)
             jsonObj.insert("uid",sendId);//id
             jsonObj.insert("groupId",targetId); //groupId: 0是单发，或者是600001这种，群发
             //利用sendId从本地获取名字，头像(不论是单发还是群聊，都用发送者的)
-            for(int i=0;i<friendList.length();i++)
+            if(sendId==clientId)//自己的信息从info抓
             {
-                if(friendList[i]->id==sendId)
+                jsonObj.insert("name",clientInfo->name());
+                jsonObj.insert("avatar",clientInfo->avatar());
+
+            }
+            else //朋友信息
+            {
+                for(int i=0;i<friendList.length();i++)
                 {
-                    jsonObj.insert("name",friendList[i]->name);
-                    jsonObj.insert("avatar",friendList[i]->icon);
+                    qDebug()<<friendList[i]->id;
+                    if(friendList[i]->id==sendId)
+                    {
+
+                        jsonObj.insert("name",friendList[i]->name);
+                        jsonObj.insert("avatar",friendList[i]->icon);
+                    }
                 }
             }
             jsonObj.insert("time",time);

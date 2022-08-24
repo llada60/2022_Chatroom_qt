@@ -97,6 +97,7 @@ private:
     void sendChatMessageRespond(QJsonObject obj,QHostAddress ip,quint16 port);//发消息（单发+群发）
     void searchRespond(QJsonObject obj,QHostAddress ip,quint16 port);//查找（好友或群）
     void addRespond(QJsonObject obj,QHostAddress ip,quint16 port);//添加（好友或群）
+    void createGroupRespond(QJsonObject obj,QHostAddress ip,quint16 port);//创建群聊
     void deleteRespond(QJsonObject obj,QHostAddress ip,quint16 port);//删除（好友或群）
     void friendRespond(QJsonObject obj,QHostAddress ip,quint16 port);//好友列表
     void groupRespond(QJsonObject obj,QHostAddress ip,quint16 port);//群列表

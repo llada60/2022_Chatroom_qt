@@ -136,6 +136,10 @@ void QQServer::parseCommand(QString jsonStr,QHostAddress ip, quint16 port)
     {
         addRespond(obj,ip,port);
     }
+    else if(command=="createGroup")//拉群
+    {
+        createGroupRespond(obj,ip,port);
+    }
     else if(command=="delete")//删除
     {
         deleteRespond(obj,ip,port);
@@ -365,6 +369,17 @@ void QQServer::addRespond(QJsonObject obj, QHostAddress ip, quint16 port)
             respondObj.insert("friendId",0);
         }
         sendMessage(QJsonDocument(respondObj).toJson(),ip,port);
+    }
+}
+
+void QQServer::createGroupRespond(QJsonObject obj, QHostAddress ip, quint16 port)
+{
+    int ownerId=obj["id"].toInt();
+    int groupId = gpModel->createGroup(ownerId);
+    QJsonArray memberArray=obj["members"].toArray();
+    for(int i=0;i<memberArray.size();i++)
+    {
+        gpModel->joinGroup(groupId,memberArray[i].toInt(),0);
     }
 }
 
