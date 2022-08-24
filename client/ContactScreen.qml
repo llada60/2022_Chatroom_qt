@@ -85,7 +85,7 @@ Rectangle {
     function personalInfBack(data)
     {
         personalInf.personalSaying = data.personalSaying
-        personalInf.sex_num = data.sex
+        personalInf.sex_num = Number(data.sex_num)
         personalInf.birthday = data.birthday
         personalInf.areaFrom = data.areaFrom
         personalInf.edu = data.edu
@@ -94,6 +94,7 @@ Rectangle {
     }
     function openPInfoWindow(data,){
         //获得用户信息
+        console.log("emit")
         personInfSignal(data["userId"], false)
 
         personalInf.isMe = false
