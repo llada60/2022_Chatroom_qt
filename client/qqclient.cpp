@@ -516,7 +516,7 @@ void QQClient::groupInfoBack(QJsonObject obj){
 //刷新好友列表
 void QQClient::refreshContactFriend()
 {
-    //更新本地群信息
+    //更新本地朋友信息
     friendRequest(clientId);
     //构造QJsonArray
     QJsonArray jsonArray;
@@ -532,7 +532,6 @@ void QQClient::refreshContactFriend()
     QVariant res; //如果QML函数没有返回值会不会报错？
     QObject* contactScreen=root->findChild<QObject*>("mainWindow") //加好友
             ->findChild<QObject*>("chatWindow1")->findChild<QObject*>("contactScreen");
-    qDebug()<<contactScreen->property("radius");
     QMetaObject::invokeMethod(contactScreen,"setContacts",
                               Q_RETURN_ARG(QVariant,res),
                               Q_ARG(QVariant,jsonArray));
@@ -540,6 +539,24 @@ void QQClient::refreshContactFriend()
 //刷新群列表
 void QQClient::refreshContactGroup()
 {
-
+    //更新本地群信息
+    groupRequest(clientId);
+    //构造QJsonArray
+    QJsonArray jsonArray;
+    for(int i=0;i<groupList.length();i++)
+    {
+        QJsonObject groupObj;
+        groupObj.insert("userId",groupList[i]->id);
+        groupObj.insert("userName",groupList[i]->name);
+        groupObj.insert("avatar",groupList[i]->icon);
+        jsonArray.append(groupObj);
+    }
+    //调用QML刷新函数
+    QVariant res; //如果QML函数没有返回值会不会报错？
+    QObject* contactScreen=root->findChild<QObject*>("mainWindow") //加好友
+            ->findChild<QObject*>("chatWindow1")->findChild<QObject*>("contactScreen");
+    QMetaObject::invokeMethod(contactScreen,"setGroups",
+                              Q_RETURN_ARG(QVariant,res),
+                              Q_ARG(QVariant,jsonArray));
 }
 
