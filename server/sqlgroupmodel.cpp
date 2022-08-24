@@ -20,7 +20,7 @@ static void createTable(QSqlDatabase db)
                                    "ID INTEGER PRIMARY KEY AUTOINCREMENT,"
                                    "NAME CHAR(15) NOT NULL,"
                                    "ICON TEXT DEFAULT 'https://c-ssl.duitang.com/uploads/blog/201408/15/20140815095903_ttcnF.jpeg',"
-                                   "INTRO TEXT,"
+                                   "INTRO TEXT DEFAULT '这个群太新了，还没有简介。',"
                                    "NOTICE TEXT)"
                                    ).arg(groupTableName)))
             {
