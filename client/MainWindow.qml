@@ -7,7 +7,7 @@ import "./components/"
 
 Window {
     id:mainWindowP
-    visible: true
+    visible: false
     width: 1000
     height: 600
     title: qsTr("WeTalk")
