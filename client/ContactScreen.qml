@@ -45,7 +45,13 @@ Rectangle {
     }
 
 
-    AddFriendWindow{ id : addFriendWindow; visible: false;}
+    AddFriendWindow{
+        id : addFriendWindow; visible: false;
+        onPassSignal: (uid, avatar, name, isPerson) => {
+            if(isPerson) appendContact({"userId":uid,"userName":name,"avatar":avatar})
+            else appendGroup({"userId":uid,"userName":name,"avatar":avatar})
+        }
+    }
     CreateGroup{id:createGroup; visible: false;}
 
     ListModel {
