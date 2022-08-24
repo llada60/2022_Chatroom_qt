@@ -28,8 +28,6 @@ Window {
     //创建群聊信号
     signal createGroupSignal(var mId)
 
-    //向群聊界面传递拉群成功信号
-    signal passCreateGroup()
 
     //返回生成的群聊号和拉群成功指令
     function createGroupBack(groupID)
@@ -40,7 +38,7 @@ Window {
         }
         else
         {
-            passCreateGroup()
+            createGroupSuccess.open()
         }
     }
 
