@@ -70,6 +70,7 @@ Window {
                 id: historyMessageScreen
                 Layout.fillHeight: true
                 width: 270
+                objectName: "historyMessageScreen"
                 Component.onCompleted: {
                     clickHistoryMessageItem.connect((data)=>{
                         // 历史消息列表与聊天窗口的同步

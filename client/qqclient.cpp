@@ -41,6 +41,10 @@ QQClient::QQClient(QQmlApplicationEngine *engine, QObject *parent)
                      this,SLOT(refreshContactFriend()));//人
     QObject::connect(contactScreen,SIGNAL(requestGroupSignal()),
                      this,SLOT(refreshContactGroup()));//群
+    QObject* historyMessageScreen=root->findChild<QObject*>("mainWindow")->findChild<QObject*>("chatWindow1")
+            ->findChild<QObject*>("chatWindow2")->findChild<QObject*>("historyMessageScreen");
+    QObject::connect()
+    //历史聊天刷新
     QObject* infoCheckScreen = chatScreen->findChild<QObject*>("chatListView");//->findChild<QObject*>("chatListItem");
     qDebug() << "personInfoCheck" << infoCheckScreen->findChildren<QObject*>()[0]->findChildren<QObject*>() << endl;
     QObject::connect(infoCheckScreen->findChildren<QObject*>()[1], SIGNAL(personInfSignal(int,bool)),
@@ -289,13 +293,14 @@ void QQClient::friendRequest(int id)
     sendMessage(diagram,this->hostIp,this->hostPort);
 }
 //历史消息请求
-void QQClient::messageRequest(int targetId)
+void QQClient::messageRequest(QVariant data)
 {
+    QJsonObject dataObj=data.toJsonObject();
     //封装Json
     QJsonObject jsonObj;
     jsonObj.insert("command","messageRequest");
     jsonObj.insert("requestId",clientId);
-    jsonObj.insert("targetId",targetId);
+    jsonObj.insert("targetId",dataObj["userId"].toInt());
     QString diagram=QJsonDocument(jsonObj).toJson();
     //发送
     sendMessage(diagram,this->hostIp,this->hostPort);
@@ -385,7 +390,7 @@ void QQClient::loginBack(QJsonObject obj)
                               Q_ARG(QVariant,isSuccess));
 
 }
-//单发响应
+//响应
 void QQClient::sendChatMessageBack(QJsonObject obj)
 {
     //解包
@@ -480,15 +485,36 @@ void QQClient::friendBack(QJsonObject obj)
 //历史消息响应
 void QQClient::messageBack(QJsonObject obj)
 {
-    qDebug() << "messageBack";
+    //包装QJsonArray<QJsonObject>
     int targetId=obj["targetId"].toInt();
+    QJsonArray packageList;//加强消息包数组
     if(targetId/100000==1) //人
     {
         QJsonArray messageList=obj["messagelist"].toArray();
-        for(int i =0;i<messageList.size();i++)
+        for(int i =0;i<messageList.size();i++) //逐消息处理
         {
-            QJsonObject item=messageList[i].toObject();
-            qDebug()<<item["datetime"].toInt()<<item["message"].toString();
+            QJsonObject item=messageList[i].toObject();//初始包
+            //groupId,sendId
+            int sendId=item["sid"].toInt();
+            QString content=item["message"].toString();
+            int time=item["datetime"].toInt();
+            //结合本地数据构建消息包
+            QJsonObject jsonObj;//加强包
+            jsonObj.insert("uid",sendId);//id
+            jsonObj.insert("groupId",0); //groupId: 0是单发，或者是600001这种，群发
+            //利用sendId从本地获取名字，头像(不论是单发还是群聊，都用发送者的)
+            for(int i=0;i<friendList.length();i++)
+            {
+                if(friendList[i]->id==sendId)
+                {
+                    jsonObj.insert("name",friendList[i]->name);
+                    jsonObj.insert("avatar",friendList[i]->icon);
+                }
+            }
+            jsonObj.insert("time",time);
+            jsonObj.insert("message",content);
+            jsonObj.insert("type",0);
+            packageList.append(jsonObj);
         }
     }
     else //群
@@ -497,9 +523,38 @@ void QQClient::messageBack(QJsonObject obj)
         for(int i =0;i<messageList.size();i++)
         {
             QJsonObject item=messageList[i].toObject();
+            //targetId就是群id mid是发送者
             qDebug()<<item["datetime"].toInt()<<item["message"].toString()<<item["mid"].toInt();
+            //groupId,sendId
+            int sendId=item["mid"].toInt();
+            QString content=item["message"].toString();
+            int time=item["datetime"].toInt();
+            //结合本地数据构建消息包
+            QJsonObject jsonObj;//加强包
+            jsonObj.insert("uid",sendId);//id
+            jsonObj.insert("groupId",targetId); //groupId: 0是单发，或者是600001这种，群发
+            //利用sendId从本地获取名字，头像(不论是单发还是群聊，都用发送者的)
+            for(int i=0;i<friendList.length();i++)
+            {
+                if(friendList[i]->id==sendId)
+                {
+                    jsonObj.insert("name",friendList[i]->name);
+                    jsonObj.insert("avatar",friendList[i]->icon);
+                }
+            }
+            jsonObj.insert("time",time);
+            jsonObj.insert("message",content);
+            jsonObj.insert("type",0);
+            packageList.append(jsonObj);
         }
     }
+    //调用重置函数
+    QObject* chatScreen=root->findChild<QObject*>("mainWindow")->findChild<QObject*>("chatWindow1")
+            ->findChild<QObject*>("chatWindow2")->findChild<QObject*>("chatScreen");
+    QVariant res;
+    QMetaObject::invokeMethod(chatScreen,"setMessages",
+                              Q_RETURN_ARG(QVariant,res),
+                              Q_ARG(QVariant,packageList));
 }
 //群列表响应
 void QQClient::groupBack(QJsonObject obj)

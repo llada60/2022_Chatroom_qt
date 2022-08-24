@@ -116,7 +116,7 @@ private slots:
     void add(int targetId);//加群/人
     void deleteRequest(int targetId);//删群/人
     void friendRequest(int id);//请求好友列表（从服务端拉取数据的系列函数）
-    void messageRequest(int id);//请求历史聊天记录
+    void messageRequest(QVariant data);//请求历史聊天记录(实际只需要id，但是为了适应signal用QVariant)
     void groupRequest(int id);//请求群列表
     void infoRequest(int id, bool isGroup);//请求某人或某群的详细数据
     void personInfoRequest(int id);//请求某人的详细数据
@@ -124,6 +124,7 @@ private slots:
     //其他函数
     void refreshContactFriend();//刷新联系人
     void refreshContactGroup();//刷新群聊通讯录
+    QJsonObject messageObject(QJsonObject rawMessage);//传入消息obj，构建一个更完善的，直接用于qml的消息obj
 
 
 private:
