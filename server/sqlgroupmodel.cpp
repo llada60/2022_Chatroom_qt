@@ -64,7 +64,7 @@ static void createTable(QSqlDatabase db)
             if(!query.exec(QString("CREATE TABLE IF NOT EXISTS %1("
                                    "GID INTEGER REFERENCES GROUPINFO(ID) ON DELETE CASCADE,"
                                    "MID INTEGER NOT NULL REFERENCES USERINFO(ID) ON DELETE CASCADE,"
-                                   "DATETIME INTEGER NOT NULL,"
+                                   "DATETIME INT NOT NULL,"
                                    "MESSAGE TEXT NOT NULL,"
                                    "TYPE INTEGER NOT NULL,"
                                    "PRIMARY KEY (GID, MID, DATETIME))"
@@ -87,7 +87,7 @@ SqlGroupModel::~SqlGroupModel()
     database().close();
 }
 
-QByteArray SqlGroupModel::createGroup(const QString& gName)
+QByteArray SqlGroupModel::createGroup(const QString& gName, const int& masterID)
 {
     setTable(groupTableName);
     QSqlQuery query;
@@ -107,6 +107,7 @@ QByteArray SqlGroupModel::createGroup(const QString& gName)
         select();
         QSqlRecord record = QSqlTableModel::record(rowCount()-1);
         id = record.value(0).toInt();
+        this->joinGroup(masterID, id, 1);
     }
     obj.insert("id", QJsonValue(id));
     doc = QJsonDocument(obj);
@@ -260,7 +261,38 @@ QByteArray SqlGroupModel::groupList(const int &mID)
         }
     }
     finalObj.insert("groupList", QJsonValue(jsonAry));
-    finalObj.insert("command", QJsonValue("groupBack"));
+    finalObj.insert("command", QJsonValue("grouplist"));
+    bAry = QJsonDocument(finalObj).toJson();
+    return bAry;
+}
+
+QByteArray SqlGroupModel::messageList(const int &gID)
+{
+    QSqlQuery query;
+    QByteArray bAry;
+    QJsonObject finalObj;
+    QJsonArray jsonItem;
+    if(!query.exec(QString("SELECT * FROM GROUPMESSAGEINFO "
+                           "WHERE GID=%1 ORDER BY GID ASC, DATETIME ASC").arg(QString::number(gID))))
+    {
+        qDebug() << "选择群聊天信息错误";
+        qDebug() << query.lastError();
+    }
+    else
+    {
+        qDebug() << "选择群聊天信息成功";
+        while(query.next())
+        {
+            QJsonObject obj;
+            obj.insert("mid", QJsonValue(query.value("MID").toInt()));
+            obj.insert("datetime", QJsonValue(query.value("DATETIME").toInt()));
+            obj.insert("message", QJsonValue(query.value("MESSAGE").toString()));
+            jsonItem.append(QJsonValue(obj));
+        }
+
+        finalObj.insert("grouplist", QJsonValue(jsonItem));
+        finalObj.insert("command", QJsonValue("groupmessageBack"));
+    }
     bAry = QJsonDocument(finalObj).toJson();
     return bAry;
 }
@@ -273,12 +305,12 @@ QByteArray SqlGroupModel::groupInfo(const int &gID)
     if(!query.exec(QString("SELECT * FROM GROUPINFO WHERE "
                            "ID=%1 ").arg(QString::number(gID))))
     {
-        qDebug() << "选择个人信息发生错误";
+        qDebug() << "选择群信息发生错误";
         qDebug() << query.lastError();
     }
     else
     {
-        qDebug() << "选择个人信息成功";
+        qDebug() << "选择群信息成功";
         while(query.next())
         {
             QJsonObject obj;

@@ -27,6 +27,9 @@ ColumnLayout {
     signal sendFileSignal(int targetId, string fileUrl, int time)
     signal sendMessageSignal(int targetId, string message, int time)
 
+    // 拉取聊天记录（页面加载完后）
+    signal requestMessageSignal(int sendId, int targetId)
+
 
 
     // 函数： 当c++层接收到新的消息时调用，往UI里添加一条消息(暂时不需要，或许直接appenddata就行)
@@ -40,11 +43,19 @@ ColumnLayout {
         chatListModel.append(data)
     }
 
+    // 函数：设置消息列表。会替换当前所有内容为新内容
+    function setMessages(messages){
+        chatListModel.clear()
+        for(let each of messages){
+            chatListModel.append(each);
+        }
+    }
+
     // 下面的方法是qml用的
 
     // 设置聊天对象
     function setArg(uid){
-        console.log("uid:" + uid);
+        console.log("targetId:" + uid);
         targetId = uid;
     }
 
@@ -269,7 +280,7 @@ ColumnLayout {
         }
     }
 
-
+    function isValidId(id){return 100000<=id&&id<=999999}
 
     //初始化测试
     Component.onCompleted: {
@@ -300,6 +311,14 @@ ColumnLayout {
                                 "avatar": "https://ts1.cn.mm.bing.net/th/id/R-C.1eed2de61a172c6ca2d79fc5ea62eb01?rik=c7W7KrSN7xFOIg&riu=http%3a%2f%2fimg.crcz.com%2fallimg%2f202003%2f10%2f1583821081100057.jpg&ehk=q%2f9lt0hQhwZzKFdRKYyG2g4zxQKgTWKJ4gHeelom3Mo%3d&risl=&pid=ImgRaw&r=0&sres=1&sresct=1",
                                 "type": 0
                             })
+
+        // 组件加载完后自动拉消息
+        if(isValidId(myUid) && isValidId(targetId)){
+            requestMessageSignal(myUid, targetId);
+            console.log(`开始拉取 myUid(${myUid}) 和 targetId(${targetId}) 间的聊天记录……`);
+        }else{
+            console.log(`myUid(${myUid})或者targetId(${targetId})不正确，不拉消息`);
+        }
     }
 
 

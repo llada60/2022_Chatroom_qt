@@ -16,7 +16,7 @@ public:
     SqlGroupModel(QObject *parent, QSqlDatabase db);
     ~SqlGroupModel();
     //创建群聊
-    QByteArray createGroup(const QString& gName);
+    QByteArray createGroup(const QString& gName, const int& masterID);
     //获取群成员信息（id, 级别）
     QByteArray memberList(const int& gID);
     //修改群信息
@@ -31,7 +31,9 @@ public:
     void sendMessage(const int& gID, const int& mID, const int& type, const int& datetime, const QString& message);
     //获取用户加入的群信息
     QByteArray groupList(const int& mID);
-    //获取群信息
+    //获取特定群的聊天记录
+    QByteArray messageList(const int& gID);
+    //获取特定群消息
     QByteArray groupInfo(const int& gID);
 };
 

@@ -3,13 +3,11 @@ import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.5
 import QtQuick.Dialogs 1.3
 
+
 // 搜索栏
 RowLayout
 {
-//    anchors.horizontalCenter: parent.horizontalCenter
-//    anchors.top: parent.top
-//    anchors.topMargin: 10
-
+    signal idpp(int idN)
 
     MessageDialog
     {
@@ -27,6 +25,7 @@ RowLayout
             text: "请输入数字"
             standardButtons: StandardButton.Cancel
     }
+
 
     Rectangle
     {
@@ -49,7 +48,7 @@ RowLayout
 
 
         padding: 5
-        placeholderText: qsTr("<font size='2' family='LiSu'>好友账号/群号/群名</font>")
+        placeholderText: qsTr("<font size='2' family='LiSu'>请输入好友账号</font>")
 
 
         background: Rectangle
@@ -79,16 +78,15 @@ RowLayout
             }
             else if(isNaN(inputID.text))
             {
+                console.log("输入非数字")
                 notNumInputText.open()
                 inputID.text = ""
             }
             else
             {
-                //将搜索内容发送
-                searchSignal(inputID.text)
+                //将该id压入数组内
+                idpp(Number(inputID.text))
             }
-
-
         }
 
     }

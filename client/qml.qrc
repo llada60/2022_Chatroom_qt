@@ -100,5 +100,8 @@
         <file>images/icon_add_contact.png</file>
         <file>components/ChatScreenNameWidget.qml</file>
         <file>components/SelectAvatar.qml</file>
+        <file>images/addGroup.png</file>
+        <file>CreateGroup.qml</file>
+        <file>components/GroupAddWidget.qml</file>
     </qresource>
 </RCC>

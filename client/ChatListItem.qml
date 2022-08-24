@@ -16,17 +16,16 @@ Item {
     }
 
 
-    PersonalInf
-    {
-        id:objectInf
-    }
+    PersonalInf {id:objectInf}
+    signal getPInfSignal(int uid)
 
     function openInfoWindow(){
-        //应增加从服务器扒取其余信息) 为什么没有传递成功啊！
+        //应增加从服务器扒取其余信息
         objectInf.isMe = sentByMe
         objectInf.personalHead = avatar
         objectInf.personalName = name
         objectInf.personalID = uid
+        getPInfSignal(uid)
         objectInf.show()
     }
 
