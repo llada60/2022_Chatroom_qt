@@ -204,16 +204,9 @@ void QQServer::sendChatMessageRespond(QJsonObject obj, QHostAddress ip, quint16 
     if(targetId/100000==1)
     {
         //取目标ip和port
-        QHostAddress targetIp;
-        quint16 targetPort;
-        for(int i=0;i<onlineUser.length();i++)
-        {
-            if(onlineUser[i]->id==targetId)//在在线用户列表中找到目标id
-            {
-                targetIp=onlineUser[i]->ip;
-                targetPort=onlineUser[i]->port;
-            }
-        }
+        QJsonObject targetObj=getTargetIpPort(targetId);
+        QString targetIp=targetObj["ip"].toString();
+        QString targetPort=QString("%1").arg(targetObj["port"].toInt());
         //转发消息
         QJsonObject jsonObj;
         jsonObj.insert("command","sendChatMessageBack");

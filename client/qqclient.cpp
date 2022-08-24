@@ -35,7 +35,6 @@ QQClient::QQClient(QQmlApplicationEngine *engine, QObject *parent)
                      this,SLOT(search(int)));
     QObject::connect(addFriendWindow,SIGNAL(addSignal(int)),
                      this,SLOT(add(int)));
-
     QObject* personInfoCheckScreen = chatScreen->findChild<QObject*>("chatListView");//->findChild<QObject*>("chatListItem");
     qDebug() << "personInfoCheck" << personInfoCheckScreen->findChildren<QObject*>()[0]->findChildren<QObject*>() << endl;
     QObject::connect(personInfoCheckScreen->findChildren<QObject*>()[1], SIGNAL(getPInfSignal(int)),
@@ -346,6 +345,8 @@ void QQClient::loginBack(QJsonObject obj)
     QMetaObject::invokeMethod(root,"loginBack",
                               Q_RETURN_ARG(QVariant,res),
                               Q_ARG(QVariant,isSuccess));
+    //刷新
+    refreshContact();
 
 }
 //单发响应
@@ -397,26 +398,6 @@ void QQClient::addBack(QJsonObject obj)
     QMetaObject::invokeMethod(addFriendWindow,"addBack",
                               Q_RETURN_ARG(QVariant,res),
                               Q_ARG(QVariant,friendId));
-    //刷新好友列表
-    friendRequest(clientId);
-    //构造QJsonArray
-    QJsonArray jsonArray;
-    for(int i=0;i<friendList.length();i++)
-    {
-        QJsonObject friendObj;
-        friendObj.insert("userId",friendList[i]->id);
-        friendObj.insert("userName",friendList[i]->name);
-        friendObj.insert("avatar",friendList[i]->icon);
-        jsonArray.append(friendObj);
-    }
-    //调用QML刷新函数
-    QObject* contactScreen=root->findChild<QObject*>("mainWindow") //加好友
-            ->findChild<QObject*>("chatWindow1")->findChild<QObject*>("contactScreen");
-    qDebug()<<contactScreen->property("radius");
-    QMetaObject::invokeMethod(contactScreen,"setContacts",
-                              Q_RETURN_ARG(QVariant,res),
-                              Q_ARG(QVariant,jsonArray));
-
 }
 //删除响应
 void QQClient::deleteBack(QJsonObject obj)
@@ -488,5 +469,30 @@ void QQClient::groupBack(QJsonObject obj)
 }
 void QQClient::personInfoBack(QJsonObject obj){
     qDebug() << "personInfoBack\n" << obj << endl;
+}
+
+//刷新好友列表
+void QQClient::refreshContact()
+{
+    //刷新好友列表
+    friendRequest(clientId);
+    //构造QJsonArray
+    QJsonArray jsonArray;
+    for(int i=0;i<friendList.length();i++)
+    {
+        QJsonObject friendObj;
+        friendObj.insert("userId",friendList[i]->id);
+        friendObj.insert("userName",friendList[i]->name);
+        friendObj.insert("avatar",friendList[i]->icon);
+        jsonArray.append(friendObj);
+    }
+    //调用QML刷新函数
+    QVariant res; //如果QML函数没有返回值会不会报错？
+    QObject* contactScreen=root->findChild<QObject*>("mainWindow") //加好友
+            ->findChild<QObject*>("chatWindow1")->findChild<QObject*>("contactScreen");
+    qDebug()<<contactScreen->property("radius");
+    QMetaObject::invokeMethod(contactScreen,"setContacts",
+                              Q_RETURN_ARG(QVariant,res),
+                              Q_ARG(QVariant,jsonArray));
 }
 
