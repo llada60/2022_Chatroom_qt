@@ -20,8 +20,6 @@ Window {
 
     property var sendArg
 
-    property int flag : 0
-
 
     MessageDialog
     {//注册失败提示
@@ -96,7 +94,7 @@ Window {
 
 
     // POST
-    function post(url, arg)
+    function post(url, arg,flag)
     {
 
         var xhr = new XMLHttpRequest;
@@ -104,13 +102,15 @@ Window {
         xhr.setRequestHeader("Content-Length", arg.length);
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;"); //post必备
         xhr.onreadystatechange = function() {
-            handleResponse(xhr);
+            handleResponse(xhr,flag);
         }
         xhr.send(arg);
     }
 
+    property int check : 0
+
     // 处理返回值
-    function handleResponse(xhr){
+    function handleResponse(xhr,flag){
         if (xhr.readyState == XMLHttpRequest.DONE)
         {
             print("DONE")
@@ -125,8 +125,21 @@ Window {
             {
                 console.log(response.message)
             }
-            console.log("内部："+response.code)
-            flag = response.code
+
+            if(response.code == -1)
+            {
+                if(flag ==1)
+                {
+                    wrongEmail.open()
+                }
+                else if(flag == 0)
+                {
+                    wrongCheck.open()
+                    check = 1
+                }
+            }
+
+
 
         }
         else if(xhr.readyState == XMLHttpRequest.HEADERS_RECEIVED)
@@ -169,6 +182,7 @@ Window {
         Layout.alignment: Qt.AlignHCenter
         anchors.centerIn: parent
         anchors.verticalCenterOffset: -20
+
 
         TextField
         {
@@ -242,12 +256,7 @@ Window {
 
                         sendArg = qsTr("email=") + emailAddress.text + qsTr("&username=") +usr.text
                         //发送验证码
-                        post("http://wetalk.funnysaltyfish.fun/send_verify_email",sendArg )
-                        console.log(flag)
-                        if(-1 == flag)
-                        {
-                            wrongEmail.open()
-                        }
+                        post("http://wetalk.funnysaltyfish.fun/send_verify_email",sendArg, 1 )
                     }
                 }
             }
@@ -270,7 +279,7 @@ Window {
                 usrPassword = password.text
                 sendArg = qsTr("email=") + emailAddress.text + qsTr("&verify_code=") +captcha.text
 
-                post("http://wetalk.funnysaltyfish.fun/verify_email",sendArg)
+                post("http://wetalk.funnysaltyfish.fun/verify_email",sendArg,0)
 
 
 
@@ -290,12 +299,11 @@ Window {
                     console.log("no password")
                     noPassword.open()
                 }
-                else if(-1 == flag)//验证码验证逻辑
+                else if(1 == check)
                 {
-                    console.log("验证码错误")
-                    wrongCheck.open()
+                    console.log("in it")
+                    check = 0
                 }
-
                 else
                 {
                     console.log("inf config ok")
