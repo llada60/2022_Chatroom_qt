@@ -168,6 +168,10 @@ void QQServer::parseCommand(QString jsonStr,QHostAddress ip, quint16 port)
     {
         changePInfo(obj,ip,port);
     }
+    else if(command=="changeGInfoRequest")//更新个人信息
+    {
+        changeGInfo(obj,ip,port);
+    }
     else
     {
         //未知命令
@@ -218,6 +222,16 @@ void QQServer::changePInfo(QJsonObject obj, QHostAddress, quint16){
     QString birth=obj["birth"].toString();
 
     atModel->updateUserInfo(id, name,gender, birth, area, edu, saying);
+}
+
+void QQServer::changeGInfo(QJsonObject obj, QHostAddress, quint16)
+{
+    int id=obj["id"].toInt();
+    QString groupName=obj["groupName"].toString();
+    QString groupNotic=obj["groupNotic"].toString();
+    QString groupSummary=obj["groupSummary"].toString();
+
+    gpModel->updateGroupInfo(id, groupName, groupSummary, groupNotic);
 }
 
 

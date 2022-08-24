@@ -63,6 +63,13 @@ QQClient::QQClient(QQmlApplicationEngine *engine, QObject *parent)
                      SIGNAL(setUsrInfSignal(QString,QString,int,QString,int,QString,QString)),
                      this,
                      SLOT(changePInfoRequest(QString,QString,int,QString,int,QString,QString)));
+    //修改群信息
+    QObject* changeGInfo=root->findChild<QObject*>("groupInf");
+    QObject::connect(changeGInfo,
+                     SIGNAL(sendGroupInf(string groupName,string groupNotic,string groupSummary,int)),
+                     this,
+                     SLOT(changeGInfoRequest(string groupName,string groupNotic,string groupSummary,int)));
+
 
 
     /*
@@ -391,6 +398,21 @@ void QQClient::changePInfoRequest(QString name, QString saying, int id, QString 
     jsonObj.insert("gender", sexn);
     jsonObj.insert("area", area);
     jsonObj.insert("edu", edul);
+    jsonObj.insert("saying", saying);
+    QString diagram=QJsonDocument(jsonObj).toJson();
+    //发送
+    sendMessage(diagram,this->hostIp,this->hostPort);
+}
+
+void QQClient::changeGInfoRequest(QString groupName, QString groupNotic, QString groupSummary, int id)
+{
+    //封装Json
+    QJsonObject jsonObj;
+    jsonObj.insert("command","changeGInfoRequest");
+    jsonObj.insert("id",id);
+    jsonObj.insert("groupName",groupName);
+    jsonObj.insert("groupNotic", groupNotic);
+    jsonObj.insert("groupSummary", groupSummary);
     QString diagram=QJsonDocument(jsonObj).toJson();
     //发送
     sendMessage(diagram,this->hostIp,this->hostPort);
