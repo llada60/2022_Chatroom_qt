@@ -510,7 +510,9 @@ void QQClient::groupBack(QJsonObject obj)
 void QQClient::personInfoBack(QJsonObject obj){
     qDebug() << "personInfoBack\n" << obj << endl;
 }
-
+void QQClient::groupInfoBack(QJsonObject obj){
+    qDebug() << "groupInfoBack\n" << obj << endl;
+}
 //刷新好友列表
 void QQClient::refreshContactFriend()
 {
