@@ -63,10 +63,12 @@ Window {
         }
         else
         {
-            usrID = pID
+            idDialog.open()
+            usrID = pID.toString()
             inputID.text = usrID
             inputPSW.text = usrPassword
-            idDialog.open()
+            Config.write("myID",usrID)
+
         }
     }
 

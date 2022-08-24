@@ -146,6 +146,24 @@ Rectangle {
             avatar: "https://www.com8.cn/wp-content/uploads/2020/08/20200823052248-5f41fd28d49e4.jpg"
             isGroup: false
         }
+        ListElement {
+            userId: 100001
+            userName: "张三"
+            avatar: "https://www.com8.cn/wp-content/uploads/2020/08/20200823052248-5f41fd28d49e4.jpg"
+            isGroup: false
+        }
+        ListElement {
+            userId: 1
+            userName: "张三"
+            avatar: "https://www.com8.cn/wp-content/uploads/2020/08/20200823052248-5f41fd28d49e4.jpg"
+            isGroup: false
+        }
+        ListElement {
+            userId: 1
+            userName: "张三"
+            avatar: "https://www.com8.cn/wp-content/uploads/2020/08/20200823052248-5f41fd28d49e4.jpg"
+            isGroup: false
+        }
     }
 
     ListModel {
@@ -196,7 +214,6 @@ Rectangle {
                     acceptedButtons: Qt.LeftButton
                     onClicked:
                     {
-                        //问题在哪啊，avatar/userId/userName
                         if(!isGroup)
                         {
                             openPInfoWindow(contactListModel.get(index))

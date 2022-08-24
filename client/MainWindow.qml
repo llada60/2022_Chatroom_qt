@@ -73,7 +73,6 @@ Window {
                 Component.onCompleted: {
                     clickHistoryMessageItem.connect((data)=>{
                         // 历史消息列表与聊天窗口的同步
-                        // chatScreen.setArgs(data["userId"], data["userName"], data["avatar"]);
                         chatScreen.setArg(data["userId"])
                     })
                 }
@@ -82,7 +81,7 @@ Window {
             ChatScreen {
                 id: chatScreen
                 Layout.fillHeight: true
-                // implicitWidth: rowLayout.width * 0.68
+                onSendMessageSignal: (id, message, time)=>historyMessageScreen.setMessageWithUid(id, message, time)
             }
         }
 
