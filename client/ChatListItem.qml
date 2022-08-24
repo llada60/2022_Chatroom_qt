@@ -31,16 +31,16 @@ Item {
 
         objectInf.visible = true
     }
-    function openInfoWindow(data){
+    function openInfoWindow(){
         //获得用户信息
-        getPInfSignal(uid)
+//        getPInfSignal(uid)
 
         objectInf.isMe = sentByMe
         objectInf.personalHead = avatar
         objectInf.personalName = name
         objectInf.personalID = uid
 
-//        objectInf.visible = true // 与服务器通讯后注释
+        objectInf.visible = true // 与服务器通讯后注释
     }
 
     Component {

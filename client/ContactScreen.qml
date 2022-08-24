@@ -10,6 +10,7 @@ Rectangle {
     radius: 4
     objectName: "contactScreen"
 
+
     // 信号，qml用，点击和某人/群聊天触发，参数为对应项的data
     signal messageWithConact(int id, string name, string avatar)
     signal messageWithGroup(int id, string name, string avatar)
@@ -17,6 +18,7 @@ Rectangle {
     // 信号，C++用，打开通讯录页面时获取联系人列表和群组列表
     signal requestContactSignal()
     signal requestGroupSignal()
+    signal createGroupSignal(var mId)
 
 
     // 获取到联系人后调这个函数，messages为QJsonArray。每一项的数据data参考如下
@@ -82,16 +84,16 @@ Rectangle {
     signal personInfSignal(int uid, bool isGroup)
 
     //接收返回的个人信息信号
-    function personalInfBack(data)
-    {
-        personalInf.personalSaying = data.personalSaying
-        personalInf.sex_num = data.sex
-        personalInf.birthday = data.birthday
-        personalInf.areaFrom = data.areaFrom
-        personalInf.edu = data.edu
+//    function personalInfBack(data)
+//    {
+//        personalInf.personalSaying = data.personalSaying
+//        personalInf.sex_num = Number(data.sex_num)
+//        personalInf.birthday = data.birthday
+//        personalInf.areaFrom = data.areaFrom
+//        personalInf.edu = data.edu
 
-        personalInf.visible = true
-    }
+//        personalInf.visible = true
+//    }
     function openPInfoWindow(data,){
         //获得用户信息
         personInfSignal(data["userId"], false)
@@ -101,7 +103,7 @@ Rectangle {
         personalInf.personalName = data["userName"]
         personalInf.personalID   = data["userId"]
 
-//        personalInf.visible = true // 与服务器通讯后注释
+        personalInf.visible = true // 与服务器通讯后注释
     }
 
     //接收返回的群组信息信号
@@ -111,13 +113,13 @@ Rectangle {
         groupSummary = data.groupSummary //群简介
         isOwner = data.isOwner
 
-        //groupInf.visible = true
+//        groupInf.visible = true
 
 
     }
     function openGInfoWindow(data){
         //获得群组信息
-        personInfSignal(data["userId"],true)
+//        personInfSignal(data["userId"],true)
 
         groupInf.groupHead = data["avatar"]
         groupInf.groupName = data["userName"]
@@ -337,7 +339,8 @@ Rectangle {
 
                 Layout.alignment: Qt.AlignLeft
                 onClicked: {
-                    createGroup.show()
+                      createGroupSignal(0)
+//                    createGroup.show()
                 }
             }
         }

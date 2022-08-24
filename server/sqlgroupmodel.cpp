@@ -192,11 +192,14 @@ bool SqlGroupModel::joinGroup(const int & gID, const int & mID, const int & rank
     {
         qDebug() << "加入群聊发生错误";
         qDebug() << query.lastError();
+        return false;
     }
     else
     {
         qDebug() << "加入群聊成功";
+        return true;
     }
+    return true;
 }
 
 void SqlGroupModel::quitGroup(const int & gID, const int & mID)

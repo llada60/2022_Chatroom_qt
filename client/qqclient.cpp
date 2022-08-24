@@ -36,13 +36,13 @@ QQClient::QQClient(QQmlApplicationEngine *engine, QObject *parent)
                      this,SLOT(search(int)));
     QObject::connect(addFriendWindow,SIGNAL(addSignal(int)),
                      this,SLOT(add(int)));
-    QObject* createGroupWindow=root->findChild<QObject*>("mainWindow")//建群 createGroup
-            ->findChild<QObject*>("chatWindow1")->findChild<QObject*>("contactScreen")
-            ->findChild<QObject*>("createGroup");
-    QObject::connect(createGroupWindow,SIGNAL(createGroupSignal(QVariant)),
-                     this,SLOT(createGroup(QVariant)));
+
+
     QObject* contactScreen=root->findChild<QObject*>("mainWindow")//通讯录刷新
             ->findChild<QObject*>("chatWindow1")->findChild<QObject*>("contactScreen");
+
+    QObject::connect(contactScreen,SIGNAL(createGroupSignal(QVariant)),
+                     this,SLOT(createGroup(QVariant)));
     QObject::connect(contactScreen,SIGNAL(requestContactSignal()),
                      this,SLOT(refreshContactFriend()));//人
     QObject::connect(contactScreen,SIGNAL(requestGroupSignal()),
@@ -300,12 +300,14 @@ void QQClient::createGroup(QVariant var)
     QJsonObject obj;
     obj.insert("command","createGroup");
     obj.insert("id",clientId);
-    QJsonArray memberArray;
-    for(int i=0;i<memberList.length();i++) //加群
-    {
-       memberArray.append(memberList[i].toInt());
-    }
-    obj.insert("members",memberArray);
+//    QJsonArray memberArray;
+//    for(int i=0;i<memberList.length();i++) //加群
+//    {
+//       memberArray.append(memberList[i].toInt());
+//    }
+//    obj.insert("members",memberArray);
+
+    qDebug() << "create group";
     //发送
     QString diagram=QJsonDocument(obj).toJson();
     sendMessage(diagram,this->hostIp,this->hostPort);
