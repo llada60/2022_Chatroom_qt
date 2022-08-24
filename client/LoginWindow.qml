@@ -18,7 +18,7 @@ Window {
     height: 400
     visible: true //窗口是否可见
     title: qsTr("登陆") //窗口标题
-    flags: (Qt.Window | Qt.CustomizeWindowHint)
+    flags: Qt.Window
 
     RegisterWindow{id: registerWindows; visible: false;}
     MainWindow{id: mainWindows; visible: false;}
