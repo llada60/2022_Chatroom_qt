@@ -218,6 +218,7 @@ void QQServer::sendChatMessageRespond(QJsonObject obj, QHostAddress ip, quint16 
         //转发消息
         QJsonObject jsonObj;
         jsonObj.insert("command","sendChatMessageBack");
+        jsonObj.insert("groupId",0); //groupId==0代表单发
         jsonObj.insert("sendId",sendId);
         jsonObj.insert("content",content);
         jsonObj.insert("time",time);
@@ -460,7 +461,9 @@ void QQServer::test(SqlAccountModel *atModel, SqlFriendModel *fdModel, SqlGroupM
     gpModel->sendMessage(600002,100002,0,3,"群发5");
     gpModel->sendMessage(600002,100003,0,3,"群发5");
     */
-
+    QJsonObject obj;
+    obj.insert("comm","1");
+    qDebug()<<obj["groupId"].toInt();
 }
 
 
