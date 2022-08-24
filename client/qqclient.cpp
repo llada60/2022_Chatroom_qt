@@ -247,7 +247,6 @@ void QQClient::add(int targetId)
     jsonObj.insert("sendId",clientId);
     jsonObj.insert("targetId",targetId);
     QString diagram=QJsonDocument(jsonObj).toJson();
-    qDebug()<<diagram;
     //发送
     sendMessage(diagram,this->hostIp,this->hostPort);
 }
@@ -397,6 +396,25 @@ void QQClient::addBack(QJsonObject obj)
     QMetaObject::invokeMethod(addFriendWindow,"addBack",
                               Q_RETURN_ARG(QVariant,res),
                               Q_ARG(QVariant,friendId));
+    //刷新好友列表
+    friendRequest(clientId);
+    //构造QJsonArray
+    QJsonArray jsonArray;
+    for(int i=0;i<friendList.length();i++)
+    {
+        QJsonObject friendObj;
+        friendObj.insert("userId",friendList[i]->id);
+        friendObj.insert("userName",friendList[i]->name);
+        friendObj.insert("avatar",friendList[i]->icon);
+        jsonArray.append(friendObj);
+    }
+    //调用QML刷新函数
+    QObject* contactScreen=root->findChild<QObject*>("mainWindow") //加好友
+            ->findChild<QObject*>("chatWindow1")->findChild<QObject*>("contactScreen");
+    qDebug()<<contactScreen->property("radius");
+    QMetaObject::invokeMethod(contactScreen,"setContacts",
+                              Q_RETURN_ARG(QVariant,res),
+                              Q_ARG(QVariant,jsonArray));
 
 }
 //删除响应
