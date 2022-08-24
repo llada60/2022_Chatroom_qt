@@ -170,7 +170,7 @@ void QQClient::parseCommand(QString jsonStr,QHostAddress ip, quint16 port)
     else if(command == "personInfoBack"){//查询某人信息
         personInfoBack(obj);
     }
-    else if(command == "groupInfoBack"){//查询某人信息
+    else if(command == "groupInfoBack"){//查询某群信息
         groupInfoBack(obj);
     }
     else
