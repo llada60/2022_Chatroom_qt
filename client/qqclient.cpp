@@ -52,18 +52,18 @@ QQClient::QQClient(QQmlApplicationEngine *engine, QObject *parent)
             ->findChild<QObject*>("chatWindow2")->findChild<QObject*>("historyMessageScreen");
     QObject::connect(historyMessageScreen,SIGNAL(refreshChatListSignal(int)),
                      SLOT(messageRequest(int)));
-    QObject* infoCheckScreen = chatScreen->findChild<QObject*>("chatListView");//->findChild<QObject*>("chatListItem");
-    qDebug() << "personInfoCheck" << infoCheckScreen->findChildren<QObject*>()[0]->findChildren<QObject*>() << endl;
-    QObject::connect(infoCheckScreen->findChildren<QObject*>()[1], SIGNAL(personInfSignal(int,bool)),
+    //个人信息
+    QObject::connect(contactScreen,SIGNAL(personInfSignal(int,bool)),
                      this,SLOT(infoRequest(int,bool)));
 
+    /*
     //修改个人信息
     QObject* changePInfo=root->findChild<QObject*>("personalInfPage");
     QObject::connect(changePInfo,
                      SIGNAL(setUsrInfSignal(QString,QString,int,QString,int,QString,QString)),
                      this,
                      SLOT(changePInfoRequest(QString,QString,int,QString,int,QString,QString)));
-
+*/
 
     /*
     clientId=100002;
@@ -350,6 +350,7 @@ void QQClient::groupRequest(int id)
     sendMessage(diagram,this->hostIp,this->hostPort);
 }
 void QQClient::infoRequest(int id, bool isGroup){
+    qDebug()<<"inforequest";
     if(isGroup == true){
         groupInfoRequest(id);
     }
