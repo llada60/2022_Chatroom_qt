@@ -14,13 +14,17 @@
 class ClientInfo//储存当前客户端用户
 {
 public:
-    int userId = 0;
-    QString userName = "默认名称";
-    QString avatar = "https://www.com8.cn/wp-content/uploads/2020/08/20200823052248-5f41fd28d49e4.jpg";
     ClientInfo(QJsonObject infoObj)
     {
-
+        id=infoObj["id"].toInt();
+        name=infoObj["name"].toString();
+        icon=infoObj["icon"].toString();
+        qDebug()<<"ClientInfo"<<id<<name<<icon;
     }
+
+    int id;
+    QString name;
+    QString icon;
 };
 
 class User //储存用户信息
@@ -88,6 +92,7 @@ private:
     quint16 hostPort=9990;
     //临时数据
     int clientId=0;//储存当前id
+    ClientInfo * clientInfo;//储存当前账户所有信息
     QList<User*> friendList;//储存好友列表
     QList<Group*> groupList;//储存群组列表
     //前端通信engine

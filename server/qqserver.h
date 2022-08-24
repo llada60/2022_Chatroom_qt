@@ -79,6 +79,7 @@ private:
     //在线用户和群链表
     QList<User*> onlineUser;
     QList<Group*> groupList;
+    QJsonObject getTargetIpPort(int targetId);
     //数据库操作
     SqlAccountModel *atModel;
     SqlFriendModel *fdModel;
