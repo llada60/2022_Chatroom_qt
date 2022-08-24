@@ -15,7 +15,6 @@
         <file>components/AutoScrollTextEdit.qml</file>
         <file>components/RoundImage.qml</file>
         <file>js/time_utils.js</file>
-        <file>main.qml</file>
         <file>LoginWindow.qml</file>
         <file>RegisterWindow.qml</file>
         <file>images/rightArrow.png</file>

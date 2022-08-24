@@ -127,6 +127,8 @@ Window {
                     onClicked: {
                         createGroupWindow.visible = false
                     }
+                    hoverEnabled: true
+                    onHoveredChanged: cursorShape = Qt.PointingHandCursor
                 }
             }
         }

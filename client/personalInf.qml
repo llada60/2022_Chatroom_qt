@@ -76,6 +76,41 @@ Window {
     SelectAvatar{id:selectAvatar}
 
 
+    flags:(Qt.Window | Qt.FramelessWindowHint)
+
+
+    Rectangle{
+            z:100
+            id:closeButton
+            width:15
+            height:15
+            radius: closeButton.width/2
+            anchors.top: parent.top
+            anchors.left: parent.left
+
+            Rectangle{
+                width:15
+                height:15
+                radius: 15/2
+                anchors.fill: parent
+                Text {
+                    id: name
+                    anchors.centerIn: parent
+                    text: qsTr("X")
+                    color:"#FFFFFF"
+                    font.pixelSize: 16
+                }
+                color:"green"
+                MouseArea {
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    onHoveredChanged: cursorShape = Qt.PointingHandCursor
+                    onClicked: {
+                        personalInfPage.visible = false
+                    }
+                }
+            }
+        }
 
 
 

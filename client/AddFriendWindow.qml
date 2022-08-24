@@ -109,6 +109,8 @@ Window {
                     onClicked: {
                         addFriendWindow.visible = false
                     }
+                    hoverEnabled: true
+                    onHoveredChanged: cursorShape = Qt.PointingHandCursor
                 }
             }
         }
