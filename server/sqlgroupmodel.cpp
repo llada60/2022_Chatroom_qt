@@ -87,7 +87,7 @@ SqlGroupModel::~SqlGroupModel()
     database().close();
 }
 
-QByteArray SqlGroupModel::createGroup(const int& masterID)
+int SqlGroupModel::createGroup(const int& masterID)
 {
     setTable(groupTableName);
     QSqlQuery query;
@@ -109,10 +109,8 @@ QByteArray SqlGroupModel::createGroup(const int& masterID)
         id = record.value(0).toInt();
         this->joinGroup(id, masterID, 1);
     }
-    obj.insert("id", QJsonValue(id));
-    doc = QJsonDocument(obj);
-    bArry = doc.toJson();
-    return bArry;
+
+    return id;
 }
 
 QByteArray SqlGroupModel::memberList(const int & gID)
