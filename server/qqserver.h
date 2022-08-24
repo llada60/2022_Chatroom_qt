@@ -101,6 +101,8 @@ private:
     void friendRespond(QJsonObject obj,QHostAddress ip,quint16 port);//好友列表
     void groupRespond(QJsonObject obj,QHostAddress ip,quint16 port);//群列表
     void messageRespond(QJsonObject obj,QHostAddress ip,quint16 port);//历史消息
+    void getPersonalInfoRespond(QJsonObject obj, QHostAddress ip, quint16 port);//获取个人信息
+    void getGroupInfoRespond(QJsonObject obj, QHostAddress ip, quint16 port);//获取群信息
     //测试代码
     void test(SqlAccountModel* atModel,SqlFriendModel* fdModel,SqlGroupModel* gpModel);
 

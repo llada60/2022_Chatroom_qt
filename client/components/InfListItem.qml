@@ -52,11 +52,12 @@ Rectangle
             onClicked:
             {
                 // 不可搜索自身id
-//                if(Config.read() ==  userid)
-//                {
-//                    cantSearchMyself.open()
-//                }
-                console.log("添加好友被点击");
+                if(ClientInfo.id == userid)
+                {
+                    cantSearchMyself.open()
+                    return
+                }
+
                 //发出好友（群聊）添加信号
                 addSignal(userid);
             }

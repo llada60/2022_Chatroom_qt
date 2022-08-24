@@ -63,8 +63,8 @@ Rectangle {
     PersonalInf{id: personalInf; visible: false}
     GroupInf{id:groupInf; visible:false}
 
-    //向服务器发送获取个人信息的信号
-    signal personInfSignal(int uid,bool isGroup)
+    //向服务器发送获取个人或群聊信息的信号
+    signal personInfSignal(int uid, bool isGroup)
 
     //接收返回的个人信息信号
     function personalInfBack(data)
@@ -77,20 +77,17 @@ Rectangle {
 
 //        personalInf.visible = true
     }
-    function openPInfoWindow(){
+    function openPInfoWindow(data,){
         //获得用户信息
-        personInfSignal(userId,isGroup)
+        personInfSignal(data["userId"], false)
 
         personalInf.isMe = false
-        personalInf.personalHead = avatar
-        personalInf.personalName = userName
-        personalInf.personalID = userId
+        personalInf.personalHead = data["avatar"]
+        personalInf.personalName = data["userName"]
+        personalInf.personalID   = data["userId"]
 
         personalInf.visible = true // 与服务器通讯后注释
     }
-
-    //向服务器发送获取个人信息的信号
-    signal groupInfSignal(int gid, bool isGroup)
 
     //接收返回的群组信息信号
     function groupInfBack(data)
@@ -103,13 +100,13 @@ Rectangle {
 
 
     }
-    function openGInfoWindow(){
+    function openGInfoWindow(data){
         //获得群组信息
-        groupInfSignal(userId,isGroup)
+        personInfSignal(data["userId"],true)
 
-        groupInf.groupHead = avatar
-        groupInf.groupName = userName
-        groupInf.groupID = userId
+        groupInf.groupHead = data["avatar"]
+        groupInf.groupName = data["userName"]
+        groupInf.groupID   = data["userId"]
 
         groupInf.visible = true //与服务器通讯后注释
     }
@@ -189,13 +186,13 @@ Rectangle {
                     onClicked:
                     {
                         //问题在哪啊，avatar/userId/userName
-                        if(false == isGroup)
+                        if(!isGroup)
                         {
-                            openPInfoWindow()
+                            openPInfoWindow(contactListModel.get(index))
                         }
                         else
                         {
-                            openGInfoWindow()
+                            openGInfoWindow(groupListModel.get(index))
                         }
                     }
 

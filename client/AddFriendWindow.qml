@@ -15,7 +15,7 @@ Window {
     title: qsTr("加好友/群")
     objectName: "addFriendWindow"
 
-    flags:(Qt.Window | Qt.FramelessWindowHint)
+    flags:(Qt.Window | Qt.CustomizeWindowHint)
 
 
     property string avatarImg: "https://c-ssl.dtstatic.com/uploads/blog/202203/25/20220325232426_17909.thumb.1000_0.jpeg"

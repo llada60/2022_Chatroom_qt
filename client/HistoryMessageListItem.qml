@@ -10,7 +10,6 @@ Rectangle {
     id: itemContainer
     anchors.left: parent.left
     anchors.right: parent.right
-    width:parent.width
     height: 72
     clip: true
     color: ListView.isCurrentItem ? "#f2f2f2" : "white"
@@ -20,27 +19,36 @@ Rectangle {
     RowLayout {
         height: parent.height
         spacing: 8
-        width: parent.width
+        width: 270 // parent.width
 
         RoundImage {
             id: avatarImg
             img_src: avatar
-
             width: 48
             height: avatarImg.width
             Layout.leftMargin: 8
-
+            color: "blue"
         }
 
+//        Label {
+//            Layout.alignment: Qt.AlignLeft
+//            color: "#ee000000"
+//            text: `<font color=\"#5e5e5e\">${latestMessage}</font>`
+//            Layout.maximumWidth: itemContainer * 0.6
+//            elide: "ElideRight"
+//            font.pointSize: 9
+//        }
+
         RowLayout {
-            Layout.alignment: Qt.AlignTop
+            Layout.alignment: Qt.AlignTop | Qt.AlignLeft
             Layout.topMargin: (itemContainer.height - avatarImg.height ) / 2 + 4
+            Layout.fillWidth: true
             ColumnLayout {
+                Layout.alignment: Qt.AlignLeft
                 Label{
                     id: userNameLabel
                     text: userName
                     elide: "ElideRight"
-
                 }
                 Label {
                     color: "#ee000000"

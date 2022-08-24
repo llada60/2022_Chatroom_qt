@@ -30,8 +30,6 @@ ColumnLayout {
     // 拉取聊天记录（页面加载完后）
     signal requestMessageSignal(int sendId, int targetId)
 
-
-
     // 函数： 当c++层接收到新的消息时调用，往UI里添加一条消息(暂时不需要，或许直接appenddata就行)
     function sendChatMessageBack(sendId,content,time)
     {
