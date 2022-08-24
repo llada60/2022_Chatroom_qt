@@ -34,8 +34,8 @@ Window {
                         acceptedButtons: Qt.LeftButton
                         onClicked:
                         {
-                            personalHead = img2.source
-                            close()
+                            personalHead = img1.source
+                            selectAvatar.visible = false
                         }
                     }
                 }
@@ -55,7 +55,7 @@ Window {
                         onClicked:
                         {
                             personalHead = img2.source
-                            close()
+                            selectAvatar.visible = false
                         }
                     }
                 }
@@ -75,7 +75,7 @@ Window {
                         onClicked:
                         {
                             personalHead = img3.source
-                            close()
+                            selectAvatar.visible = false
                         }
                     }
                 }
@@ -103,7 +103,7 @@ Window {
                         onClicked:
                         {
                             personalHead = img4.source
-                            close()
+                            selectAvatar.visible = false
                         }
                     }
                 }
@@ -123,7 +123,7 @@ Window {
                         onClicked:
                         {
                             personalHead = img5.source
-                            close()
+                            selectAvatar.visible = false
                         }
                     }
                 }
@@ -143,7 +143,7 @@ Window {
                         onClicked:
                         {
                             personalHead = img6.source
-                            close()
+                            selectAvatar.visible = false
                         }
                     }
                 }
