@@ -83,7 +83,7 @@ Window {
         width: 200;
         height: 100
         title: qsTr("添加成员确认")
-        standardButtons: StandardButton.Yes|StandardButton.No
+        standardButtons: StandardButton.Ok|StandardButton.Cancel
 
         Text {
             id: text
@@ -91,8 +91,10 @@ Window {
             text: printMember()
             anchors.centerIn: parent
         }
+
         onAccepted:
         {
+            console.log("create")
             createGroupSignal(memberId)
         }
     }

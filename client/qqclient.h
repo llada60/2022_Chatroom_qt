@@ -114,7 +114,7 @@ private slots:
     void sendChatMessage(int targetId,QString content,int time);//发消息
     void search(int targetId);//查找群/人
     void add(int targetId);//加群/人
-    void createGtoup(QVariantList memberList);
+    void createGroup(QVariant memberList);
     void deleteRequest(int targetId);//删群/人
     void friendRequest(int id);//请求好友列表（从服务端拉取数据的系列函数）
     void messageRequest(int id);//请求历史聊天记录(实际只需要id，但是为了适应signal用QVariant)
@@ -130,8 +130,8 @@ private slots:
 private:
     //配置信息
     QUdpSocket* udpSocket;//服务器ip和端口
-    QHostAddress hostIp=QHostAddress("81.68.194.103");
-    quint16 hostPort=8080;
+    QHostAddress hostIp=QHostAddress("192.168.81.108");
+    quint16 hostPort=9990;
     //临时数据
     int clientId=0;//储存当前id
     ClientInfo * clientInfo;//储存当前账户所有信息

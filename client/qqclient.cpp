@@ -39,8 +39,8 @@ QQClient::QQClient(QQmlApplicationEngine *engine, QObject *parent)
     QObject* createGroupWindow=root->findChild<QObject*>("mainWindow")//建群 createGroup
             ->findChild<QObject*>("chatWindow1")->findChild<QObject*>("contactScreen")
             ->findChild<QObject*>("createGroup");
-    QObject::connect(createGroupWindow,SIGNAL(createGroupSignal(QVariantList)),
-                     this,SLOT(createGroup(QVariantList)));
+    QObject::connect(createGroupWindow,SIGNAL(createGroupSignal(QVariant)),
+                     this,SLOT(createGroup(QVariant)));
     QObject* contactScreen=root->findChild<QObject*>("mainWindow")//通讯录刷新
             ->findChild<QObject*>("chatWindow1")->findChild<QObject*>("contactScreen");
     QObject::connect(contactScreen,SIGNAL(requestContactSignal()),
@@ -277,12 +277,17 @@ void QQClient::add(int targetId)
     sendMessage(diagram,this->hostIp,this->hostPort);
 }
 
-void QQClient::createGroup(QVariantList memberList)
+void QQClient::createGroup(QVariant var)
 {
-    for(int i=0;i<memberList.length();i++)
+    qDebug()<<"create(C++)";
+    QVariantList memberList=var.toList();
+    //建群
+
+    for(int i=0;i<memberList.length();i++) //加群
     {
-        qDebug()<<memberList[i].toInt();
+       int memberId=memberList[i].toInt();
     }
+
 }
 
 //删除请求
