@@ -108,14 +108,35 @@ QByteArray SqlFriendModel::friendList(const int &ID)
 {
     setTable(friendTableName);
     QSqlQuery query;
+    QSqlQuery query1;
     QJsonArray jsonAry;
     QByteArray bAry;
     QJsonObject finalObj;
+    if(!query1.exec(QString("SELECT * FROM USERINFO WHERE "
+                           "ID=%1").arg(QString::number(ID))))
+    {
+        qDebug() << "选择好友发生错误";
+        qDebug() << query.lastError();
+    }
+    else
+    {
+        query1.next();
+        QJsonObject obj;
+        obj.insert("id", QJsonValue(query1.value("ID").toInt()));
+        obj.insert("name", QJsonValue(query1.value("NAME").toString()));
+        obj.insert("icon", QJsonValue(query1.value("ICON").toString()));
+        obj.insert("gender", QJsonValue(query1.value("GENDER").toBool()));
+        obj.insert("birth", QJsonValue(query1.value("BIRTH").toString()));
+        obj.insert("area", QJsonValue(query1.value("AREA").toString()));
+        obj.insert("education", QJsonValue(query1.value("EDUCATION").toString()));
+        obj.insert("signature", QJsonValue(query1.value("SIGNATURE").toString()));
+        jsonAry.append(QJsonValue(obj));
+    }
     if(!query.exec(QString("SELECT * FROM (SELECT USERID AS ID FROM FRIENDINFO WHERE "
-                           "FRIENDID=%1 UNION "
+                           "FRIENDID=%1 AND USERID !=%1 UNION "
                            "SELECT FRIENDID AS ID FROM FRIENDINFO WHERE "
-                           "USERID=%2) AS A JOIN USERINFO AS B  "
-                           "ON A.ID=B.ID").arg(QString::number(ID), QString::number(ID))))
+                           "USERID=%1 AND FRIENDID!=%1) AS A JOIN USERINFO AS B  "
+                           "ON A.ID=B.ID").arg(QString::number(ID))))
     {
         qDebug() << "选择好友发生错误";
         qDebug() << query.lastError();
