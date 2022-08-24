@@ -65,7 +65,11 @@ Rectangle {
             else appendGroup({"userId":uid,"userName":name,"avatar":avatar})
         }
     }
-    CreateGroup{id:createGroup; visible: false;}
+    CreateGroup{
+        id:createGroup;
+        visible: false;
+        objectName: "createGroup"
+    }
 
     /*
       获取好友/群聊信息=>信息界面

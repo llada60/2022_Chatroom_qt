@@ -114,9 +114,10 @@ private slots:
     void sendChatMessage(int targetId,QString content,int time);//发消息
     void search(int targetId);//查找群/人
     void add(int targetId);//加群/人
+    void createGtoup(QVariantList memberList);
     void deleteRequest(int targetId);//删群/人
     void friendRequest(int id);//请求好友列表（从服务端拉取数据的系列函数）
-    void messageRequest(QVariant data);//请求历史聊天记录(实际只需要id，但是为了适应signal用QVariant)
+    void messageRequest(int id);//请求历史聊天记录(实际只需要id，但是为了适应signal用QVariant)
     void groupRequest(int id);//请求群列表
     void infoRequest(int id, bool isGroup);//请求某人或某群的详细数据
     void personInfoRequest(int id);//请求某人的详细数据
