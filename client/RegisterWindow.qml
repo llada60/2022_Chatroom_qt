@@ -63,10 +63,13 @@ Window {
         }
         else
         {
+            idDialog.open()
             usrID = pID
             inputID.text = usrID
             inputPSW.text = usrPassword
-            idDialog.open()
+            Config.write("myID",usrID)
+            console.log("write "+usrID)
+
         }
     }
 

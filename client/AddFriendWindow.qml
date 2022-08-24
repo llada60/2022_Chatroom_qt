@@ -55,7 +55,7 @@ Window {
         }
         else
         {
-            //这里应该把好友添加到通讯录
+            //这里应该把好友/群聊添加到通讯录
             passSignal(userid,avatarImg,userName,isPerson)
             addOk.open()
         }

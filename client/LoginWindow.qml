@@ -7,7 +7,7 @@ import QtQuick.Dialogs 1.3
 import "./js/config_utils.js" as ConfigUtils
 
 Window {
-    property int usrID: Config.read("myID",0)
+    property int usrID: Config.read("myID","") //置空失败
     property string usrPSW: ""
     property string usrHead: Config.read("myHead", "https://c-ssl.duitang.com/uploads/blog/201408/15/20140815095903_ttcnF.jpeg")     //登陆时若本地就有头像自动获取；否则使用自带默认头像（类qq的企鹅）
     property string usrName: ""
@@ -107,7 +107,7 @@ Window {
         x:20
         leftPadding: 4
         placeholderText: qsTr("<center>账号</center>")
-        text: Config.read("myID",0)
+        text: usrID
     }
     TextField
     {
