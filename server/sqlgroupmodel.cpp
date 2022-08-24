@@ -107,7 +107,7 @@ QByteArray SqlGroupModel::createGroup(const int& masterID)
         select();
         QSqlRecord record = QSqlTableModel::record(rowCount()-1);
         id = record.value(0).toInt();
-        this->joinGroup(masterID, id, 1);
+        this->joinGroup(id, masterID, 1);
     }
     obj.insert("id", QJsonValue(id));
     doc = QJsonDocument(obj);
@@ -123,7 +123,7 @@ QByteArray SqlGroupModel::memberList(const int & gID)
     QByteArray bAry;
     QJsonObject finalObj;
     if(!query.exec(QString("SELECT MID, RANK FROM MEMBERINFO "
-                           "WHERE GID=%1)").arg(QString::number(gID))))
+                           "WHERE GID=%1").arg(QString::number(gID))))
     {
         qDebug() << "选择群成员错误";
         qDebug() << query.lastError();

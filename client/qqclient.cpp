@@ -45,6 +45,8 @@ QQClient::QQClient(QQmlApplicationEngine *engine, QObject *parent)
     qDebug() << "personInfoCheck" << infoCheckScreen->findChildren<QObject*>()[0]->findChildren<QObject*>() << endl;
     QObject::connect(infoCheckScreen->findChildren<QObject*>()[1], SIGNAL(getInfSignal(int,bool)),
                      this,SLOT(infoRequest(int,bool)));
+    login(100002,"123");
+
     /*
     //c++调qml函数（例子）
     QVariant res;
