@@ -13,6 +13,7 @@ Window {
     height: 100
     visible: false
     title: qsTr("加好友/群")
+    objectName: "addFriendWindow"
 
 
     property string avatarImg: "https://c-ssl.dtstatic.com/uploads/blog/202203/25/20220325232426_17909.thumb.1000_0.jpeg"
@@ -40,7 +41,7 @@ Window {
         userName = data.pName
         avatarImg = data.headImg
         isPerson = data.isPerson
-        Window.height = 180
+        //Window.height = 180
         searchResult.visible = true
     }
     //返回添加成功信号

@@ -27,7 +27,11 @@ QQClient::QQClient(QQmlApplicationEngine *engine, QObject *parent)
             ->findChild<QObject*>("chatWindow2")->findChild<QObject*>("chatScreen");
     QObject::connect(chatScreen,SIGNAL(sendMessageSignal(int,QString,int)),
                      this,SLOT(sendChatMessage(int,QString,int)));
-
+    QObject* addFriendWindow=root->findChild<QObject*>("mainWindow") //加好友
+            ->findChild<QObject*>("chatWindow1")->findChild<QObject*>("contactScreen")
+            ->findChild<QObject*>("addFriendWindow");
+    QObject::connect(addFriendWindow,SIGNAL(searchSignal(int)),
+                     this,SLOT(search(int)));
 
     /*
     //c++调qml函数（例子）
@@ -123,7 +127,7 @@ void QQClient::parseCommand(QString jsonStr,QHostAddress ip, quint16 port)
     {
         loginBack(obj);
     }
-    else if(command=="sendChatMessageBack")//收到单发消息
+    else if(command=="sendChatMessageBack")//收到消息
     {
         sendChatMessageBack(obj);
     }
@@ -307,6 +311,11 @@ void QQClient::loginBack(QJsonObject obj)
     {
         clientId=0;
     }
+    else//成功，拉数据
+    {
+        friendRequest(clientId);
+        groupRequest(clientId);
+    }
     //调用QML登录函数
     QVariant res; //如果QML函数没有返回值会不会报错？
     QMetaObject::invokeMethod(root,"loginBack",
@@ -341,7 +350,14 @@ void QQClient::sendChatMessageBack(QJsonObject obj)
 //查找响应
 void QQClient::searchBack(QJsonObject obj)
 {
-    qDebug()<<"searchBack()"<<obj;
+    //调用QML函数
+    QVariant res; //如果QML函数没有返回值会不会报错？
+    QObject* addFriendWindow=root->findChild<QObject*>("mainWindow") //加好友
+            ->findChild<QObject*>("chatWindow1")->findChild<QObject*>("contactScreen")
+            ->findChild<QObject*>("addFriendWindow");
+    QMetaObject::invokeMethod(addFriendWindow,"searchBack",
+                              Q_RETURN_ARG(QVariant,res),
+                              Q_ARG(QVariant,obj));
 }
 //添加响应
 void QQClient::addBack(QJsonObject obj)

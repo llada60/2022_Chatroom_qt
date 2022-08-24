@@ -29,7 +29,7 @@ ColumnLayout {
 
 
 
-    // 函数： 当c++层接收到新的消息时调用，往UI里添加一条消息
+    // 函数： 当c++层接收到新的消息时调用，往UI里添加一条消息(暂时不需要，或许直接appenddata就行)
     function sendChatMessageBack(sendId,content,time)
     {
         console.log(content)
@@ -274,7 +274,7 @@ ColumnLayout {
     //初始化测试
     Component.onCompleted: {
         chatListModel.append({
-                                 "uid": 0,
+                                 "uid": 100002,
                                  "name": "李四",
                                  "time": 1660893694,
                                  "message": `{"fileName": "来来来.txt","fileSize": 1389420,"localPath": "d:/test/来来来.txt"}`,
@@ -282,7 +282,7 @@ ColumnLayout {
                                  "type": 1 // 1代表文件
                              })
         chatListModel.append({
-                                "uid": 0,
+                                "uid": 100002,
                                 "name": "李四",
                                 "time": 1660893694,
 
@@ -292,7 +292,7 @@ ColumnLayout {
                                 "type": 0
                             })
         chatListModel.append({
-                                "uid": 1,
+                                "uid": 100001,
                                 "name": "cyy",
                                 "time": 1660893694,
 

@@ -19,6 +19,7 @@ public:
         this->id=id;
         this->name=name;
         this->icon=icon;
+        qDebug()<<"构建User:"<<id<<name;
     }
 
     int id;
@@ -36,6 +37,7 @@ public:
         this->icon=icon;
         this->intro=intro;
         this->notice=notice;
+        qDebug()<<"构建Group:"<<id<<name;
     }
     int id;
     QString name;

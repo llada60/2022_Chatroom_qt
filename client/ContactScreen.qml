@@ -8,6 +8,7 @@ import "./components"
 Rectangle {
     id: rectangle
     radius: 4
+    objectName: "contactScreen"
 
     // 信号，点击和某人/群聊天触发，参数为对应项的data
     signal messageWithConact(int id, string name, string avatar)

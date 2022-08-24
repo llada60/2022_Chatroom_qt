@@ -182,27 +182,40 @@ void QQServer::sendChatMessageRespond(QJsonObject obj, QHostAddress ip, quint16 
     QString content=obj["content"].toString();
     int time=obj["time"].toInt();
     int type=obj["type"].toInt();
-    //取目标ip和port
-    QHostAddress targetIp;
-    quint16 targetPort;
-    for(int i=0;i<onlineUser.length();i++)
+    //根据id判断群/人
+    if(targetId/100000==1)
     {
-        if(onlineUser[i]->id==targetId)//在在线用户列表中找到目标id
+        //取目标ip和port
+        QHostAddress targetIp;
+        quint16 targetPort;
+        for(int i=0;i<onlineUser.length();i++)
         {
-            targetIp=onlineUser[i]->ip;
-            targetPort=onlineUser[i]->port;
+            if(onlineUser[i]->id==targetId)//在在线用户列表中找到目标id
+            {
+                targetIp=onlineUser[i]->ip;
+                targetPort=onlineUser[i]->port;
+            }
         }
+        //转发消息
+        QJsonObject jsonObj;
+        jsonObj.insert("command","sendChatMessageBack");
+        jsonObj.insert("sendId",sendId);
+        jsonObj.insert("content",content);
+        jsonObj.insert("time",time);
+        QString diagram=QJsonDocument(jsonObj).toJson();
+        sendMessage(diagram,targetIp,targetPort);
+        //数据库添加聊天记录
+        fdModel->sendMessage(sendId, targetId, type, time, content);
     }
-    //转发消息
-    QJsonObject jsonObj;
-    jsonObj.insert("command","sendChatMessageBack");
-    jsonObj.insert("sendId",sendId);
-    jsonObj.insert("content",content);
-    jsonObj.insert("time",time);
-    QString diagram=QJsonDocument(jsonObj).toJson();
-    sendMessage(diagram,targetIp,targetPort);
-    //数据库添加聊天记录
-    fdModel->sendMessage(sendId, targetId, type, time, content);
+    else
+    {
+        //取群成员
+
+        //遍历发送
+
+        //添加数据库
+    }
+
 }
 
 void QQServer::searchRespond(QJsonObject obj, QHostAddress ip, quint16 port)
@@ -322,29 +335,6 @@ void QQServer::test(SqlAccountModel *atModel, SqlFriendModel *fdModel, SqlGroupM
     gpModel->sendMessage(600002,100001,0,1,"群发3");
     gpModel->sendMessage(600002,100002,0,3,"群发5");
     */
-
 }
 
 
-
-/*
-void QQServer::sendToGroupRespond(QJsonObject obj, QHostAddress ip, quint16 port)
-{
-    //解包
-    int sendId=obj["sendId"].toInt();
-    int targetId=obj["targetId"].toInt();
-    QString content=obj["content"].toString();
-    QString time=obj["time"].toString();
-    int type=obj["type"].toInt();
-    gpModel->sendMessage(targetId, sendId, type, time, content);
-    QByteArray bAry = gpModel->memberList(targetId);
-    QJsonParseError error;
-    QJsonObject jsonObj = QJsonDocument::fromJson(bAry, &error).object();
-    QJsonArray jsonAry = jsonObj.value("list").toArray();
-    QList<int> lt;
-    for(int i=0;i<jsonAry.size();i++)
-    {
-        lt.append(jsonAry[i].toObject().value("id").toInt());
-    }
-}
-*/
