@@ -41,7 +41,7 @@ Window {
         userName = data.pName
         avatarImg = data.headImg
         isPerson = data.isPerson
-        //Window.height = 180
+        addFriendWindow.height = 180
         searchResult.visible = true
     }
     //返回添加成功信号

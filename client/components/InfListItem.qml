@@ -34,7 +34,7 @@ Rectangle
             background: Item{
                 opacity:1
             }
-            Layout.leftMargin: 80
+            Layout.leftMargin: 70
             icon.source: addFriendButton.pressed? "qrc:/images/addFriend1.png":
                                  addFriendButton.hovered? "qrc:/images/addFriend1.png" :
                                                 ("qrc:/images/addFriend.png")
