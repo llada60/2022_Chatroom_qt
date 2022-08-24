@@ -25,6 +25,12 @@ Window {
     // 发送登陆信号，在数据库中验证
     signal loginSignal(int usrID,string usrPSW)
 
+//    // TODO 测试用，快速登录账号
+//    Component.onCompleted: {
+//        loginSignal(100001, "123");
+//        console.log("测试快速登录……")
+//    }
+
 
     MessageDialog
     {

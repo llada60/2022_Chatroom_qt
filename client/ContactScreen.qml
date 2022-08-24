@@ -18,11 +18,6 @@ Rectangle {
     signal requestContactSignal()
     signal requestGroupSignal()
 
-    Component.onCompleted: {
-        requestContactSignal()
-        requestGroupSignal()
-    }
-
     // 获取到联系人后调这个函数，messages为QJsonArray。每一项的数据data参考如下
     /**
       userId: 1
@@ -53,6 +48,13 @@ Rectangle {
     // 添加一条群组信息
     function appendGroup(data){
         groupListModel.append(data)
+    }
+
+    // 下面是qml用的
+    function sendRequestDataSignal(){
+        console.log("获取通讯录信息……")
+        requestContactSignal()
+        requestGroupSignal()
     }
 
 

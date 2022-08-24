@@ -230,8 +230,8 @@ Window {
                     Layout.alignment: Qt.AlignHCenter
                     Layout.topMargin: -9
                     background:
-                    {
-                        opacity: 1
+                    Item {
+                        opacity: 0
                     }
                     icon.source: sendMsg.pressed? "qrc:/images/message1.png":
                                          sendMsg.hovered? "qrc:/images/message1.png" :
