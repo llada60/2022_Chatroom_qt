@@ -13,12 +13,14 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
     QSettingIni qSettingIni("config.ini");
     QFileUtils qFileUtils;
+    ClientInfo clientInfo;
 
     QQmlApplicationEngine engine;
     QQmlContext* root = engine.rootContext();
 
     root->setContextProperty("Config", &qSettingIni);
     root->setContextProperty("QFileUtils", &qFileUtils);
+    root->setContextProperty("ClientInfo", &clientInfo);
 
     const QUrl url(QStringLiteral("qrc:/LoginWindow.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
