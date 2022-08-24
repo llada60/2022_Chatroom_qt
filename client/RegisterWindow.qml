@@ -27,6 +27,15 @@ Window {
             standardButtons: StandardButton.Cancel
     }
 
+    MessageDialog
+    {//验证失败提示
+            id: wrongCheck
+            title: "提示"
+            icon: StandardIcon.Warning
+            text: "验证失败"
+            standardButtons: StandardButton.Cancel
+    }
+
     Dialog
     {//返回注册结果
         id: idDialog
@@ -101,11 +110,13 @@ Window {
 
     ColumnLayout
     {
+        Layout.alignment: Qt.AlignHCenter
         anchors.centerIn: parent
         anchors.verticalCenterOffset: -20
 
         TextField
         {
+            Layout.alignment: Qt.AlignHCenter
             id: usr
             width:200
             height: 50
@@ -114,6 +125,7 @@ Window {
         }
         TextField
         {
+            Layout.alignment: Qt.AlignHCenter
             id: password
             Layout.topMargin: 15
             width:200
@@ -124,6 +136,7 @@ Window {
         }
         TextField
         {
+            Layout.alignment: Qt.AlignHCenter
             id: passwordAgain
             Layout.topMargin: 15
             width:200
@@ -132,11 +145,49 @@ Window {
             echoMode: TextInput.Password
             placeholderText: qsTr("<center>确认密码</center>")
         }
+        TextField
+        {
+            Layout.alignment: Qt.AlignHCenter
+            id: emailAddress
+            Layout.topMargin: 15
+            width:200
+            height: 50
+            leftPadding: 4
+            placeholderText: qsTr("<center>邮件地址</center>")
+        }
+        Rectangle
+        {
+            Layout.alignment: Qt.AlignHCenter
+            width: 200
+            Layout.topMargin: 15
+            TextField
+            {
+                id: captcha
+                width:100
+                height: 50
+                leftPadding: 4
+                placeholderText: qsTr("<center>验证码</center>")
+            }
+            Button
+            {
+                anchors.left: captcha.right
+                anchors.leftMargin: 10
+                id:sendEmail
+                text: "发送验证码"
+                onClicked:
+                {
+                    //发送验证码
+                }
+            }
+        }
+
+
+
         RoundButton
         {
             //注册，自动分配账号，并弹出message写出对应的账号和用户名，跳过登陆步骤进入主界面
             id: register
-            Layout.topMargin: 10
+            Layout.topMargin: 50
             Layout.alignment: Qt.AlignHCenter
             text: qsTr("注册")
             flat: true
@@ -162,15 +213,17 @@ Window {
                     console.log("no password")
                     noPassword.open()
                 }
+                else if(captcha.text == "")//验证码验证逻辑，需修改if
+                {
+                    console.log("验证码错误")
+                    wrongCheck.open()
+
+                }
 
                 else
                 {
                     console.log("inf config ok")
                     registerSignal(usrName,usrPassword)
-
-//                    //存储注册后的id
-//                    Config.write("myID",usrID)
-//                    Config.write("myPSW",usrPassword)
 
                     loginWindows.show()
                     close()

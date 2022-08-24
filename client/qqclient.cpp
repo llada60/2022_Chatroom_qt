@@ -36,16 +36,22 @@ QQClient::QQClient(QQmlApplicationEngine *engine, QObject *parent)
                      this,SLOT(search(int)));
     QObject::connect(addFriendWindow,SIGNAL(addSignal(int)),
                      this,SLOT(add(int)));
+    QObject* createGroupWindow=root->findChild<QObject*>("mainWindow")//建群 createGroup
+            ->findChild<QObject*>("chatWindow1")->findChild<QObject*>("contactScreen")
+            ->findChild<QObject*>("createGroup");
+    QObject::connect(createGroupWindow,SIGNAL(createGroupSignal(QVariant)),
+                     this,SLOT(createGroup(QVariant)));
     QObject* contactScreen=root->findChild<QObject*>("mainWindow")//通讯录刷新
             ->findChild<QObject*>("chatWindow1")->findChild<QObject*>("contactScreen");
     QObject::connect(contactScreen,SIGNAL(requestContactSignal()),
                      this,SLOT(refreshContactFriend()));//人
     QObject::connect(contactScreen,SIGNAL(requestGroupSignal()),
                      this,SLOT(refreshContactGroup()));//群
+    //历史聊天刷新
     QObject* historyMessageScreen=root->findChild<QObject*>("mainWindow")->findChild<QObject*>("chatWindow1")
             ->findChild<QObject*>("chatWindow2")->findChild<QObject*>("historyMessageScreen");
-    QObject::connect(historyMessageScreen,SIGNAL(clickHistoryMessageItem(QVariant)),
-                     SLOT(messageRequest(QVariant)));//历史聊天刷新
+    QObject::connect(historyMessageScreen,SIGNAL(refreshChatListSignal(int)),
+                     SLOT(messageRequest(int)));
     QObject* infoCheckScreen = chatScreen->findChild<QObject*>("chatListView");//->findChild<QObject*>("chatListItem");
     qDebug() << "personInfoCheck" << infoCheckScreen->findChildren<QObject*>()[0]->findChildren<QObject*>() << endl;
     QObject::connect(infoCheckScreen->findChildren<QObject*>()[1], SIGNAL(personInfSignal(int,bool)),
@@ -271,6 +277,19 @@ void QQClient::add(int targetId)
     sendMessage(diagram,this->hostIp,this->hostPort);
 }
 
+void QQClient::createGroup(QVariant var)
+{
+    qDebug()<<"create(C++)";
+    QVariantList memberList=var.toList();
+    //建群
+
+    for(int i=0;i<memberList.length();i++) //加群
+    {
+       int memberId=memberList[i].toInt();
+    }
+
+}
+
 //删除请求
 void QQClient::deleteRequest(int targetId)
 {
@@ -294,14 +313,13 @@ void QQClient::friendRequest(int id)
     sendMessage(diagram,this->hostIp,this->hostPort);
 }
 //历史消息请求
-void QQClient::messageRequest(QVariant data)
+void QQClient::messageRequest(int id)
 {
-    QJsonObject dataObj=data.toJsonObject();
     //封装Json
     QJsonObject jsonObj;
     jsonObj.insert("command","messageRequest");
     jsonObj.insert("requestId",clientId);
-    jsonObj.insert("targetId",dataObj["userId"].toInt());
+    jsonObj.insert("targetId",id);
     QString diagram=QJsonDocument(jsonObj).toJson();
     //发送
     sendMessage(diagram,this->hostIp,this->hostPort);
