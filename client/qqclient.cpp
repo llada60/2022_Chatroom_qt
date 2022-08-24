@@ -56,7 +56,7 @@ QQClient::QQClient(QQmlApplicationEngine *engine, QObject *parent)
     QObject::connect(contactScreen,SIGNAL(personInfSignal(int,bool)),
                      this,SLOT(infoRequest(int,bool)));
 
-    /*
+
     //修改个人信息
     QObject* changePInfo=root->findChild<QObject*>("personalInfPage");
     QObject::connect(changePInfo,
