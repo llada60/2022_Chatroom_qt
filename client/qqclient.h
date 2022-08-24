@@ -124,7 +124,6 @@ private slots:
     //其他函数
     void refreshContactFriend();//刷新联系人
     void refreshContactGroup();//刷新群聊通讯录
-    QJsonObject messageObject(QJsonObject rawMessage);//传入消息obj，构建一个更完善的，直接用于qml的消息obj
 
 
 private:

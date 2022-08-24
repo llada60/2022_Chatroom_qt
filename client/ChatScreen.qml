@@ -42,12 +42,12 @@ ColumnLayout {
             if(data["groupId"] === targetId) {
                 chatListModel.append(data)
             }
-            updateHistorySignal(data["groupId"], data["message"], data["time"]);
+            updateHistorySignal(targetId, data["message"], data["time"]);
         }else{
             if(data["uid"] === targetId || data["uid"] === myUid) {
                 chatListModel.append(data)
             }
-            updateHistorySignal(data["uid"], data["message"], data["time"]);
+            updateHistorySignal(targetId, data["message"], data["time"]);
         }
     }
 

@@ -43,12 +43,6 @@ QQClient::QQClient(QQmlApplicationEngine *engine, QObject *parent)
                      this,SLOT(refreshContactGroup()));//群
     QObject* historyMessageScreen=root->findChild<QObject*>("mainWindow")->findChild<QObject*>("chatWindow1")
             ->findChild<QObject*>("chatWindow2")->findChild<QObject*>("historyMessageScreen");
-    QObject::connect()
-    //历史聊天刷新
-    QObject* infoCheckScreen = chatScreen->findChild<QObject*>("chatListView");//->findChild<QObject*>("chatListItem");
-    qDebug() << "personInfoCheck" << infoCheckScreen->findChildren<QObject*>()[0]->findChildren<QObject*>() << endl;
-    QObject::connect(infoCheckScreen->findChildren<QObject*>()[1], SIGNAL(personInfSignal(int,bool)),
-                     this,SLOT(infoRequest(int,bool)));
     /*
     clientId=100002;
     sendChatMessage(100001,"nihao",123);
