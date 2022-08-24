@@ -16,10 +16,15 @@ class ClientInfo//储存当前客户端用户
 public:
     ClientInfo(QJsonObject infoObj)
     {
-
+        id=infoObj["id"].toInt();
+        name=infoObj["name"].toString();
+        icon=infoObj["icon"].toString();
+        qDebug()<<"ClientInfo"<<id<<name<<icon;
     }
 
-
+    int id;
+    QString name;
+    QString icon;
 };
 
 class User //储存用户信息
@@ -85,6 +90,7 @@ private:
     quint16 hostPort=9990;
     //临时数据
     int clientId=0;//储存当前id
+    ClientInfo * clientInfo;//储存当前账户所有信息
     QList<User*> friendList;//储存好友列表
     QList<Group*> groupList;//储存群组列表
     //前端通信engine

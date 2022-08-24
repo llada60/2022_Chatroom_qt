@@ -87,6 +87,9 @@ RowLayout
                 //将搜索内容发送
                 userid = Number(inputID.text)
                 searchSignal(inputID.text)
+                console.log("search")
+                console.log(inputID.text)
+
             }
 
 

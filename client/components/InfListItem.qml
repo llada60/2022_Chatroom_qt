@@ -42,7 +42,7 @@ Rectangle
             onClicked:
             {
                 //发出好友（群聊）添加信号
-                addSignal()
+                addSignal(userid);
             }
         }
     }
