@@ -20,14 +20,18 @@ SOURCES += \
     qqserver.cpp \
     sqlaccountmodel.cpp \
     sqlfriendmodel.cpp \
-    sqlgroupmodel.cpp
+    sqlgroupmodel.cpp \
+    tcpclient.cpp \
+    tcpserver.cpp
 
 HEADERS += \
     ../../Tcp-Version/QQServer/onlinelist.h \
     qqserver.h \
     sqlaccountmodel.h \
     sqlfriendmodel.h \
-    sqlgroupmodel.h
+    sqlgroupmodel.h \
+    tcpclient.h \
+    tcpserver.h
 
 FORMS += \
     qqserver.ui
