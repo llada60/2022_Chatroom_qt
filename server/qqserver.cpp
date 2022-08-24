@@ -156,7 +156,7 @@ void QQServer::parseCommand(QString jsonStr,QHostAddress ip, quint16 port)
     {
         getPersonalInfoRespond(obj,ip,port);
     }
-    else if(command=="getGroupInfoRequest")//查找群信息
+    else if(command=="groupInfoRequest")//查找群信息
     {
         getGroupInfoRespond(obj,ip,port);
     }
@@ -377,7 +377,7 @@ void QQServer::getPersonalInfoRespond(QJsonObject obj, QHostAddress ip, quint16 
     QJsonObject userObj=QJsonDocument::fromJson(atModel->userInfo(targetId)).object();
     //封装响应
     QJsonObject respondObj;
-    respondObj.insert("command","getPersonalInfoBack");
+    respondObj.insert("command","personInfoBack");
     respondObj.insert("personalSaying",userObj["result"].toObject()["signature"].toString());
     respondObj.insert("sex_num",userObj["result"].toObject()["gender"].toString());
     respondObj.insert("birthday",userObj["result"].toObject()["birth"].toString());
@@ -395,7 +395,7 @@ void QQServer::getGroupInfoRespond(QJsonObject obj, QHostAddress ip, quint16 por
     QJsonObject groupObj=QJsonDocument::fromJson(gpModel->groupInfo(targetId)).object();
     //封装响应
     QJsonObject respondObj;
-    respondObj.insert("command","getGroupInfoBack");
+    respondObj.insert("command","groupInfoBack");
     respondObj.insert("groupNotice",groupObj["result"].toObject()["notice"].toString());
     respondObj.insert("groupSummary",groupObj["result"].toObject()["intro"].toString());
     respondObj.insert("isOwner",groupObj["result"].toObject()["id"].toString());
