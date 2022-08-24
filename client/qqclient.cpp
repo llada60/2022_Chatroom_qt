@@ -43,7 +43,7 @@ QQClient::QQClient(QQmlApplicationEngine *engine, QObject *parent)
                      this,SLOT(refreshContactGroup()));//群
     QObject* infoCheckScreen = chatScreen->findChild<QObject*>("chatListView");//->findChild<QObject*>("chatListItem");
     qDebug() << "personInfoCheck" << infoCheckScreen->findChildren<QObject*>()[0]->findChildren<QObject*>() << endl;
-    QObject::connect(infoCheckScreen->findChildren<QObject*>()[1], SIGNAL(getInfSignal(int,bool)),
+    QObject::connect(infoCheckScreen->findChildren<QObject*>()[1], SIGNAL(personInfSignal(int,bool)),
                      this,SLOT(infoRequest(int,bool)));
     login(100002,"123");
 
@@ -510,10 +510,22 @@ void QQClient::groupBack(QJsonObject obj)
     }
 }
 void QQClient::personInfoBack(QJsonObject obj){
-    qDebug() << "personInfoBack\n" << obj << endl;
+//    qDebug() << "personInfoBack\n" << obj << endl;
+    QVariant res;
+    QObject* personInfoWindow=root->findChild<QObject*>("mainWindow")
+            ->findChild<QObject*>("chatWindow1")->findChild<QObject*>("contactScreen");
+    QMetaObject::invokeMethod(personInfoWindow,"personalInfBack",
+                              Q_RETURN_ARG(QVariant,res),
+                              Q_ARG(QVariant,obj));
 }
 void QQClient::groupInfoBack(QJsonObject obj){
-    qDebug() << "groupInfoBack\n" << obj << endl;
+//    qDebug() << "groupInfoBack\n" << obj << endl;
+    QVariant res;
+    QObject* groupInfoWindow=root->findChild<QObject*>("mainWindow")
+            ->findChild<QObject*>("chatWindow1")->findChild<QObject*>("contactScreen");
+    QMetaObject::invokeMethod(groupInfoWindow,"groupInfBack",
+                              Q_RETURN_ARG(QVariant,res),
+                              Q_ARG(QVariant,obj));
 }
 //刷新好友列表
 void QQClient::refreshContactFriend()
