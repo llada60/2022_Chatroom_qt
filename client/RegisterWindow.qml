@@ -5,6 +5,7 @@ import QtQuick.Controls.Material 2.0
 import QtQuick.Layouts 1.3
 import QtQuick.Dialogs 1.3
 import "./js/config_utils.js" as ConfigUtils
+import "./components"
 
 Window {
     id: registerWindows
@@ -13,13 +14,6 @@ Window {
     visible: false //窗口是否可见
     title: qsTr("注册") //窗口标题
     objectName: "registerWindow"
-
-    property string usrName: ""
-    property string usrPassword: ""
-    property int usrID: 0
-
-
-    MainWindow{id:mainWindow}
 
     //发送信号
     signal registerSignal(string usrName,string usrPassword)
@@ -72,8 +66,6 @@ Window {
             usrID = pID
             idDialog.open()
         }
-
-
     }
 
 
@@ -140,6 +132,7 @@ Window {
         {
             //注册，自动分配账号，并弹出message写出对应的账号和用户名，跳过登陆步骤进入主界面
             id: register
+            Layout.topMargin: 10
             Layout.alignment: Qt.AlignHCenter
             text: qsTr("注册")
             flat: true
@@ -170,6 +163,15 @@ Window {
                 {
                     console.log("inf config ok")
                     registerSignal(usrName,usrPassword)
+                    inputID.text = usrID
+                    inputPSW.text = usrPassword
+
+//                    //存储注册后的id
+//                    Config.write("myID",usrID)
+//                    Config.write("myPSW",usrPassword)
+
+                    loginWindows.show()
+                    close()
                 }
 
             }
@@ -177,7 +179,18 @@ Window {
             anchors.verticalCenterOffset: 125
         }
 
-
+    }
+    Button
+    {
+        id: backToLogin
+        anchors.bottom: parent.bottom
+        anchors.horizontalCenter: parent.horizontalCenter
+        text: "返回"
+        onClicked:
+        {
+            loginWindows.show()
+            close()
+        }
 
     }
 

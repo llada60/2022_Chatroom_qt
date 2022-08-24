@@ -26,8 +26,21 @@ Window {
     //创建群聊信号
     signal createGroupSignal(var mId)
 
-    //返回生成的群聊号和拉群成功指令
+    //向群聊界面传递拉群成功信号
+    signal passCreateGroup()
 
+    //返回生成的群聊号和拉群成功指令
+    function createGroupBack(groupID)
+    {
+        if(0 == groupID)
+        {
+            createGroupError.open()
+        }
+        else
+        {
+            passCreateGroup()
+        }
+    }
 
 
 
@@ -51,6 +64,22 @@ Window {
             text: "3人以下无法建群"
             standardButtons: StandardButton.Cancel
     }
+    MessageDialog
+    {//创建群聊失败提示
+            id: createGroupError
+            title: "提示"
+            icon: StandardIcon.Warning
+            text: "创建群聊失败"
+            standardButtons: StandardButton.Cancel
+    }
+    MessageDialog
+    {//创建群聊成功提示
+            id: createGroupSuccess
+            title: "提示"
+            icon: StandardIcon.Warning
+            text: "创建群聊成功"
+            standardButtons: StandardButton.Cancel
+    }
 
     Dialog
     {//添加该成员提示
@@ -71,6 +100,7 @@ Window {
             createGroupSignal(memberId)
         }
     }
+
 
 
     // 搜索栏
@@ -198,8 +228,8 @@ Window {
                 else
                 {
                     idDialog.open()
-                    //窗体无法关闭的bug
-                    close()
+//                    //窗体无法关闭的bug
+//                    close()
                 }
             }
         }

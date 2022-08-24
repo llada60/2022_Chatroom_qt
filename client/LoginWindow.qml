@@ -10,6 +10,8 @@ Window {
     property int usrID: 0
     property string usrPSW: ""
     property string usrHead: "https://c-ssl.duitang.com/uploads/blog/201408/15/20140815095903_ttcnF.jpeg" //登陆时若本地就有头像自动获取；否则使用自带默认头像（类qq的企鹅）
+    property string usrName: ""
+    property string usrPassword: ""
 
     id: loginWindows
     width: 248
@@ -113,6 +115,7 @@ Window {
         leftPadding: 4
         echoMode: TextInput.Password
         placeholderText: qsTr("<center>密码</center>")
+        text: usrPassword
     }
 
     // 确认
