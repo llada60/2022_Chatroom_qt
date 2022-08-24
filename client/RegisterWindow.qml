@@ -128,7 +128,7 @@ Window {
 
             if(response.code == -1)
             {
-                if(flag ==1)
+                if(flag == 1)
                 {
                     wrongEmail.open()
                 }
@@ -136,6 +136,17 @@ Window {
                 {
                     wrongCheck.open()
                     check = 1
+                }
+            }
+            else
+            {
+                if(flag == 0)
+                {
+                    console.log("inf config ok")
+                    registerSignal(usrName,usrPassword)
+
+                    loginWindows.show()
+                    close()
                 }
             }
 
@@ -299,18 +310,10 @@ Window {
                     console.log("no password")
                     noPassword.open()
                 }
-                else if(1 == check)
-                {
-                    console.log("in it")
-                    check = 0
-                }
                 else
                 {
-                    console.log("inf config ok")
-                    registerSignal(usrName,usrPassword)
+                    post("http://wetalk.funnysaltyfish.fun/verify_email",sendArg,0)
 
-                    loginWindows.show()
-                    close()
                 }
 
             }
