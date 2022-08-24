@@ -42,10 +42,11 @@ QQClient::QQClient(QQmlApplicationEngine *engine, QObject *parent)
                      this,SLOT(refreshContactFriend()));//人
     QObject::connect(contactScreen,SIGNAL(requestGroupSignal()),
                      this,SLOT(refreshContactGroup()));//群
+    //历史聊天刷新
     QObject* historyMessageScreen=root->findChild<QObject*>("mainWindow")->findChild<QObject*>("chatWindow1")
             ->findChild<QObject*>("chatWindow2")->findChild<QObject*>("historyMessageScreen");
-    QObject::connect(historyMessageScreen,SIGNAL(clickHistoryMessageItem(QVariant)),
-                     SLOT(messageRequest(QVariant)));//历史聊天刷新
+    QObject::connect(historyMessageScreen,SIGNAL(refreshChatListSignal(int)),
+                     SLOT(messageRequest(int)));
     QObject* infoCheckScreen = chatScreen->findChild<QObject*>("chatListView");//->findChild<QObject*>("chatListItem");
     qDebug() << "personInfoCheck" << infoCheckScreen->findChildren<QObject*>()[0]->findChildren<QObject*>() << endl;
     QObject::connect(infoCheckScreen->findChildren<QObject*>()[1], SIGNAL(personInfSignal(int,bool)),
@@ -294,14 +295,13 @@ void QQClient::friendRequest(int id)
     sendMessage(diagram,this->hostIp,this->hostPort);
 }
 //历史消息请求
-void QQClient::messageRequest(QVariant data)
+void QQClient::messageRequest(int id)
 {
-    QJsonObject dataObj=data.toJsonObject();
     //封装Json
     QJsonObject jsonObj;
     jsonObj.insert("command","messageRequest");
     jsonObj.insert("requestId",clientId);
-    jsonObj.insert("targetId",dataObj["userId"].toInt());
+    jsonObj.insert("targetId",id);
     QString diagram=QJsonDocument(jsonObj).toJson();
     //发送
     sendMessage(diagram,this->hostIp,this->hostPort);
