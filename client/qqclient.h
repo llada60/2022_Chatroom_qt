@@ -153,6 +153,8 @@ private:
     void messageBack(QJsonObject obj);//请求历史聊天记录
     void groupBack(QJsonObject obj);//请求群列表
     void personInfoBack(QJsonObject obj);//某人信息
+    //其他函数
+    void refreshContact();//刷新联系人
 };
 
 

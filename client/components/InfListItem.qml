@@ -55,6 +55,7 @@ Rectangle
                 if(ClientInfo.id == userid)
                 {
                     cantSearchMyself.open()
+                    return
                 }
 
                 //发出好友（群聊）添加信号

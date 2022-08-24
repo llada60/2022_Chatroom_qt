@@ -16,6 +16,8 @@ Item {
 
     property var icons: ["../images/icon_chat.png", "../images/icon_contact.png"]
 
+    signal changeToContact()
+
     onCurrentChanged: stack.replace(null, stack.children[current])
 
     Column {
@@ -48,6 +50,10 @@ Item {
                     anchors.fill: parent
                     onClicked: {
                         tabWidget.current = index
+                        if (1 == index)//联系人界面
+                        {
+                            changeToContact()
+                        }
                     }
                 }
             }
