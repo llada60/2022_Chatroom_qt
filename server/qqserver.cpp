@@ -210,7 +210,7 @@ void QQServer::sendChatMessageRespond(QJsonObject obj, QHostAddress ip, quint16 
     else
     {
         //取群成员
-
+        Group* group = new Group(targetId,gpModel);
         //遍历发送
 
         //添加数据库

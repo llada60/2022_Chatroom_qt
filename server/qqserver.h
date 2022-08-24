@@ -34,6 +34,30 @@ public:
     quint16 port;
 };
 
+class Group //一个群数据
+{
+public:
+    Group(int gId,SqlGroupModel* gpModel)
+    {
+        QJsonObject obj=QJsonDocument::fromJson(gpModel->memberList(gId)).object();
+        QJsonArray list=obj["list"].toArray();
+        for(int i=0;i<list.size();i++)
+        {
+            memberList.append(list[i].toObject()["id"].toInt());
+        }
+        for(int i=0;i<memberList.length();i++)
+        {
+            qDebug()<<memberList[i];
+        }
+    }
+
+    ~Group()//清空数据
+    {
+        memberList.clear();
+    }
+
+    QList<int> memberList;
+};
 
 class QQServer : public QMainWindow
 {
@@ -54,6 +78,7 @@ private:
     QUdpSocket* udpSocket=NULL;
     //在线用户和群链表
     QList<User*> onlineUser;
+    QList<Group*> groupList;
     //数据库操作
     SqlAccountModel *atModel;
     SqlFriendModel *fdModel;
