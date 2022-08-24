@@ -124,14 +124,13 @@ private slots:
     //其他函数
     void refreshContactFriend();//刷新联系人
     void refreshContactGroup();//刷新群聊通讯录
-    QJsonObject messageObject(QJsonObject rawMessage);//传入消息obj，构建一个更完善的，直接用于qml的消息obj
 
 
 private:
     //配置信息
     QUdpSocket* udpSocket;//服务器ip和端口
-    QHostAddress hostIp=QHostAddress("127.0.0.1");
-    quint16 hostPort=9990;
+    QHostAddress hostIp=QHostAddress("81.68.194.103");
+    quint16 hostPort=8080;
     //临时数据
     int clientId=0;//储存当前id
     ClientInfo * clientInfo;//储存当前账户所有信息

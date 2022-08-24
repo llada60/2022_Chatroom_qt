@@ -377,6 +377,7 @@ void QQClient::loginBack(QJsonObject obj)
     {
         friendRequest(clientId);
         groupRequest(clientId);
+        messageRequest(clientId);
         //测试
         /*
         messageRequest(100002);

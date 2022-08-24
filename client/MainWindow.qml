@@ -82,7 +82,7 @@ Window {
             ChatScreen {
                 id: chatScreen
                 Layout.fillHeight: true
-                onSendMessageSignal: (id, message, time)=>historyMessageScreen.setMessageWithUid(id, message, time)
+                onUpdateHistorySignal: (id, message, time)=>historyMessageScreen.setMessageWithUid(id, message, time)
             }
         }
 
