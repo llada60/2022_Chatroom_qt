@@ -279,15 +279,20 @@ void QQClient::add(int targetId)
 
 void QQClient::createGroup(QVariant var)
 {
-    qDebug()<<"create(C++)";
     QVariantList memberList=var.toList();
     //建群
-
+    QJsonObject obj;
+    obj.insert("command","createGroup");
+    obj.insert("id",clientId);
+    QJsonArray memberArray;
     for(int i=0;i<memberList.length();i++) //加群
     {
-       int memberId=memberList[i].toInt();
+       memberArray.append(memberList[i].toInt());
     }
-
+    obj.insert("members",memberArray);
+    //发送
+    QString diagram=QJsonDocument(obj).toJson();
+    sendMessage(diagram,this->hostIp,this->hostPort);
 }
 
 //删除请求
