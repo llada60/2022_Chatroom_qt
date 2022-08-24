@@ -33,7 +33,7 @@ Item {
     }
     function openInfoWindow(data){
         //获得用户信息
-        personInfSignal(uid)
+        getPInfSignal(uid)
 
         objectInf.isMe = sentByMe
         objectInf.personalHead = avatar
