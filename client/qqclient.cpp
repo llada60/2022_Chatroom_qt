@@ -41,10 +41,7 @@ QQClient::QQClient(QQmlApplicationEngine *engine, QObject *parent)
                      this,SLOT(refreshContactFriend()));//人
     QObject::connect(contactScreen,SIGNAL(requestGroupSignal()),
                      this,SLOT(refreshContactGroup()));//群
-    QObject* infoCheckScreen = chatScreen->findChild<QObject*>("chatListView");//->findChild<QObject*>("chatListItem");
-    qDebug() << "personInfoCheck" << infoCheckScreen->findChildren<QObject*>()[0]->findChildren<QObject*>() << endl;
-    QObject::connect(infoCheckScreen->findChildren<QObject*>()[1], SIGNAL(getInfSignal(int,bool)),
-                     this,SLOT(infoRequest(int,bool)));
+
     /*
     //c++调qml函数（例子）
     QVariant res;
@@ -364,6 +361,7 @@ void QQClient::loginBack(QJsonObject obj)
     {
         friendRequest(clientId);
         groupRequest(clientId);
+        messageRequest(clientId);
         //测试
         /*
         messageRequest(100002);
@@ -462,6 +460,7 @@ void QQClient::friendBack(QJsonObject obj)
 //历史消息响应
 void QQClient::messageBack(QJsonObject obj)
 {
+    qDebug() << "messageBack";
     int targetId=obj["targetId"].toInt();
     if(targetId/100000==1) //人
     {

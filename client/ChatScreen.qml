@@ -38,7 +38,17 @@ ColumnLayout {
 
     // data 样例见下面的 chatListModel
     function appendData(data){
-        chatListModel.append(data)
+        if(data["groupId"] >= 600000){ // 群发
+            if(data["groupId"] === targetId) {
+                chatListModel.append(data)
+            }
+            updateHistorySignal(data["groupId"], data["message"], data["time"]);
+        }else{
+            if(data["uid"] === targetId || data["uid"] === myUid) {
+                chatListModel.append(data)
+            }
+            updateHistorySignal(data["uid"], data["message"], data["time"]);
+        }
     }
 
     // 函数：设置消息列表。会替换当前所有内容为新内容
@@ -50,6 +60,7 @@ ColumnLayout {
     }
 
     // 下面的方法是qml用的
+    signal updateHistorySignal(int targetId, string message, int time)
 
     // 设置聊天对象
     function setArg(uid){
@@ -182,7 +193,6 @@ ColumnLayout {
                         MouseArea {
                             anchors.fill: parent
                             onClicked: {
-                                console.log("click the folder_icon")
                                 openFileDialog.open();
                             }
                             hoverEnabled: true
@@ -207,7 +217,7 @@ ColumnLayout {
                         MouseArea {
                             anchors.fill: parent
                             onClicked: {
-                                console.log("图片选择");
+                                openFileDialog.open()
                             }
                             hoverEnabled: true
                             onHoveredChanged: cursorShape = Qt.PointingHandCursor
@@ -274,6 +284,7 @@ ColumnLayout {
                     messageField.clear()
                     chatListView.currentIndex = chatListModel.count - 1;
                     sendMessageSignal(targetId, message, time)
+                    updateHistorySignal(targetId, message, time)
                 }
             }
         }
