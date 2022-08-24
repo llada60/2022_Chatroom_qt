@@ -96,7 +96,7 @@ QByteArray SqlGroupModel::createGroup(const int& masterID)
     QByteArray bArry;
     int id = 0;
     if(!query.exec(QString("INSERT INTO GROUPINFO(NAME) VALUES("
-                           "'%1')").arg(QString::number(masterID)+"'s Group")))
+                           "'%1')").arg(QString::number(masterID)+"s Group")))
     {
         qDebug() << "创建群聊发生错误";
         qDebug() << query.lastError();
@@ -291,7 +291,8 @@ QByteArray SqlGroupModel::messageList(const int &gID)
         }
 
         finalObj.insert("grouplist", QJsonValue(jsonItem));
-        finalObj.insert("command", QJsonValue("groupmessageBack"));
+        finalObj.insert("targetId",gID);
+        finalObj.insert("command", QJsonValue("messageBack"));
     }
     bAry = QJsonDocument(finalObj).toJson();
     return bAry;

@@ -39,7 +39,6 @@ QQClient::QQClient(QQmlApplicationEngine *engine, QObject *parent)
     qDebug() << "personInfoCheck" << personInfoCheckScreen->findChildren<QObject*>()[0]->findChildren<QObject*>() << endl;
     QObject::connect(personInfoCheckScreen->findChildren<QObject*>()[1], SIGNAL(getPInfSignal(int)),
                      this,SLOT(personInfoRequest(int)));
-
     /*
     //c++调qml函数（例子）
     QVariant res;
@@ -207,7 +206,7 @@ void QQClient::login(int id, QString password)
     //deleteRequest(100002);
     //friendRequest(100001);
     //groupRequest(100001);
-    messageRequest(100001);
+    //messageRequest(100001);
 
 }
 
@@ -274,12 +273,13 @@ void QQClient::friendRequest(int id)
     sendMessage(diagram,this->hostIp,this->hostPort);
 }
 //历史消息请求
-void QQClient::messageRequest(int id)
+void QQClient::messageRequest(int targetId)
 {
     //封装Json
     QJsonObject jsonObj;
     jsonObj.insert("command","messageRequest");
-    jsonObj.insert("id",id);
+    jsonObj.insert("requestId",clientId);
+    jsonObj.insert("targetId",targetId);
     QString diagram=QJsonDocument(jsonObj).toJson();
     //发送
     sendMessage(diagram,this->hostIp,this->hostPort);
@@ -337,16 +337,16 @@ void QQClient::loginBack(QJsonObject obj)
     {
         friendRequest(clientId);
         groupRequest(clientId);
-        //聊天记录
-        //个人信息
+        //测试
+        refreshContact();
+        messageRequest(100002);
+        messageRequest(600001);
     }
     //调用QML登录函数
     QVariant res; //如果QML函数没有返回值会不会报错？
     QMetaObject::invokeMethod(root,"loginBack",
                               Q_RETURN_ARG(QVariant,res),
                               Q_ARG(QVariant,isSuccess));
-    //刷新
-    refreshContact();
 
 }
 //单发响应
@@ -434,13 +434,25 @@ void QQClient::friendBack(QJsonObject obj)
 //历史消息响应
 void QQClient::messageBack(QJsonObject obj)
 {
-    //解包
-    QJsonObject friendMessages=obj["friendlist"].toObject();
-    QJsonObject groupMessages=obj["grouplist"].toObject();
-    //时间还是string
-    qDebug()<<friendMessages;
-    qDebug()<<groupMessages;
-
+    int targetId=obj["targetId"].toInt();
+    if(targetId/100000==1) //人
+    {
+        QJsonArray messageList=obj["messagelist"].toArray();
+        for(int i =0;i<messageList.size();i++)
+        {
+            QJsonObject item=messageList[i].toObject();
+            qDebug()<<item["datetime"].toInt()<<item["message"].toString();
+        }
+    }
+    else //群
+    {
+        QJsonArray messageList=obj["grouplist"].toArray();
+        for(int i =0;i<messageList.size();i++)
+        {
+            QJsonObject item=messageList[i].toObject();
+            qDebug()<<item["datetime"].toInt()<<item["message"].toString()<<item["mid"].toInt();
+        }
+    }
 }
 //群列表响应
 void QQClient::groupBack(QJsonObject obj)

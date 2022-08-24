@@ -156,7 +156,7 @@ void QQServer::parseCommand(QString jsonStr,QHostAddress ip, quint16 port)
     {
         getPersonalInfoRespond(obj,ip,port);
     }
-    else if(command=="getGroupInfo")//查找群信息
+    else if(command=="getGroupInfoRequest")//查找群信息
     {
         getGroupInfoRespond(obj,ip,port);
     }
@@ -354,13 +354,19 @@ void QQServer::groupRespond(QJsonObject obj, QHostAddress ip, quint16 port)
 void QQServer::messageRespond(QJsonObject obj, QHostAddress ip, quint16 port)
 {
     //解包
-    int id=obj["id"].toInt();
+    int targetId=obj["targetId"].toInt();
+    int requestId=obj["requestId"].toInt();
     //处理+返回
-    QByteArray diagram=atModel->messageList(id);
+    QByteArray diagram;
+    if(targetId/100000==1) //人
+    {
+        diagram=fdModel->messageList(requestId,targetId);
+    }
+    else //群
+    {
+        diagram=gpModel->messageList(targetId);
+    }
     sendMessage(diagram,ip,port);
-    //测试
-    QJsonObject testObj=QJsonDocument::fromJson(diagram).object();
-    qDebug()<<testObj;
 }
 
 void QQServer::getPersonalInfoRespond(QJsonObject obj, QHostAddress ip, quint16 port)
@@ -403,30 +409,36 @@ void QQServer::getGroupInfoRespond(QJsonObject obj, QHostAddress ip, quint16 por
 void QQServer::test(SqlAccountModel *atModel, SqlFriendModel *fdModel, SqlGroupModel *gpModel)
 {
     /*
-     * 这些语句留着备用，想用直接赋值粘贴到外面
-     *
     atModel->addUserAccount("cyy","123");//创建
     atModel->addUserAccount("chen","123");
-    gpModel->createGroup("group1");
-    gpModel->createGroup("group2");
+    atModel->addUserAccount("丁真","123");
+    atModel->addUserAccount("雪豹","123");
+    atModel->addUserAccount("刀哥","123");
+    atModel->addUserAccount("虎哥","123");
 
     fdModel->addFriend(100001,100002);//加好友
-    fdModel->addFriend(100002,100001);
+    fdModel->addFriend(100001,100003);
+    fdModel->addFriend(100001,100004);
 
-    gpModel->joinGroup(600001,100001,1);//加群
+    gpModel->createGroup(100001);//建群加群
     gpModel->joinGroup(600001,100002,0);
-    gpModel->joinGroup(600002,100001,1);
-    gpModel->joinGroup(600002,100002,0);
+    gpModel->joinGroup(600001,100003,0);
+    gpModel->createGroup(100002);
+    gpModel->joinGroup(600002,100001,0);
+    gpModel->joinGroup(600002,100003,0);
 
-    fdModel->sendMessage(100001,100002,0,1,"你好");
-    fdModel->sendMessage(100001,100002,0,1,"我是丁真");
-    fdModel->sendMessage(100002,100001,0,1,"我是雪豹");
-    fdModel->sendMessage(100002,100002,0,1,"嗷");
+    fdModel->sendMessage(100001,100002,0,1,"你好");//消息
+    fdModel->sendMessage(100002,100001,0,1,"我是丁真");
+    fdModel->sendMessage(100001,100003,0,1,"我是雪豹");
+    fdModel->sendMessage(100003,100001,0,1,"雪豹闭嘴");
 
-    gpModel->sendMessage(600001,100001,0,1,"群发1");
+
+    gpModel->sendMessage(600001,100001,0,1,"群发1");//群发
     gpModel->sendMessage(600001,100002,0,1,"群发2");
+    gpModel->sendMessage(600001,100003,0,1,"群发2");
     gpModel->sendMessage(600002,100001,0,1,"群发3");
     gpModel->sendMessage(600002,100002,0,3,"群发5");
+    gpModel->sendMessage(600002,100003,0,3,"群发5");
     */
 }
 
