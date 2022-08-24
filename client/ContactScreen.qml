@@ -10,9 +10,18 @@ Rectangle {
     radius: 4
     objectName: "contactScreen"
 
-    // 信号，点击和某人/群聊天触发，参数为对应项的data
+    // 信号，qml用，点击和某人/群聊天触发，参数为对应项的data
     signal messageWithConact(int id, string name, string avatar)
     signal messageWithGroup(int id, string name, string avatar)
+
+    // 信号，C++用，打开通讯录页面时获取联系人列表和群组列表
+    signal requestContactSignal()
+    signal requestGroupSignal()
+
+    Component.onCompleted: {
+        requestContactSignal()
+        requestGroupSignal()
+    }
 
     // 获取到联系人后调这个函数，messages为QJsonArray。每一项的数据data参考如下
     /**
