@@ -11,6 +11,17 @@
 #include <QDateTime>
 #include <iostream>
 
+class ClientInfo//储存当前客户端用户
+{
+public:
+    ClientInfo(QJsonObject infoObj)
+    {
+
+    }
+
+
+};
+
 class User //储存用户信息
 {
 public:
@@ -72,6 +83,7 @@ private:
     QUdpSocket* udpSocket;//服务器ip和端口
     QHostAddress hostIp=QHostAddress("127.0.0.1");
     quint16 hostPort=9990;
+    //临时数据
     int clientId=0;//储存当前id
     QList<User*> friendList;//储存好友列表
     QList<Group*> groupList;//储存群组列表
