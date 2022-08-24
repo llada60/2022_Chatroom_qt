@@ -20,14 +20,27 @@ Item {
     PersonalInf {id:objectInf}
     signal getPInfSignal(int uid)
 
-    function openInfoWindow(){
-        //应增加从服务器扒取其余信息
+    //接收返回的个人信息信号
+    function personalInfBack(data)
+    {
+        objectInf.personalSaying = data.personalSaying
+        objectInf.sex_num = data.sex
+        objectInf.birthday = data.birthday
+        objectInf.areaFrom = data.areaFrom
+        objectInf.edu = data.edu
+
+        objectInf.visible = true
+    }
+    function openInfoWindow(data){
+        //获得用户信息
+        personInfSignal(uid)
+
         objectInf.isMe = sentByMe
         objectInf.personalHead = avatar
         objectInf.personalName = name
         objectInf.personalID = uid
-        getPInfSignal(uid)
-        objectInf.show()
+
+//        objectInf.visible = true // 与服务器通讯后注释
     }
 
     Component {

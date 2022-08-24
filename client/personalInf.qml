@@ -46,7 +46,7 @@ Window {
     property bool setFlag: true //1：readOnly界面 0:修改界面
 
     // 发送：设置信息返回服务器端->数据库端存储
-    signal setUsrInfSignal(string name,string saying,int usrid,string personalHead,int sexn,string area,string edul)
+    signal setUsrInfSignal(string name,string saying,int usrid,string personalHead,int sexn,string area,string edul,string birth)
 
 
     property string shengXiao: checkShengXiao()
@@ -168,7 +168,7 @@ Window {
                     console.log("个人信息修改已完成")
 
                     // 发送信号(string name,string saying,int usrid,string avatar, int sexn,string area,string edul)
-                    setUsrInfSignal(personalName,personalSaying,personalID,personalHead,sexToNum(),areaFrom,edu)
+                    setUsrInfSignal(personalName,personalSaying,personalID,personalHead,sexToNum(),areaFrom,edu,birthDay)
                 }
 
 

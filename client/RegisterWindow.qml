@@ -18,6 +18,11 @@ Window {
     //发送信号
     signal registerSignal(string usrName,string usrPassword)
 
+    property var sendArg
+
+    property int flag : 0
+
+
     MessageDialog
     {//注册失败提示
             id: wrongRegister
@@ -33,6 +38,14 @@ Window {
             title: "提示"
             icon: StandardIcon.Warning
             text: "验证失败"
+            standardButtons: StandardButton.Cancel
+    }
+    MessageDialog
+    {//邮箱输入错误提示
+            id: wrongEmail
+            title: "提示"
+            icon: StandardIcon.Warning
+            text: "邮箱输入错误"
             standardButtons: StandardButton.Cancel
     }
 
@@ -80,6 +93,49 @@ Window {
 
         }
     }
+
+
+    // POST
+    function post(url, arg)
+    {
+
+        var xhr = new XMLHttpRequest;
+        xhr.open("POST", url);
+        xhr.setRequestHeader("Content-Length", arg.length);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;"); //post必备
+        xhr.onreadystatechange = function() {
+            handleResponse(xhr);
+        }
+        xhr.send(arg);
+    }
+
+    // 处理返回值
+    function handleResponse(xhr){
+        if (xhr.readyState == XMLHttpRequest.DONE)
+        {
+            print("DONE")
+            const response = JSON.parse(xhr.responseText.toString())
+            console.log(response.code)
+
+            if(50 != response.code)
+            {
+                console.log(response.error_msg)
+            }
+            else
+            {
+                console.log(response.message)
+            }
+            console.log("内部："+response.code)
+            flag = response.code
+
+        }
+        else if(xhr.readyState == XMLHttpRequest.HEADERS_RECEIVED)
+        {
+            print('HEADERS_RECEIVED')
+        }
+    }
+
+
 
 
     MessageDialog
@@ -176,7 +232,23 @@ Window {
                 text: "发送验证码"
                 onClicked:
                 {
-                    //发送验证码
+                    if("" == usr.text)
+                    {
+                        noUsrName.open()
+                    }
+                    else
+                    {
+                        //"email=xxx.@xxxx.com&username=xxx"
+
+                        sendArg = qsTr("email=") + emailAddress.text + qsTr("&username=") +usr.text
+                        //发送验证码
+                        post("http://wetalk.funnysaltyfish.fun/send_verify_email",sendArg )
+                        console.log(flag)
+                        if(-1 == flag)
+                        {
+                            wrongEmail.open()
+                        }
+                    }
                 }
             }
         }
@@ -196,6 +268,11 @@ Window {
             {
                 usrName = usr.text
                 usrPassword = password.text
+                sendArg = qsTr("email=") + emailAddress.text + qsTr("&verify_code=") +captcha.text
+
+                post("http://wetalk.funnysaltyfish.fun/verify_email",sendArg)
+
+
 
                 if(passwordAgain.text != password.text)
                 {
@@ -213,11 +290,10 @@ Window {
                     console.log("no password")
                     noPassword.open()
                 }
-                else if(captcha.text == "")//验证码验证逻辑，需修改if
+                else if(-1 == flag)//验证码验证逻辑
                 {
                     console.log("验证码错误")
                     wrongCheck.open()
-
                 }
 
                 else
