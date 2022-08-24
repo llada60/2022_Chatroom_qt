@@ -156,7 +156,7 @@ void QQServer::parseCommand(QString jsonStr,QHostAddress ip, quint16 port)
     {
         getPersonalInfoRespond(obj,ip,port);
     }
-    else if(command=="getGroupInfo")//查找群信息
+    else if(command=="getGroupInfoRequest")//查找群信息
     {
         getGroupInfoRespond(obj,ip,port);
     }
