@@ -118,7 +118,9 @@ private slots:
     void friendRequest(int id);//请求好友列表（从服务端拉取数据的系列函数）
     void messageRequest(int id);//请求历史聊天记录
     void groupRequest(int id);//请求群列表
+    void infoRequest(int id, bool isGroup);//请求某人或某群的详细数据
     void personInfoRequest(int id);//请求某人的详细数据
+    void groupInfoRequest(int id);//请求某群的详细数据
     //其他函数
     void refreshContactFriend();//刷新联系人
     void refreshContactGroup();//刷新群聊通讯录
@@ -156,6 +158,7 @@ private:
     void messageBack(QJsonObject obj);//请求历史聊天记录
     void groupBack(QJsonObject obj);//请求群列表
     void personInfoBack(QJsonObject obj);//某人信息
+    void groupInfoBack(QJsonObject obj);//某群信息
     //其他函数
 
 };
