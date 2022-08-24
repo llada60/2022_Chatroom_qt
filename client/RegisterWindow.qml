@@ -64,6 +64,8 @@ Window {
         else
         {
             usrID = pID
+            inputID.text = usrID
+            inputPSW.text = usrPassword
             idDialog.open()
         }
     }
@@ -163,8 +165,8 @@ Window {
                 {
                     console.log("inf config ok")
                     registerSignal(usrName,usrPassword)
-                    inputID.text = usrID
-                    inputPSW.text = usrPassword
+//                    inputID.text = usrID
+//                    inputPSW.text = usrPassword
 
 //                    //存储注册后的id
 //                    Config.write("myID",usrID)
