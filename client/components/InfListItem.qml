@@ -52,7 +52,7 @@ Rectangle
             onClicked:
             {
                 // 不可搜索自身id
-                if(Config.read() ==  userid)
+                if(ClientInfo.id == userid)
                 {
                     cantSearchMyself.open()
                 }

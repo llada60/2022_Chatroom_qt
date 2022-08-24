@@ -65,7 +65,7 @@ Window {
             HistoryMessageScreen {
                 id: historyMessageScreen
                 Layout.fillHeight: true
-                implicitWidth: 270
+                width: 270
                 Component.onCompleted: {
                     clickHistoryMessageItem.connect((data)=>{
                         // 历史消息列表与聊天窗口的同步
