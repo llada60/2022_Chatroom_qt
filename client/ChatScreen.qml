@@ -19,7 +19,9 @@ ColumnLayout {
     property string targetAvatar: "https://tse2-mm.cn.bing.net/th/id/OIP-C.cS6phGwfJ3qgAtvSXv0rugAAAA?pid=ImgDet&rs=1"
     objectName: "chatScreen" //这句话用于C++抓取
 
-    PersonalInf {id:objectInf}
+    PersonalInf {
+        id:personalInfPage
+    }
 
 
     // 信号，当前端发送了一条信息时调用

@@ -17,7 +17,10 @@ int main(int argc, char *argv[])
     ClientInfo clientInfo;
 
     QQmlApplicationEngine engine;
+
     QQmlContext* root = engine.rootContext();
+    //engine.rootContext()->setContextProperty("QQClient",);
+
 
     root->setContextProperty("Config", &qSettingIni);
     root->setContextProperty("QFileUtils", &qFileUtils);
@@ -32,6 +35,7 @@ int main(int argc, char *argv[])
     engine.load(url);
     //C++后台通讯
     QQClient* qqClient=new QQClient(&engine,&app);
+    engine.rootContext()->setContextProperty("QQClient",qqClient);
 
     return app.exec();
 }
