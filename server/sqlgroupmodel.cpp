@@ -317,7 +317,7 @@ QByteArray SqlGroupModel::groupInfo(const int &gID, const int& mID)
     {
         qDebug() << "确认群主成功";
         query1.next();
-        rank = query1["RANK"].toInt();
+        rank = query1.value("RANK").toInt();
     }
     if(!query.exec(QString("SELECT * FROM GROUPINFO WHERE "
                            "ID=%1 ").arg(QString::number(gID))))

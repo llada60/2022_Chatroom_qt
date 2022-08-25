@@ -309,7 +309,7 @@ void QQServer::searchRespond(QJsonObject obj, QHostAddress ip, quint16 port)
     int targetId=obj["targetId"].toInt();
     //从数据库查数据
     QJsonObject userObj=QJsonDocument::fromJson(atModel->userInfo(targetId)).object();
-    QJsonObject groupObj=QJsonDocument::fromJson(gpModel->groupInfo(targetId)).object();
+    QJsonObject groupObj=QJsonDocument::fromJson(gpModel->groupInfo(targetId,100001)).object();//这里100001临时用
     //封装响应
     QJsonObject respondObj;
     respondObj.insert("command","searchBack");
