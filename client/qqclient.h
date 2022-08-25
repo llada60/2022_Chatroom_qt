@@ -160,6 +160,7 @@ private:
     void sendChatMessageBack(QJsonObject obj);
     void searchBack(QJsonObject obj);
     void addBack(QJsonObject obj);
+    void createGroupBack(QJsonObject obj);
     void deleteBack(QJsonObject obj);
     void friendBack(QJsonObject obj);//请求好友列表（从服务端拉取数据的系列函数）
     void messageBack(QJsonObject obj);//请求历史聊天记录

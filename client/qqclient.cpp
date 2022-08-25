@@ -179,6 +179,10 @@ void QQClient::parseCommand(QString jsonStr,QHostAddress ip, quint16 port)
     {
         addBack(obj);
     }
+    else if(command=="createGroupBack")//建群响应
+    {
+        createGroupBack(obj);
+    }
     else if(command=="deleteBack")//删除响应
     {
         deleteBack(obj);
@@ -295,13 +299,6 @@ void QQClient::createGroup(QVariant var)
     QJsonObject obj;
     obj.insert("command","createGroup");
     obj.insert("id",clientId);
-    QJsonArray memberArray;
-    for(int i=0;i<memberList.length();i++) //加群
-    {
-       memberArray.append(memberList[i].toInt());
-    }
-    obj.insert("members",memberArray);
-    //发送
     QString diagram=QJsonDocument(obj).toJson();
     sendMessage(diagram,this->hostIp,this->hostPort);
 }
@@ -525,6 +522,20 @@ void QQClient::addBack(QJsonObject obj)
     QMetaObject::invokeMethod(addFriendWindow,"addBack",
                               Q_RETURN_ARG(QVariant,res),
                               Q_ARG(QVariant,friendId));
+}
+
+void QQClient::createGroupBack(QJsonObject obj)
+{
+    //解包
+    int groupId=obj["groupId"].toInt();
+    //回调
+    QVariant res; //如果QML函数没有返回值会不会报错？
+    QObject* contactScreen=root->findChild<QObject*>("mainWindow")
+            ->findChild<QObject*>("chatWindow1")->findChild<QObject*>("contactScreen");
+    QMetaObject::invokeMethod(contactScreen,"createGroupIsSuccess",
+                              Q_RETURN_ARG(QVariant,res),
+                              Q_ARG(QVariant,groupId));
+
 }
 //删除响应
 void QQClient::deleteBack(QJsonObject obj)

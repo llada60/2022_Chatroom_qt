@@ -392,6 +392,10 @@ void QQServer::createGroupRespond(QJsonObject obj, QHostAddress ip, quint16 port
 {
     int ownerId=obj["id"].toInt();
     int groupId = gpModel->createGroup(ownerId);
+    QJsonObject respondObj;
+    respondObj.insert("command","createGroupBack");
+    respondObj.insert("groupId",groupId);
+    sendMessage(QJsonDocument(respondObj).toJson(),ip,port);
 }
 
 void QQServer::deleteRespond(QJsonObject obj, QHostAddress ip, quint16 port)
