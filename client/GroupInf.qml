@@ -125,7 +125,7 @@ Window {
                         noticeC.visible = false
                         groupNotic = noticeC.text
 
-                        avatar = groupHead
+//                        avatar = groupHead
 
                         console.log("群组信息修改已完成")
 

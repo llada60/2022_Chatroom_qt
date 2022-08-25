@@ -2,6 +2,7 @@ import QtQuick 2.12
 import QtQuick.Controls 2.5
 import QtQuick.Controls.Material 2.3
 import QtQuick.Layouts 1.3
+import QtQuick.Dialogs 1.3
 
 import "./components"
 
@@ -19,6 +20,15 @@ Rectangle {
     signal requestContactSignal()
     signal requestGroupSignal()
     signal createGroupSignal(var mId)
+
+    MessageDialog
+    {//创建群聊成功提示
+            id: createGroupSuccess
+            title: "提示"
+            icon: StandardIcon.Warning
+            text: "创建群聊成功"
+            standardButtons: StandardButton.Cancel
+    }
 
 
     // 获取到联系人后调这个函数，messages为QJsonArray。每一项的数据data参考如下
@@ -84,16 +94,16 @@ Rectangle {
     signal personInfSignal(int uid, bool isGroup)
 
     //接收返回的个人信息信号
-//    function personalInfBack(data)
-//    {
-//        personalInf.personalSaying = data.personalSaying
-//        personalInf.sex_num = Number(data.sex_num)
-//        personalInf.birthday = data.birthday
-//        personalInf.areaFrom = data.areaFrom
-//        personalInf.edu = data.edu
+    function personalInfBack(data)
+    {
+        personalInf.personalSaying = data.personalSaying
+        personalInf.sex_num = Number(data.sex_num)
+        personalInf.birthday = data.birthday
+        personalInf.areaFrom = data.areaFrom
+        personalInf.edu = data.edu
 
-//        personalInf.visible = true
-//    }
+        personalInf.visible = true
+    }
     function openPInfoWindow(data,){
         //获得用户信息
         personInfSignal(data["userId"], false)
@@ -103,7 +113,7 @@ Rectangle {
         personalInf.personalName = data["userName"]
         personalInf.personalID   = data["userId"]
 
-        personalInf.visible = true // 与服务器通讯后注释
+//        personalInf.visible = true // 与服务器通讯后注释
     }
 
     //接收返回的群组信息信号
@@ -220,7 +230,7 @@ Rectangle {
                     acceptedButtons: Qt.LeftButton
                     onClicked:
                     {
-                        if(!isGroup)
+                        if(!isGroup && Number(userId)< 600000)
                         {
                             openPInfoWindow(contactListModel.get(index))
                         }
@@ -341,6 +351,8 @@ Rectangle {
                 onClicked: {
                       createGroupSignal(0)
 //                    createGroup.show()
+                    createGroupSuccess.open()
+
                 }
             }
         }
