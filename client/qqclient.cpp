@@ -531,11 +531,11 @@ void QQClient::createGroupBack(QJsonObject obj)
     QVariant res; //如果QML函数没有返回值会不会报错？
     QObject* contactScreen=root->findChild<QObject*>("mainWindow")
             ->findChild<QObject*>("chatWindow1")->findChild<QObject*>("contactScreen");
-    /*
+    qDebug()<<"creageGroupBack";
     QMetaObject::invokeMethod(contactScreen,"createGroupIsSuccess",
                               Q_RETURN_ARG(QVariant,res),
                               Q_ARG(QVariant,groupId));
-*/
+
 }
 //删除响应
 void QQClient::deleteBack(QJsonObject obj)

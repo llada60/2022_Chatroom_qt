@@ -107,6 +107,7 @@ int SqlGroupModel::createGroup(const int& masterID)
         select();
         QSqlRecord record = QSqlTableModel::record(rowCount()-1);
         id = record.value(0).toInt();
+        for(int i=0;i<100000;i++);//循环阻塞
         this->joinGroup(id, masterID, 1);
     }
 
@@ -192,10 +193,12 @@ bool SqlGroupModel::joinGroup(const int & gID, const int & mID, const int & rank
     {
         qDebug() << "加入群聊发生错误";
         qDebug() << query.lastError();
+        return false;
     }
     else
     {
         qDebug() << "加入群聊成功";
+        return true;
     }
 }
 
