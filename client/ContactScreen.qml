@@ -92,7 +92,7 @@ Rectangle {
         personalInf.edu = data.education
         personalInf.personalHead = data.icon
         personalInf.personalName = data.name
-        personalInf.personalID   = data.id
+        personalInf.personalID = data.id
 
         personalInf.visible = true
     }

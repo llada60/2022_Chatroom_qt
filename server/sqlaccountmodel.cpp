@@ -155,7 +155,7 @@ QByteArray SqlAccountModel::userInfo(const int &userID)
         }
         qDebug() << finalObj;
     }
-    finalObj.insert("command", QJsonValue("userinfoback"));
+    finalObj.insert("command", QJsonValue("personInfoBack"));
     bAry = QJsonDocument(finalObj).toJson();
     return bAry;
 }
