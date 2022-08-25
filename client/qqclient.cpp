@@ -51,7 +51,7 @@ QQClient::QQClient(QQmlApplicationEngine *engine, QObject *parent)
     QObject::connect(historyMessageScreen,SIGNAL(refreshChatListSignal(int)),
                      SLOT(messageRequest(int)));
     //个人信息
-    QObject::connect(contactScreen,SIGNAL(personInfSignal(int,bool)),
+    QObject::connect(contactScreen,SIGNAL(infSignal(int,bool)),
                      this,SLOT(infoRequest(int,bool)));
     //chatScreen个人信息
     QObject::connect(chatScreen,SIGNAL(getPInfSignal(int,bool)),
@@ -374,6 +374,7 @@ void QQClient::groupInfoRequest(int id){
     qDebug()<<"groupInfoRequest()";
     QJsonObject jsonObj;
     jsonObj.insert("command","groupInfoRequest");
+    jsonObj.insert("clientId",clientId);
     jsonObj.insert("targetId",id);
     QString diagram=QJsonDocument(jsonObj).toJson();
     //发送
@@ -710,7 +711,7 @@ void QQClient::groupInfoBack(QJsonObject obj){
             ->findChild<QObject*>("chatWindow1")->findChild<QObject*>("contactScreen");
     QMetaObject::invokeMethod(groupInfoWindow,"groupInfBack",
                               Q_RETURN_ARG(QVariant,res),
-                              Q_ARG(QVariant,obj));
+                              Q_ARG(QVariant,obj["result"].toObject()));
 }
 //刷新好友列表
 void QQClient::refreshContactFriend()

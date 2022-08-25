@@ -463,15 +463,9 @@ void QQServer::getGroupInfoRespond(QJsonObject obj, QHostAddress ip, quint16 por
 {
     //解包
     int targetId=obj["targetId"].toInt();
+    int clientId=obj["clientId"].toInt();
     //从数据库查数据
-    QJsonObject groupObj=QJsonDocument::fromJson(gpModel->groupInfo(targetId)).object();
-    //封装响应
-    QJsonObject respondObj;
-    respondObj.insert("command","groupInfoBack");
-    respondObj.insert("groupNotice",groupObj["result"].toObject()["notice"].toString());
-    respondObj.insert("groupSummary",groupObj["result"].toObject()["intro"].toString());
-    respondObj.insert("isOwner",groupObj["result"].toObject()["id"].toString());
-    QString diagram=QJsonDocument(respondObj).toJson();
+    QByteArray diagram=gpModel->groupInfo(targetId,clientId);
     sendMessage(diagram,ip,port);
 }
 

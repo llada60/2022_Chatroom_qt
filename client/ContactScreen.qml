@@ -82,7 +82,7 @@ Rectangle {
     GroupInf{id:groupInf; visible:false}
 
     //向服务器发送获取个人或群聊信息的信号
-    signal personInfSignal(int uid, bool isGroup)
+    signal infSignal(int uid, bool isGroup)
 
     //接收返回的个人信息信号
     function personalInfBack(data)
@@ -102,7 +102,7 @@ Rectangle {
     function openPInfoWindow(data,){
         //获得用户信息
         console.log("emit")
-        personInfSignal(data["userId"], false)
+        infSignal(data["userId"], false)
 
         personalInf.isMe = false
         personalInf.personalHead = data["avatar"]
@@ -127,7 +127,7 @@ Rectangle {
 
     function openGInfoWindow(data){
         //获得群组信息
-        personInfSignal(data["userId"],true)
+        infSignal(data["userId"],true)
 
         groupInf.groupHead = data["avatar"]
         groupInf.groupName = data["userName"]

@@ -299,11 +299,26 @@ QByteArray SqlGroupModel::messageList(const int &gID)
     return bAry;
 }
 
-QByteArray SqlGroupModel::groupInfo(const int &gID)
+
+QByteArray SqlGroupModel::groupInfo(const int &gID, const int& mID)
 {
     QSqlQuery query;
+    QSqlQuery query1;
     QByteArray bAry;
     QJsonObject finalObj;
+    int rank;
+    if(!query1.exec(QString("SELECT RANK FROM MEMBERINFO WHERE "
+                           "GID=%1 AND MID=%2 ").arg(QString::number(gID),QString::number(mID))))
+    {
+        qDebug() << "确认群主发生错误";
+        qDebug() << query1.lastError();
+    }
+    else
+    {
+        qDebug() << "确认群主成功";
+        query1.next();
+        rank = query1["RANK"].toInt();
+    }
     if(!query.exec(QString("SELECT * FROM GROUPINFO WHERE "
                            "ID=%1 ").arg(QString::number(gID))))
     {
@@ -316,11 +331,12 @@ QByteArray SqlGroupModel::groupInfo(const int &gID)
         while(query.next())
         {
             QJsonObject obj;
-            obj.insert("id", QJsonValue(query.value("ID").toInt()));
-            obj.insert("name", QJsonValue(query.value("NAME").toString()));
+            obj.insert("groupId", QJsonValue(query.value("ID").toInt()));
+            obj.insert("groupName", QJsonValue(query.value("NAME").toString()));
             obj.insert("icon", QJsonValue(query.value("ICON").toString()));
-            obj.insert("intro", QJsonValue(query.value("INTRO").toString()));
-            obj.insert("notice", QJsonValue(query.value("NOTICE").toString()));
+            obj.insert("groupSummary", QJsonValue(query.value("INTRO").toString()));
+            obj.insert("groupNotice", QJsonValue(query.value("NOTICE").toString()));
+            obj.insert("isOwner", QJsonValue(rank==1));
             finalObj.insert("result", QJsonValue(obj));
         }
         qDebug() << finalObj;
@@ -329,3 +345,4 @@ QByteArray SqlGroupModel::groupInfo(const int &gID)
     bAry = QJsonDocument(finalObj).toJson();
     return bAry;
 }
+
