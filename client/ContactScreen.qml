@@ -2,6 +2,7 @@ import QtQuick 2.12
 import QtQuick.Controls 2.5
 import QtQuick.Controls.Material 2.3
 import QtQuick.Layouts 1.3
+import QtQuick.Dialogs 1.3
 
 import "./components"
 
@@ -133,6 +134,14 @@ Rectangle {
         groupInf.visible = true //与服务器通讯后注释
     }
 
+    MessageDialog
+    {//创建群聊成功提示
+            id: createGroupSuccess
+            title: "提示"
+            icon: StandardIcon.Warning
+            text: "创建群聊成功"
+            standardButtons: StandardButton.Cancel
+    }
 
     /*
       ui界面
@@ -344,7 +353,8 @@ Rectangle {
 
                 Layout.alignment: Qt.AlignLeft
                 onClicked: {
-                    createGroup.show()
+//                    createGroup.show()
+                        createGroupSuccess.open()
                 }
             }
         }
