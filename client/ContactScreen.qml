@@ -136,12 +136,25 @@ Rectangle {
         groupInf.visible = true //与服务器通讯后注释
     }
 
+    function createGroupIsSuccess(v)
+    {
+        (0 != v)? (createGroupSuccess.open()):(createGroupError.open())
+    }
+
     MessageDialog
     {//创建群聊成功提示
             id: createGroupSuccess
             title: "提示"
             icon: StandardIcon.Warning
             text: "创建群聊成功"
+            standardButtons: StandardButton.Cancel
+    }
+    MessageDialog
+    {//创建群聊失败提示
+            id: createGroupError
+            title: "提示"
+            icon: StandardIcon.Warning
+            text: "创建群聊失败"
             standardButtons: StandardButton.Cancel
     }
 
@@ -357,7 +370,6 @@ Rectangle {
                 onClicked: {
 //                    createGroup.show()
                     createGroupSignal(1)
-                    createGroupSuccess.open()
                 }
             }
         }
