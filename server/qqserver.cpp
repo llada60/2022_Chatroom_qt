@@ -170,7 +170,7 @@ void QQServer::parseCommand(QString jsonStr,QHostAddress ip, quint16 port)
     }
     else if(command=="changeGInfoRequest")//更新群信息
     {
-
+        changeGInfo(obj,ip,port);
     }
     else
     {
