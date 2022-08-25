@@ -14,6 +14,13 @@ Window {
     visible: false
 
     id: personalInfPage
+    objectName: "personInfWindow"
+
+    // 发送：设置信息返回服务器端->数据库端存储
+    signal setUsrInfSignal(string name,string saying,int usrid,string personalHead,
+                           int sexn,string area,string edul,string birth)
+    signal testSignal(int id)
+
 
     property bool isMe: true //1表示个人信息可设置，0表示他人信息不可设置
     property string personalHead: "https://c-ssl.dtstatic.com/uploads/item/201403/08/20140308212511_LYudw.thumb.1000_0.jpeg"
@@ -44,9 +51,6 @@ Window {
 
     property string edu: "北理"
     property bool setFlag: true //1：readOnly界面 0:修改界面
-
-    // 发送：设置信息返回服务器端->数据库端存储
-    signal setUsrInfSignal(string name,string saying,int usrid,string personalHead,int sexn,string area,string edul,string birth)
 
 
     property string shengXiao: checkShengXiao()
@@ -161,13 +165,14 @@ Window {
 
                     headArea.acceptedButtons = Qt.NoButton
 
-                    avatar = personalHead
+                    //avatar = personalHead
 
                     Config.write("myHead", personalHead)
 
                     console.log("个人信息修改已完成")
 
                     // 发送信号(string name,string saying,int usrid,string avatar, int sexn,string area,string edul)
+                    testSignal(1)
                     setUsrInfSignal(personalName,personalSaying,personalID,personalHead,sexToNum(),areaFrom,edu,birthDay)
                 }
 

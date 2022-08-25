@@ -19,6 +19,9 @@ ColumnLayout {
     property string targetAvatar: "https://tse2-mm.cn.bing.net/th/id/OIP-C.cS6phGwfJ3qgAtvSXv0rugAAAA?pid=ImgDet&rs=1"
     objectName: "chatScreen" //这句话用于C++抓取
 
+    PersonalInf {id:objectInf}
+
+
     // 信号，当前端发送了一条信息时调用
     // targetId: 发给谁
     // message: 消息
@@ -32,6 +35,7 @@ ColumnLayout {
 
     //从聊天记录获取个人信息
     signal getPInfSignal(int uid,bool isGroup)
+
 
 
     // 函数： 当c++层接收到新的消息时调用，往UI里添加一条消息(暂时不需要，或许直接appenddata就行)

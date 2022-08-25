@@ -47,6 +47,7 @@ QQClient::QQClient(QQmlApplicationEngine *engine, QObject *parent)
                      this,SLOT(refreshContactFriend()));//人
     QObject::connect(contactScreen,SIGNAL(requestGroupSignal()),
                      this,SLOT(refreshContactGroup()));//群
+
     //历史聊天刷新
     QObject* historyMessageScreen=root->findChild<QObject*>("mainWindow")->findChild<QObject*>("chatWindow1")
             ->findChild<QObject*>("chatWindow2")->findChild<QObject*>("historyMessageScreen");
@@ -58,6 +59,13 @@ QQClient::QQClient(QQmlApplicationEngine *engine, QObject *parent)
     //chatScreen个人信息
     QObject::connect(chatScreen,SIGNAL(getPInfSignal(int,bool)),
                      this,SLOT(infoRequest(int,bool)));
+
+    QObject* personInfWindow = chatScreen->findChild<QObject*>("personInfWindow");
+    qDebug()<<personInfWindow->property("height");
+    QObject::connect(personInfWindow,SIGNAL(testSignal(int)),
+                     this,SLOT(test(int)));
+    QObject::connect(personInfWindow,SIGNAL(setUsrInfSignal(QString,QString,int,QString,int,QString,QString,QString)),
+                     this,SLOT(changePInfoRequest(QString, QString, int, QString, int,QString, QString)));
 
 
     /*
@@ -390,6 +398,7 @@ void QQClient::changePInfoRequest(QString name, QString saying, int id, QString 
                                   QString area, QString edul)
 {
     //封装Json
+    qDebug()<<"changePInfoRequest()";
     QJsonObject jsonObj;
     jsonObj.insert("command","changePInfoRequest");
     jsonObj.insert("id",id);
@@ -400,7 +409,12 @@ void QQClient::changePInfoRequest(QString name, QString saying, int id, QString 
     jsonObj.insert("edu", edul);
     QString diagram=QJsonDocument(jsonObj).toJson();
     //发送
-    sendMessage(diagram,this->hostIp,this->hostPort);
+    //sendMessage(diagram,this->hostIp,this->hostPort);
+}
+
+void QQClient::test(int i)
+{
+    qDebug()<<"test()";
 }
 //响应函数
 //注册响应

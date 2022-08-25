@@ -17,7 +17,6 @@ Item {
     }
 
 
-    PersonalInf {id:objectInf}
 
     //接收返回的个人信息信号
     function personalInfBack(data)
@@ -35,6 +34,7 @@ Item {
         getPInfSignal(uid,false)
         console.log("从聊天界面发出个人信息请求")
         objectInf.isMe = sentByMe
+        console.log(sentByMe)
         objectInf.personalHead = avatar
         objectInf.personalName = name
         objectInf.personalID = uid
