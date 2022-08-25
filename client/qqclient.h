@@ -108,7 +108,7 @@ public:
     ~QQClient();
     Q_INVOKABLE void test(int i);//用于注册后调用，这个函数链接不到，所以使用注册方法实现。
     Q_INVOKABLE void changePInfoRequest(QString,QString,int,QString,int,QString,QString);
-    Q_INVOKABLE void changeGInfoRequest(QString groupName,QString groupNotic,QString groupSummary,int groupId);
+    Q_INVOKABLE void changeGInfoRequest(QString groupName,QString groupNotice,QString groupSummary,int groupId);
 
 
 private slots:

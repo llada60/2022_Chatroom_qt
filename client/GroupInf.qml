@@ -26,8 +26,6 @@ Window {
     //接收发来信号判断是否是群主，若是群主拥有设置权限
     property bool isOwner: true
 
-    // 若为群主对信息进行修改，向服务器推送修改后的信息
-    signal sendGroupInf(string groupName,string groupNotic,string groupSummary)
 
 
     flags:(Qt.Window | Qt.CustomizeWindowHint)
@@ -126,9 +124,8 @@ Window {
 
                         avatar = groupHead
 
+                        QQClient.changeGInfoRequest(groupName,groupNotic,groupSummary,groupID)
                         console.log("群组信息修改已完成")
-
-                        sendGroupInf(groupName,groupNotic,groupSummary)
                     }
 
                     setFlag = !setFlag
