@@ -19,6 +19,8 @@ Rectangle {
     signal requestContactSignal()
     signal requestGroupSignal()
 
+    //创建群聊信号
+    signal createGroupSignal(var mId)
 
     // 获取到联系人后调这个函数，messages为QJsonArray。每一项的数据data参考如下
     /**
@@ -354,7 +356,8 @@ Rectangle {
                 Layout.alignment: Qt.AlignLeft
                 onClicked: {
 //                    createGroup.show()
-                        createGroupSuccess.open()
+                    createGroupSignal(1)
+                    createGroupSuccess.open()
                 }
             }
         }
