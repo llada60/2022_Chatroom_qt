@@ -108,14 +108,16 @@ Rectangle {
     //接收返回的群组信息信号
     function groupInfBack(data)
     {
-        groupNotic = data.groupNotic //群公告
-        groupSummary = data.groupSummary //群简介
-        isOwner = data.isOwner
+        groupInf.groupNotic = data.groupNotic //群公告
+        groupInf.groupSummary = data.groupSummary //群简介
+        groupInf.isOwner = data.isOwner
 
         //groupInf.visible = true
 
 
     }
+
+
     function openGInfoWindow(data){
         //获得群组信息
         personInfSignal(data["userId"],true)
@@ -219,7 +221,7 @@ Rectangle {
                     acceptedButtons: Qt.LeftButton
                     onClicked:
                     {
-                        if(!isGroup)
+                        if(!isGroup&&Number(userId)<600000)
                         {
                             openPInfoWindow(contactListModel.get(index))
                         }

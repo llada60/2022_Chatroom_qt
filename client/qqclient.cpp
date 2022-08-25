@@ -350,7 +350,7 @@ void QQClient::groupRequest(int id)
     sendMessage(diagram,this->hostIp,this->hostPort);
 }
 void QQClient::infoRequest(int id, bool isGroup){
-    qDebug()<<"inforequest";
+    qDebug()<<"infoRequest()";
     if(isGroup == true){
         groupInfoRequest(id);
     }
@@ -362,6 +362,7 @@ void QQClient::infoRequest(int id, bool isGroup){
 
 void QQClient::personInfoRequest(int id){
     //封装Json
+    qDebug()<<"personInfoRequest()";
     QJsonObject jsonObj;
     jsonObj.insert("command","personInfoRequest");
     jsonObj.insert("id",id);
@@ -372,6 +373,7 @@ void QQClient::personInfoRequest(int id){
 
 void QQClient::groupInfoRequest(int id){
     //封装Json
+    qDebug()<<"groupInfoRequest()";
     QJsonObject jsonObj;
     jsonObj.insert("command","groupInfoRequest");
     jsonObj.insert("id",id);
@@ -659,6 +661,7 @@ void QQClient::groupBack(QJsonObject obj)
 }
 void QQClient::personInfoBack(QJsonObject obj){
 //    qDebug() << "personInfoBack\n" << obj << endl;
+    qDebug()<<obj;
     QVariant res;
     QObject* personInfoWindow=root->findChild<QObject*>("mainWindow")
             ->findChild<QObject*>("chatWindow1")->findChild<QObject*>("contactScreen");

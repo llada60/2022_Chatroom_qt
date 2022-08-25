@@ -433,8 +433,10 @@ void QQServer::getPersonalInfoRespond(QJsonObject obj, QHostAddress ip, quint16 
 {
     //解包
     int targetId=obj["targetId"].toInt();
+    qDebug()<<targetId;
     //从数据库查数据
     QJsonObject userObj=QJsonDocument::fromJson(atModel->userInfo(targetId)).object();
+    qDebug()<<userObj;
     //封装响应
     QJsonObject respondObj;
     respondObj.insert("command","personInfoBack");
