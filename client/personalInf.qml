@@ -285,7 +285,7 @@ Window {
                 Layout.alignment: Qt.AlignHCenter
                 Layout.topMargin: 5
                 font.pixelSize: 12
-                font.family: "LiSu"
+                //font.family: "LiSu"
                 color: "#767777"
                 text: personalSaying
             }

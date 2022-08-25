@@ -18,7 +18,6 @@ Item {
 
 
     PersonalInf {id:objectInf}
-    signal getPInfSignal(int uid)
 
     //接收返回的个人信息信号
     function personalInfBack(data)
@@ -33,8 +32,8 @@ Item {
     }
     function openInfoWindow(data){
         //获得用户信息
-        getPInfSignal(uid)
-
+        getPInfSignal(uid,false)
+        console.log("从聊天界面发出个人信息请求")
         objectInf.isMe = sentByMe
         objectInf.personalHead = avatar
         objectInf.personalName = name

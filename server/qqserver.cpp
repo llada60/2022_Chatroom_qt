@@ -438,14 +438,7 @@ void QQServer::getPersonalInfoRespond(QJsonObject obj, QHostAddress ip, quint16 
     QJsonObject userObj=QJsonDocument::fromJson(atModel->userInfo(targetId)).object();
     qDebug()<<userObj;
     //封装响应
-    QJsonObject respondObj;
-    respondObj.insert("command","personInfoBack");
-    respondObj.insert("personalSaying",userObj["result"].toObject()["signature"].toString());
-    respondObj.insert("sex_num",userObj["result"].toObject()["gender"].toString());
-    respondObj.insert("birthday",userObj["result"].toObject()["birth"].toString());
-    respondObj.insert("areaFrom",userObj["result"].toObject()["area"].toString());
-    respondObj.insert("edu",userObj["result"].toObject()["education"].toString());
-    QString diagram=QJsonDocument(respondObj).toJson();
+    QString diagram=QJsonDocument(userObj).toJson();
     sendMessage(diagram,ip,port);
 }
 

@@ -84,11 +84,15 @@ Rectangle {
     //接收返回的个人信息信号
     function personalInfBack(data)
     {
-        personalInf.personalSaying = data.personalSaying
-        personalInf.sex_num = Number(data.sex_num)
-        personalInf.birthday = data.birthday
-        personalInf.areaFrom = data.areaFrom
-        personalInf.edu = data.edu
+
+        personalInf.personalSaying = data.signature
+        personalInf.sex_num = Number(data.gender)
+        personalInf.birthday = data.birth
+        personalInf.areaFrom = data.area
+        personalInf.edu = data.education
+        personalInf.personalHead = data.icon
+        personalInf.personalName = data.name
+        personalInf.personalID   = data.id
 
         personalInf.visible = true
     }
@@ -108,7 +112,7 @@ Rectangle {
     //接收返回的群组信息信号
     function groupInfBack(data)
     {
-        groupInf.groupNotic = data.groupNotic //群公告
+        groupInf.groupNotic = data.groupNotice //群公告
         groupInf.groupSummary = data.groupSummary //群简介
         groupInf.isOwner = data.isOwner
 

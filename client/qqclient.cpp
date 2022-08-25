@@ -55,6 +55,10 @@ QQClient::QQClient(QQmlApplicationEngine *engine, QObject *parent)
     //个人信息
     QObject::connect(contactScreen,SIGNAL(personInfSignal(int,bool)),
                      this,SLOT(infoRequest(int,bool)));
+    //chatScreen个人信息
+    QObject::connect(chatScreen,SIGNAL(getPInfSignal(int,bool)),
+                     this,SLOT(infoRequest(int,bool)));
+
 
     /*
     //修改个人信息
@@ -365,7 +369,7 @@ void QQClient::personInfoRequest(int id){
     qDebug()<<"personInfoRequest()";
     QJsonObject jsonObj;
     jsonObj.insert("command","personInfoRequest");
-    jsonObj.insert("id",id);
+    jsonObj.insert("targetId",id);
     QString diagram=QJsonDocument(jsonObj).toJson();
     //发送
     sendMessage(diagram,this->hostIp,this->hostPort);
@@ -376,7 +380,7 @@ void QQClient::groupInfoRequest(int id){
     qDebug()<<"groupInfoRequest()";
     QJsonObject jsonObj;
     jsonObj.insert("command","groupInfoRequest");
-    jsonObj.insert("id",id);
+    jsonObj.insert("targetId",id);
     QString diagram=QJsonDocument(jsonObj).toJson();
     //发送
     sendMessage(diagram,this->hostIp,this->hostPort);
