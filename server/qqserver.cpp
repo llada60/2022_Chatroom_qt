@@ -391,7 +391,9 @@ void QQServer::addRespond(QJsonObject obj, QHostAddress ip, quint16 port)
 void QQServer::createGroupRespond(QJsonObject obj, QHostAddress ip, quint16 port)
 {
     int ownerId=obj["id"].toInt();
+    qDebug()<<ownerId;
     int groupId = gpModel->createGroup(ownerId);
+    qDebug()<<groupId;
     QJsonObject respondObj;
     respondObj.insert("command","createGroupBack");
     respondObj.insert("groupId",groupId);

@@ -294,7 +294,6 @@ void QQClient::add(int targetId)
 void QQClient::createGroup(QVariant var)
 {
     qDebug()<<"createGroup";
-    QVariantList memberList=var.toList();
     //建群
     QJsonObject obj;
     obj.insert("command","createGroup");
@@ -532,10 +531,11 @@ void QQClient::createGroupBack(QJsonObject obj)
     QVariant res; //如果QML函数没有返回值会不会报错？
     QObject* contactScreen=root->findChild<QObject*>("mainWindow")
             ->findChild<QObject*>("chatWindow1")->findChild<QObject*>("contactScreen");
+    /*
     QMetaObject::invokeMethod(contactScreen,"createGroupIsSuccess",
                               Q_RETURN_ARG(QVariant,res),
                               Q_ARG(QVariant,groupId));
-
+*/
 }
 //删除响应
 void QQClient::deleteBack(QJsonObject obj)
