@@ -106,6 +106,10 @@ public:
     //初始化的时候把QMLengine塞进去
     QQClient(QQmlApplicationEngine* engine,QObject *parent = nullptr);
     ~QQClient();
+    Q_INVOKABLE void test(int i);//用于注册后调用，这个函数链接不到，所以使用注册方法实现。
+    Q_INVOKABLE void changePInfoRequest(QString,QString,int,QString,int,QString,QString);
+    Q_INVOKABLE void changeGInfoRequest(QString groupName,QString groupNotic,QString groupSummary,int groupId);
+
 
 private slots:
     //请求函数：QML到C++的槽函数
@@ -122,8 +126,6 @@ private slots:
     void infoRequest(int id, bool isGroup);//请求某人或某群的详细数据
     void personInfoRequest(int id);//请求某人的详细数据
     void groupInfoRequest(int id);//请求某群的详细数据
-    void changePInfoRequest(QString,QString,int,QString,int,QString,QString);
-    void test(int i);
     //其他函数
     void refreshContactFriend();//刷新联系人
     void refreshContactGroup();//刷新群聊通讯录
