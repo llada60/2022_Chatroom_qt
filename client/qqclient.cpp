@@ -671,7 +671,7 @@ void QQClient::personInfoBack(QJsonObject obj){
             ->findChild<QObject*>("chatWindow1")->findChild<QObject*>("contactScreen");
     QMetaObject::invokeMethod(personInfoWindow,"personalInfBack",
                               Q_RETURN_ARG(QVariant,res),
-                              Q_ARG(QVariant,obj));
+                              Q_ARG(QVariant,obj["result"].toObject()));
 }
 void QQClient::groupInfoBack(QJsonObject obj){
 //    qDebug() << "groupInfoBack\n" << obj << endl;
