@@ -52,53 +52,53 @@ The overall architecture of the project system and the contents under each archi
 
 #### 2.4 Module structure diagram
 
-![image-20230312210839354](/Users/ll/code/Qt/2022_Chatroom_qt/pic/image-20230312210839354.png)
+![image-20230312210839354](pic/image-20230312210839354.png)
 
 #### 3 Display
 
 1. Registration
 
-![image-20230312211049754](/Users/ll/code/Qt/2022_Chatroom_qt/pic/image-20230312211049754.png)
+![image-20230312211049754](pic/image-20230312211049754.png)
 
 2. Verification code sending
 
-<img src="/Users/ll/code/Qt/2022_Chatroom_qt/pic/image-20230312211223849.png" alt="image-20230312211223849" style="zoom:50%;" />
+<img src="pic/image-20230312211223849.png" alt="image-20230312211223849" style="zoom:50%;" />
 
 3. Login
 
-![image-20230312211255732](/Users/ll/code/Qt/2022_Chatroom_qt/pic/image-20230312211255732.png)
+![image-20230312211255732](pic/image-20230312211255732.png)
 
 4. Contact
 
-![image-20230312211308344](/Users/ll/code/Qt/2022_Chatroom_qt/pic/image-20230312211308344.png)
+![image-20230312211308344](pic/image-20230312211308344.png)
 
 5. Add friend/group
 
-![image-20230312211748656](/Users/ll/code/Qt/2022_Chatroom_qt/pic/image-20230312211748656.png)
+![image-20230312211748656](pic/image-20230312211748656.png)
 
 6. Add friend successfully
 
-![image-20230312211754181](/Users/ll/code/Qt/2022_Chatroom_qt/pic/image-20230312211754181.png)
+![image-20230312211754181](pic/image-20230312211754181.png)
 
 7. Chat page and history message (WAN, support offline information collection)
 
-![image-20230312211803556](/Users/ll/code/Qt/2022_Chatroom_qt/pic/image-20230312211803556.png)
+![image-20230312211803556](pic/image-20230312211803556.png)
 
 8. Group Chat
 
-![image-20230312211808143](/Users/ll/code/Qt/2022_Chatroom_qt/pic/image-20230312211808143.png)
+![image-20230312211808143](pic/image-20230312211808143.png)
 
 9. Sending emoji
 
-![image-20230312211830776](/Users/ll/code/Qt/2022_Chatroom_qt/pic/image-20230312211830776.png)
+![image-20230312211830776](pic/image-20230312211830776.png)
 
 10. Click the profile to view personal information
 
-![image-20230312211841721](/Users/ll/code/Qt/2022_Chatroom_qt/pic/image-20230312211841721.png)
+![image-20230312211841721](pic/image-20230312211841721.png)
 
 11. Personal information modification (The information shown can be modified, modify the birthday automatically calculate the age and zodiac. Avatar is optional)
 
-![image-20230312211852457](/Users/ll/code/Qt/2022_Chatroom_qt/pic/image-20230312211852457.png)
+![image-20230312211852457](pic/image-20230312211852457.png)
 
-![image-20230312211857005](/Users/ll/code/Qt/2022_Chatroom_qt/pic/image-20230312211857005.png)
+![image-20230312211857005](pic/image-20230312211857005.png)
 
