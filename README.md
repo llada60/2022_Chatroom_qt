@@ -20,7 +20,7 @@ It can be used in office, entertainment, daily life and other scenarios, and kee
 
 #### 2.2 Design Thought
 
-The project is divided into **Client, Server **and **Database**. The Server is placed on the cloud server under Internet to achieve the purpose of public instant communication. With the Server as the center, the communication between the three parts is connected.
+The project is divided into **Client, Server** and **Database**. The Server is placed on the cloud server under Internet to achieve the purpose of public instant communication. With the Server as the center, the communication between the three parts is connected.
 
 In the development process, the front and back end are seperated, and the corresponding interface functions and signals are written, and the connection adjustment is carried out at the end of the merger. This helps us develop independently, with clear division of labor and high efficiency.
 
