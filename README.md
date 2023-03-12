@@ -26,7 +26,7 @@ In the development process, the front and back end are seperated, and the corres
 
 The overall architecture of the project system and the contents under each architecture are shown below.
 
-![image-20230312205417853](/Users/ll/code/Qt/2022_Chatroom_qt/pic/image-20230312205417853.png)
+![image-20230312205417853](pic/image-20230312205417853.png)
 
  #### 2.3 Introduction of Module Function
 
